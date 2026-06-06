@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>13-0 — Build the Unbeaten XI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#0a1f18;--panel:#08160f;--panel2:#0b2419;--line:#1c4334;--line2:#2a5742;
+    --cream:#f4ead5;--cream-dim:#bcae90;--ball:#c0392b;--ball-bright:#e0492f;
+    --gold:#e3b341;--willow:#cdd6a0;--shadow:0 18px 40px -18px rgba(0,0,0,.8);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:"Spectral",Georgia,serif;color:var(--cream);
+    background:
+      radial-gradient(1200px 600px at 50% -10%, rgba(18,70,52,.35) 0%, transparent 60%),
+      radial-gradient(900px 700px at 50% 120%, rgba(192,57,43,.10) 0%, transparent 60%),
+      linear-gradient(180deg,var(--night) 0%, #061611 100%);
+    min-height:100%;-webkit-font-smoothing:antialiased;line-height:1.5;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:20px 18px 70px;position:relative;z-index:1}
+  .mono{font-family:"Oswald",Impact,sans-serif}
+  .eyebrow{font-family:"Oswald",sans-serif;letter-spacing:.28em;text-transform:uppercase;font-size:12px;color:var(--cream-dim)}
+
+  /* ---------- title ---------- */
+  #title{text-align:center;padding:30px 0 10px;max-width:720px;margin:0 auto}
+  .bigscore{font-family:"Oswald",sans-serif;font-weight:700;line-height:.82;
+    font-size:clamp(96px,24vw,210px);letter-spacing:-.02em;color:var(--cream);text-shadow:0 0 36px rgba(227,179,65,.18)}
+  .bigscore .dash{color:var(--ball)}
+  .tag{font-size:clamp(18px,4.4vw,26px);font-style:italic;color:var(--willow);margin-top:6px}
+  .sub{max-width:600px;margin:18px auto 0;color:var(--cream-dim);font-size:16px}
+  .modes{display:flex;gap:10px;justify-content:center;margin:26px 0 6px;flex-wrap:wrap}
+  .modebtn{cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--cream);
+    padding:12px 16px;border-radius:10px;text-align:left;min-width:210px;transition:.18s}
+  .modebtn:hover{border-color:var(--gold)}
+  .modebtn.on{border-color:var(--gold);background:rgba(227,179,65,.10)}
+  .modebtn .t{font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:14px}
+  .modebtn .d{font-size:13px;color:var(--cream-dim)}
+  .cta{cursor:pointer;font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.14em;
+    font-size:18px;font-weight:600;color:#0a1f18;background:var(--gold);border:none;border-radius:10px;
+    padding:16px 38px;margin-top:22px;box-shadow:var(--shadow);transition:.16s}
+  .cta:hover{transform:translateY(-2px);filter:brightness(1.05)}
+  .cta:disabled{opacity:.4;cursor:not-allowed;transform:none}
+  .ghost{background:transparent;color:var(--cream);border:1px solid var(--line)}
+  details.howto{margin-top:24px;text-align:left;border-top:1px solid var(--line);padding-top:16px}
+  details.howto summary{cursor:pointer;font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.12em;font-size:13px;color:var(--gold);list-style:none;display:inline-block}
+  details.howto summary::-webkit-details-marker{display:none}
+  details.howto summary::after{content:" \\25B8";color:var(--cream-dim)}
+  details.howto[open] summary::after{content:" \\25BE"}
+  .howto p{color:var(--cream-dim);font-size:15px;margin:10px 0 0}
+  .howto b{color:var(--cream)}
+
+  .hidden{display:none!important}
+
+  /* ---------- draft top bar ---------- */
+  .dtop{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:16px;gap:16px;flex-wrap:wrap}
+  .dtop .brand{display:flex;align-items:center;gap:14px}
+  .dtop .brand .mono{font-size:26px;font-weight:700}
+  .roundpill{font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:13px;color:var(--cream-dim);border:1px solid var(--line);border-radius:20px;padding:6px 14px}
+  .cell{display:flex;align-items:center;gap:10px}
+  .cell .chip{font-family:"Oswald",sans-serif;font-weight:600;letter-spacing:.04em;border-radius:24px;padding:8px 18px;font-size:18px}
+  .cell .chip.team{background:#10110f;border:1px solid var(--line2);color:var(--cream)}
+  .cell .chip.era{background:rgba(227,179,65,.12);border:1px solid var(--gold);color:var(--gold)}
+  .respins{display:flex;gap:16px;align-items:center}
+  .respin{cursor:pointer;background:none;border:none;font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.08em;
+    font-size:13px;display:flex;align-items:center;gap:6px;transition:.15s}
+  .respin.team{color:var(--gold)} .respin.era{color:#b07fd6}
+  .respin:disabled{opacity:.3;cursor:not-allowed}
+  .respin .ic{font-size:15px}
+
+  /* ---------- draft grid ---------- */
+  .draftgrid{display:grid;grid-template-columns:1.15fr 1fr;gap:20px;align-items:start}
+  @media(max-width:880px){.draftgrid{grid-template-columns:1fr}}
+
+  .listcard{background:linear-gradient(180deg,var(--panel),#06140e);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow)}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+  .ftabs{display:flex;gap:5px}
+  .ftab{cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--cream-dim);
+    font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.06em;font-size:12px;padding:7px 12px;border-radius:8px;transition:.14s}
+  .ftab:hover{border-color:var(--gold)} .ftab.on{background:var(--gold);color:#0a1f18;border-color:var(--gold);font-weight:600}
+  .search{flex:1;min-width:120px;background:#04100b;border:1px solid var(--line);border-radius:8px;color:var(--cream);
+    padding:8px 12px;font-family:"Spectral",serif;font-size:14px}
+  .search::placeholder{color:#5e7368}
+  .sortsel{background:#04100b;border:1px solid var(--line);border-radius:8px;color:var(--cream);padding:8px 10px;font-family:"Oswald",sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:.06em;cursor:pointer}
+  .avail{font-family:"Oswald",sans-serif;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#5e7368;margin:2px 2px 8px}
+
+  .plist{max-height:560px;overflow-y:auto;padding-right:6px;display:flex;flex-direction:column;gap:8px}
+  .plist::-webkit-scrollbar{width:8px}.plist::-webkit-scrollbar-thumb{background:var(--line2);border-radius:6px}
+  .prow{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:.12s;background:rgba(255,255,255,.015)}
+  .prow:hover{border-color:var(--gold);background:rgba(227,179,65,.06)}
+  .prow.sel{border-color:var(--gold);background:rgba(227,179,65,.12);box-shadow:0 0 0 1px var(--gold) inset}
+  .prow.disabled{opacity:.35;cursor:not-allowed}
+  .prow.disabled:hover{border-color:var(--line);background:rgba(255,255,255,.015)}
+  .prow .pid{flex:1;min-width:0}
+  .prow .pn{font-weight:600;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .prow .pr{font-family:"Oswald",sans-serif;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--ball-bright);margin-top:1px}
+  .prow .pr .dim{color:#5e7368}
+  .prow .stats{display:flex;gap:12px;text-align:center}
+  .prow .st{min-width:38px}
+  .prow .st .v{font-family:"Oswald",sans-serif;font-weight:600;font-size:15px;color:var(--cream);line-height:1}
+  .prow .st .k{font-family:"Oswald",sans-serif;font-size:9px;letter-spacing:.08em;color:#5e7368;text-transform:uppercase}
+  .prow .st.hot .v{color:var(--gold)}
+  @media(max-width:520px){.prow .stats{gap:7px}.prow .st{min-width:30px}.prow .st .v{font-size:13px}}
+
+  /* ---------- team sheet ---------- */
+  .sheet{background:linear-gradient(180deg,var(--panel2),#07180f);border:1px solid var(--line);border-radius:14px;padding:16px 16px 14px;box-shadow:var(--shadow);position:sticky;top:14px}
+  .sheet h3{font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.16em;font-size:13px;color:var(--gold);margin-bottom:4px;display:flex;justify-content:space-between}
+  .sheet .hint{font-size:12.5px;color:var(--cream-dim);font-style:italic;margin-bottom:12px;min-height:18px}
+  .kbadge{font-family:"Oswald",sans-serif;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+    border-radius:8px;padding:7px 11px;margin-bottom:10px;border:1px solid var(--line2);color:var(--cream-dim);display:flex;justify-content:space-between;align-items:center}
+  .kbadge.met{border-color:var(--willow);color:var(--willow);background:rgba(205,214,160,.08)}
+  .kbadge.urgent{border-color:var(--ball);color:var(--ball-bright);background:rgba(192,57,43,.08)}
+  .kbadge.warn{border-color:#7a5a1f;color:var(--gold);background:rgba(227,179,65,.06)}
+  .slot .kglove{font-size:13px;margin-left:6px}
+
+  /* ---------- lotto spin stage ---------- */
+  #spinstage{text-align:center;padding:30px 10px 10px;min-height:48vh}
+  .reels{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
+  .reelcard{background:#fff;border-radius:18px;padding:6px;box-shadow:var(--shadow)}
+  .reelcard.team{border:5px solid var(--gold)}
+  .reelcard.era{border:5px solid #9b59d0}
+  .reelcard .inner,.reelcard{min-width:200px}
+  .reelcard .rlabel{font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:13px;color:var(--ball);margin-top:10px}
+  .reelcard .rval{font-family:"Oswald",sans-serif;font-weight:700;font-size:54px;line-height:1.05;color:#0a1f18;padding:2px 16px 16px;min-height:88px;display:flex;align-items:center;justify-content:center;white-space:nowrap}
+  .reelcard.spinning .rval{color:#8a8a8a;filter:blur(.4px)}
+  .reelcard.landed{animation:pop .4s ease}
+  @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.07)}100%{transform:scale(1)}}
+  #spinstage .times{font-family:"Oswald",sans-serif;font-size:40px;color:var(--cream-dim)}
+  .spinbtn{display:inline-block;margin-top:26px}
+  .spinnote{color:var(--cream-dim);font-style:italic;margin-top:14px;font-size:14px}
+  @media(max-width:560px){.reelcard{min-width:150px}.reelcard .rval{font-size:40px;min-height:66px}}
+
+  /* ---------- mobile bottom slot bar ---------- */
+  #slotbar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:none;
+    background:rgba(6,18,12,.97);border-top:1px solid var(--line);backdrop-filter:blur(8px);
+    padding:9px 12px calc(9px + env(safe-area-inset-bottom))}
+  .sbhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:7px}
+  .sbhead .k{font-family:"Oswald",sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--cream-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sbhead .k.kept{color:var(--willow)} .sbhead .k.warn{color:var(--gold)}
+  .sbrow{display:flex;gap:3px;justify-content:space-between}   /* all 11 fit, no scroll */
+  .scell{flex:1 1 0;min-width:0;text-align:center}
+  .ring{width:100%;max-width:32px;aspect-ratio:1;border-radius:50%;border:2px dashed var(--line2);display:flex;align-items:center;justify-content:center;
+    font-family:"Oswald",sans-serif;font-size:10px;font-weight:600;color:#5e7368;margin:0 auto;position:relative;transition:.14s}
+  .scell.filled .ring{border-style:solid;border-color:var(--line2);background:rgba(255,255,255,.05);color:var(--cream)}
+  .scell.eligible .ring{border-color:var(--gold);background:rgba(227,179,65,.16);color:var(--gold);cursor:pointer;box-shadow:0 0 8px rgba(227,179,65,.35)}
+  .scell.active .ring{border-color:var(--gold);background:rgba(227,179,65,.28);color:var(--gold)}
+  .scell .slbl{font-family:"Oswald",sans-serif;font-size:7.5px;letter-spacing:.02em;text-transform:uppercase;color:#5e7368;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .scell.filled .slbl{color:var(--cream-dim)}
+  .ring .kg{position:absolute;top:-6px;right:-4px;font-size:11px}
+  @media(max-width:880px){
+    #slotbar{display:block}
+    .sheet{display:none}
+    .draftgrid{grid-template-columns:1fr}
+    #draft{padding-bottom:118px}
+    .plist{max-height:none}
+  }
+  .slot{display:flex;align-items:center;gap:12px;border:1px dashed var(--line2);border-radius:10px;padding:9px 12px;margin-bottom:7px;transition:.14s;cursor:default}
+  .slot .num{font-family:"Oswald",sans-serif;color:#5e7368;width:20px;font-size:15px;text-align:center}
+  .slot .body{flex:1;min-width:0}
+  .slot .role{font-family:"Oswald",sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#5e7368}
+  .slot .filledname{font-weight:600;font-size:15px;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .slot .filledsub{font-family:"Oswald",sans-serif;font-size:11px;color:var(--cream-dim);letter-spacing:.04em}
+  .slot.filled{border-style:solid;border-color:var(--line2);background:rgba(255,255,255,.02)}
+  .slot.open.eligible{border-color:var(--gold);background:rgba(227,179,65,.10);cursor:pointer;box-shadow:0 0 0 1px var(--gold) inset}
+  .slot.open.eligible:hover{background:rgba(227,179,65,.18)}
+  .slot.active{border-color:var(--gold);background:rgba(227,179,65,.14);cursor:pointer}
+  .slot .tick{font-family:"Oswald",sans-serif;font-size:11px;color:var(--willow)}
+
+  /* ---------- result ---------- */
+  #result{text-align:center}
+  .verdict{font-family:"Oswald",sans-serif;font-weight:700;font-size:clamp(40px,10vw,84px);letter-spacing:.01em;line-height:.9}
+  .recordline{font-family:"Oswald",sans-serif;font-size:clamp(54px,15vw,120px);font-weight:700;letter-spacing:.04em;margin:6px 0}
+  .recordline .w{color:var(--willow)}.recordline .d{color:var(--cream-dim)}.recordline .l{color:var(--ball)}
+  .vmsg{font-style:italic;color:var(--cream);font-size:18px;max-width:600px;margin:10px auto 0}
+  .stats2{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:26px 0}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 22px;min-width:150px}
+  .stat .v{font-family:"Oswald",sans-serif;font-size:38px;font-weight:700}
+  .stat .k{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-dim);font-family:"Oswald",sans-serif}
+  .resultxi{text-align:left;max-width:620px;margin:0 auto;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .resultxi h3{font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.16em;font-size:13px;color:var(--gold);margin-bottom:10px}
+  .xirow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 0;border-bottom:1px dashed rgba(20,48,35,.5)}
+  .xirow:last-child{border-bottom:none}
+  .xirow .num{font-family:"Oswald",sans-serif;color:var(--cream-dim);width:26px;font-size:15px}
+  .xirow .who{flex:1;font-size:15px}.xirow .who small{color:var(--cream-dim);font-size:12px}
+  .xirow .role{font-family:"Oswald",sans-serif;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--cream-dim);text-align:right}
+  .grail{color:var(--gold);text-shadow:0 0 30px rgba(227,179,65,.4)}
+  .footnote{margin-top:30px;color:#5e7368;font-size:12px;border-top:1px solid var(--line);padding-top:16px;text-align:left;max-width:760px;margin-left:auto;margin-right:auto}
+
+  .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);opacity:0;
+    background:#10110f;border:1px solid var(--ball);color:var(--cream);font-family:"Oswald",sans-serif;
+    letter-spacing:.04em;font-size:13px;padding:10px 18px;border-radius:10px;transition:.2s;pointer-events:none;z-index:60}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- TITLE -->
+  <section id="title">
+    <div class="eyebrow">Eleven legends &middot; spun across history &middot; one perfect year</div>
+    <div class="bigscore">13<span class="dash">-</span>0</div>
+    <div class="tag">Can you win all thirteen?</div>
+    <p class="sub">A top side plays about thirteen Tests in a year. The machine spins a <b>nation</b> and a <b>decade</b>; from every player that country fielded that decade you pick one and slot them into your order. Eleven spins, eleven players, one full XI &mdash; then you send them out for a year of Tests.</p>
+    <div class="modes" id="modes">
+      <button class="modebtn on" data-mode="scorecard"><div class="t">Scorecard</div><div class="d">Era stats shown for every player.</div></button>
+      <button class="modebtn" data-mode="pavilion"><div class="t">Pavilion</div><div class="d">Names only. Pick on nous alone.</div></button>
+    </div>
+    <br>
+    <button class="cta" id="startBtn">Spin the machine</button>
+    <details class="howto">
+      <summary>How it works</summary>
+      <p>Eleven picks. Each pick the reels land a <b>nation &times; decade</b> &mdash; say <i>Australia, 90s</i>. The left panel lists every Australian of that decade; sort by runs, wickets or dismissals, search, filter, then choose one and drop them into an open slot in your XI.</p>
+      <p>The team sheet sets the shape: <b>2 openers</b>, <b>2 top order</b> (3&ndash;4), <b>3 middle order</b> (one of which can instead be a bowler), a <b>spinner</b>, two <b>fast bowlers</b> and a flexible bowling slot. Roles are strict — an opener only fills an opener's spot, a No.3 only a top-order spot. <b>All-rounders</b> carry their real bowling type, so a spinning all-rounder can't fill a fast-bowling slot, and a quick can't fill the spinner's. A wicket-keeper isn't compulsory, but field an XI without one and the side is <b>heavily penalised</b>. Glowing slots show where the selected player can go. You get one <b>Team</b> re-spin and one <b>Era</b> re-spin.</p>
+      <p>Stats shown are for the <b>chosen decade only</b>; the marquee names carry real splits, others are flagged &approx;. Your side is scored on runs and twenty-wickets-a-match, era-adjusted under the hood.</p>
+    </details>
+  </section>
+
+  <!-- DRAFT -->
+  <section id="draft" class="hidden">
+    <div class="dtop">
+      <div class="brand">
+        <div class="mono">13<span style="color:var(--ball)">-</span>0</div>
+        <div class="roundpill">Pick <span id="roundNo">1</span> / 11</div>
+        <div class="cell" id="cellChips"><span class="chip team" id="chipTeam">--</span><span class="chip era" id="chipEra">--</span></div>
+      </div>
+      <div class="respins" id="respinWrap">
+        <button class="respin team" id="respinTeam"><span class="ic">&#x21bb;</span> Team (<span id="rsT">1</span>)</button>
+        <button class="respin era" id="respinEra"><span class="ic">&#x21bb;</span> Era (<span id="rsE">1</span>)</button>
+      </div>
+    </div>
+
+    <!-- lotto spin stage -->
+    <div id="spinstage" class="hidden">
+      <div class="reels">
+        <div class="reelcard team"><div class="rlabel">Team</div><div class="rval" id="reelTeam">?</div></div>
+        <div class="times">&times;</div>
+        <div class="reelcard era"><div class="rlabel">Decade</div><div class="rval" id="reelEra">?</div></div>
+      </div>
+      <button class="cta spinbtn" id="spinBtn">Spin the machine</button>
+      <div class="spinnote" id="spinNote">Spin to draw a nation and a decade</div>
+    </div>
+
+    <div class="draftgrid" id="draftgrid">
+      <div class="listcard">
+        <div class="controls">
+          <div class="ftabs" id="ftabs">
+            <button class="ftab on" data-f="ALL">All</button>
+            <button class="ftab" data-f="BAT">Bat</button>
+            <button class="ftab" data-f="BOWL">Bowl</button>
+            <button class="ftab" data-f="AR">AR</button>
+            <button class="ftab" data-f="WK">WK</button>
+          </div>
+          <input class="search" id="search" placeholder="Search player...">
+          <select class="sortsel" id="sortsel">
+            <option value="runs">Sort: Runs</option>
+            <option value="wkts">Sort: Wickets</option>
+            <option value="avg">Sort: Bat avg</option>
+            <option value="dis">Sort: Catches/St</option>
+            <option value="mat">Sort: Matches</option>
+            <option value="name">Sort: Name</option>
+          </select>
+        </div>
+        <div class="avail" id="avail">— players available</div>
+        <div class="plist" id="plist"></div>
+      </div>
+
+      <div class="sheet">
+        <h3><span>Your XI</span><span class="tick" id="xiCount">0 / 11</span></h3>
+        <div class="kbadge" id="keeperBadge"></div>
+        <div class="hint" id="sheetHint">Pick a player, then choose a glowing slot.</div>
+        <div id="slots"></div>
+      </div>
+    </div>
+
+    <!-- mobile: fixed bottom slot bar -->
+    <div id="slotbar">
+      <div class="sbhead">
+        <span class="k" id="sbCount">0 / 11</span>
+        <span class="k" id="sbKeeper">&#x1F9E4; keeper: none</span>
+        <span class="k" id="sbHint">Tap a player</span>
+      </div>
+      <div class="sbrow" id="sbRow"></div>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section id="result" class="hidden">
+    <div class="eyebrow">Final standings — a year of Tests</div>
+    <div class="verdict" id="verdict">&nbsp;</div>
+    <div class="recordline" id="record">&nbsp;</div>
+    <p class="vmsg" id="vmsg"></p>
+    <div class="stats2">
+      <div class="stat"><div class="v" id="sBat">0</div><div class="k">Batting index</div></div>
+      <div class="stat"><div class="v" id="sBowl">0</div><div class="k">Bowling index</div></div>
+      <div class="stat"><div class="v" id="sWin">0%</div><div class="k">Win / Test</div></div>
+      <div class="stat"><div class="v" id="sOdds">0%</div><div class="k">Odds of 13-0</div></div>
+    </div>
+    <div class="resultxi"><h3>The eleven you sent out</h3><div id="resultXi"></div></div>
+    <div style="margin-top:26px;text-align:center"><button class="cta" id="againBtn">Pick a new eleven</button></div>
+    <div class="footnote" id="footnote"></div>
+  </section>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   13-0 — era-normalized cricket draft (82-0 style)
+   ============================================================ */
+const NATIONS={AUS:"Australia",ENG:"England",IND:"India",WI:"West Indies",PAK:"Pakistan",SA:"South Africa",SL:"Sri Lanka",NZ:"New Zealand",BAN:"Bangladesh",ZIM:"Zimbabwe"};
+const ABBR={AUS:"AUS",ENG:"ENG",IND:"IND",WI:"WI",PAK:"PAK",SA:"SA",SL:"SL",NZ:"NZ",BAN:"BAN",ZIM:"ZIM"};
+const DECADES=["1930s","1940s","1950s","1960s","1970s","1980s","1990s","2000s","2010s","2020s"];
+const eraShort=d=>d.slice(2);          // "1930s" -> "30s" (no century needed from the 1930s on)
+
+/* era difficulty pars (hidden — power the sim only) */
+const batPar ={"1930s":45,"1940s":42,"1950s":37,"1960s":36,"1970s":37,"1980s":38,"1990s":39,"2000s":43,"2010s":39,"2020s":37};
+const bowlPar={"1930s":33,"1940s":31,"1950s":28,"1960s":30,"1970s":30,"1980s":30,"1990s":30,"2000s":33,"2010s":30,"2020s":29};
+const SR_PAR={PC:58,SP:66,AR:60};
+const POS_FACTOR={OP:1.05,TOP:1.03,MD:1.00,AR:1.00,WK:0.97,PC:1.00,SP:1.00};
+const XI_SIZE=11, SEASON=13, RESPIN_T=1, RESPIN_E=1, MIN_CELL=10;  // only spin team×era cells with >=10 players
+
+/* [name, country, decadesCSV, rolesCSV, mat, runs, batAvg, wkts, bowlAvg, bowlSR]  (career figures; era splits derived) */
+const RAW=[
+["Clarrie Grimmett","AUS","1930s","SP",37,557,13.9,216,24.2,67],
+["Bill Ponsford","AUS","1930s","OP",29,2122,48.2,0,0,0],
+["Bill Woodfull","AUS","1930s","OP",35,2300,46,0,0,0],
+["Don Bradman","AUS","1930s,1940s","TOP",52,6996,99.94,0,0,0],
+["Stan McCabe","AUS","1930s","MD",39,2748,48.2,36,42.9,0],
+["Bill O'Reilly","AUS","1930s,1940s","SP",27,410,12.8,144,22.6,69],
+["Lindsay Hassett","AUS","1930s,1940s,1950s","MD",43,3073,46.6,0,0,0],
+["Keith Miller","AUS","1940s,1950s","AR,PC,MD",55,2958,37,170,23,55],
+["Ray Lindwall","AUS","1940s,1950s","PC",61,1502,21.2,228,23,60],
+["Neil Harvey","AUS","1940s,1950s,1960s","TOP",79,6149,48.4,0,0,0],
+["Arthur Morris","AUS","1940s,1950s","OP",46,3533,46.5,0,0,0],
+["Richie Benaud","AUS","1950s,1960s","AR,SP",63,2201,24.5,248,27,77],
+["Alan Davidson","AUS","1950s,1960s","AR,PC",44,1328,24.6,186,20.5,62],
+["Bob Simpson","AUS","1960s","OP",62,4869,46.8,71,42.3,0],
+["Bill Lawry","AUS","1960s,1970s","OP",67,5234,47.2,0,0,0],
+["Norman O'Neill","AUS","1950s,1960s","MD",42,2779,45.6,0,0,0],
+["Graham McKenzie","AUS","1960s,1970s","PC",60,945,12.3,246,29.8,72],
+["Doug Walters","AUS","1960s,1970s","MD",74,5357,48.3,49,29.1,0],
+["Ian Chappell","AUS","1960s,1970s","TOP",75,5345,42.4,0,0,0],
+["Greg Chappell","AUS","1970s,1980s","TOP",87,7110,53.9,47,40.7,0],
+["Dennis Lillee","AUS","1970s,1980s","PC",70,905,13.7,355,23.9,52],
+["Jeff Thomson","AUS","1970s,1980s","PC",51,679,12.8,200,28,53],
+["Rod Marsh","AUS","1970s,1980s","WK,MD",96,3633,26.5,0,0,0],
+["Rick McCosker","AUS","1970s","OP",25,1622,39.6,0,0,0],
+["Ashley Mallett","AUS","1970s","SP",38,430,11,132,29.8,76],
+["Allan Border","AUS","1970s,1980s,1990s","MD",156,11174,50.6,39,39.1,0],
+["David Boon","AUS","1980s,1990s","OP,MD",107,7422,43.7,0,0,0],
+["Dean Jones","AUS","1980s,1990s","TOP",52,3631,46.6,0,0,0],
+["Geoff Marsh","AUS","1980s,1990s","OP",50,2854,33.2,0,0,0],
+["Kim Hughes","AUS","1970s,1980s","MD",70,4415,37.4,0,0,0],
+["Craig McDermott","AUS","1980s,1990s","PC",71,940,12,291,28.6,56],
+["Geoff Lawson","AUS","1980s","PC",46,894,14,180,30.6,64],
+["Terry Alderman","AUS","1980s,1990s","PC",41,203,6.5,170,27.2,62],
+["Merv Hughes","AUS","1980s,1990s","PC",53,1032,16.6,212,28.4,57],
+["Steve Waugh","AUS","1980s,1990s,2000s","MD",168,10927,51.1,92,37.4,0],
+["Mark Taylor","AUS","1980s,1990s","OP",104,7525,43.5,0,0,0],
+["Michael Slater","AUS","1990s,2000s","OP",74,5312,42.8,0,0,0],
+["Mark Waugh","AUS","1990s,2000s","MD",128,8029,41.8,59,41.2,0],
+["Ian Healy","AUS","1980s,1990s","WK,MD",119,4356,27.4,0,0,0],
+["Shane Warne","AUS","1990s,2000s","SP",145,3154,17.3,708,25.4,57],
+["Glenn McGrath","AUS","1990s,2000s","PC",124,641,7.4,563,21.6,52],
+["Ricky Ponting","AUS","1990s,2000s,2010s","TOP",168,13378,51.9,0,0,0],
+["Matthew Hayden","AUS","1990s,2000s","OP",103,8625,50.7,0,0,0],
+["Justin Langer","AUS","1990s,2000s","OP",105,7696,45.3,0,0,0],
+["Adam Gilchrist","AUS","1990s,2000s","WK,MD",96,5570,47.6,0,0,0],
+["Damien Martyn","AUS","1990s,2000s","MD",67,4406,46.4,0,0,0],
+["Michael Hussey","AUS","2000s,2010s","MD",79,6235,51.5,0,0,0],
+["Michael Clarke","AUS","2000s,2010s","MD",115,8643,49.1,31,38.2,0],
+["Jason Gillespie","AUS","1990s,2000s","PC",71,1218,18.7,259,26.1,55],
+["Brett Lee","AUS","2000s,2010s","PC",76,1451,20.2,310,30.8,53],
+["Stuart MacGill","AUS","2000s","SP",44,349,8,208,29,54],
+["Brad Haddin","AUS","2000s,2010s","WK,MD",66,3266,33,0,0,0],
+["Steve Smith","AUS","2010s,2020s","TOP",109,9685,57,19,55,0],
+["David Warner","AUS","2010s,2020s","OP",112,8786,44.6,0,0,0],
+["Chris Rogers","AUS","2010s","OP",25,2015,42.9,0,0,0],
+["Usman Khawaja","AUS","2010s,2020s","OP",75,5358,45,0,0,0],
+["Mitchell Johnson","AUS","2000s,2010s","PC",73,2065,22,313,28.4,51],
+["Ryan Harris","AUS","2010s","PC",27,603,18,113,23.5,51],
+["Nathan Lyon","AUS","2010s,2020s","SP",129,1300,12.6,530,30.8,63],
+["Peter Siddle","AUS","2000s,2010s","PC",67,1164,14.4,221,30.7,62],
+["Mitchell Starc","AUS","2010s,2020s","PC",90,1700,18,358,27.4,49],
+["Josh Hazlewood","AUS","2010s,2020s","PC",71,560,11,279,25.5,54],
+["Pat Cummins","AUS","2010s,2020s","PC",68,1100,17,294,22.5,47],
+["Marnus Labuschagne","AUS","2010s,2020s","TOP",55,4400,49,0,0,0],
+["Travis Head","AUS","2010s,2020s","MD",60,3800,42,0,0,0],
+["Alex Carey","AUS","2020s","WK,MD",40,1900,32,0,0,0],
+["Cameron Green","AUS","2020s","AR,PC,MD",35,1700,35,50,34,60],
+["Jack Hobbs","ENG","1930s","OP",61,5410,56.9,1,165,0],
+["Frank Woolley","ENG","1930s","AR,SP,MD",64,3283,36.1,83,33.9,80],
+["Herbert Sutcliffe","ENG","1930s","OP",54,4555,60.7,0,0,0],
+["Wally Hammond","ENG","1930s,1940s","TOP",85,7249,58.5,83,37.8,75],
+["Harold Larwood","ENG","1930s","PC",21,485,19.4,78,28.4,65],
+["Maurice Tate","ENG","1930s","PC",39,1198,25.5,155,26.2,67],
+["Hedley Verity","ENG","1930s","SP",40,669,20.9,144,24.4,80],
+["Len Hutton","ENG","1930s,1940s,1950s","OP",79,6971,56.7,0,0,0],
+["Denis Compton","ENG","1940s,1950s","TOP",78,5807,50.1,25,56.4,0],
+["Alec Bedser","ENG","1940s,1950s","PC",51,714,12.8,236,24.9,68],
+["Cyril Washbrook","ENG","1940s,1950s","OP",37,2569,42.8,0,0,0],
+["Godfrey Evans","ENG","1940s,1950s","WK,MD",91,2439,20.5,0,0,0],
+["Jim Laker","ENG","1950s","SP",46,676,14.1,193,21.2,62],
+["Tony Lock","ENG","1950s,1960s","SP",49,742,13.7,174,25.6,71],
+["Peter May","ENG","1950s,1960s","TOP",66,4537,46.8,0,0,0],
+["Colin Cowdrey","ENG","1950s,1960s,1970s","TOP,OP",114,7624,44.1,0,0,0],
+["Fred Trueman","ENG","1950s,1960s","PC",67,981,13.8,307,21.6,49],
+["Brian Statham","ENG","1950s,1960s","PC",70,675,11.4,252,24.8,64],
+["Ken Barrington","ENG","1950s,1960s","TOP",82,6806,58.7,29,44.8,0],
+["Geoffrey Boycott","ENG","1960s,1970s,1980s","OP",108,8114,47.7,0,0,0],
+["Ted Dexter","ENG","1950s,1960s","TOP",62,4502,47.9,66,34.9,0],
+["John Snow","ENG","1960s,1970s","PC",49,772,13.5,202,26.7,59],
+["Basil D'Oliveira","ENG","1960s,1970s","AR,PC,MD",44,2484,40.1,47,39.6,0],
+["Derek Underwood","ENG","1960s,1970s,1980s","SP",86,937,11.6,297,25.8,74],
+["Alan Knott","ENG","1960s,1970s,1980s","WK,MD",95,4389,32.8,0,0,0],
+["Tony Greig","ENG","1970s","AR,PC,MD",58,3599,40.4,141,32.2,67],
+["Bob Willis","ENG","1970s,1980s","PC",90,840,11.5,325,25.2,53],
+["David Gower","ENG","1970s,1980s,1990s","MD",117,8231,44.3,0,0,0],
+["Ian Botham","ENG","1970s,1980s,1990s","AR,PC,MD",102,5200,33.5,383,28.4,57],
+["Graham Gooch","ENG","1970s,1980s,1990s","OP",118,8900,42.6,23,46.5,0],
+["Mike Gatting","ENG","1980s,1990s","MD",79,4409,35.6,0,0,0],
+["Allan Lamb","ENG","1980s,1990s","MD",79,4656,36.1,0,0,0],
+["John Emburey","ENG","1980s,1990s","SP",64,1713,22.5,147,38.4,90],
+["Graham Dilley","ENG","1980s","PC",41,521,13.4,138,29.8,62],
+["Michael Atherton","ENG","1990s,2000s","OP",115,7728,37.7,0,0,0],
+["Alec Stewart","ENG","1990s,2000s","WK,OP",133,8463,39.5,0,0,0],
+["Graham Thorpe","ENG","1990s,2000s","MD",100,6744,44.7,0,0,0],
+["Nasser Hussain","ENG","1990s,2000s","MD",96,5764,37.2,0,0,0],
+["Darren Gough","ENG","1990s,2000s","PC",58,855,12.6,229,28.4,51],
+["Angus Fraser","ENG","1990s","PC",46,388,7.5,177,27.3,67],
+["Michael Vaughan","ENG","2000s","OP",82,5719,41.4,0,0,0],
+["Marcus Trescothick","ENG","2000s","OP",76,5825,43.8,0,0,0],
+["Kevin Pietersen","ENG","2000s,2010s","TOP",104,8181,47.3,0,0,0],
+["Andrew Strauss","ENG","2000s,2010s","OP",100,7037,40.9,0,0,0],
+["Andrew Flintoff","ENG","2000s","AR,PC",79,3845,31.8,226,32.8,58],
+["Matthew Hoggard","ENG","2000s","PC",67,473,7.3,248,30.5,61],
+["Steve Harmison","ENG","2000s","PC",63,743,11.5,226,31.8,61],
+["Monty Panesar","ENG","2000s,2010s","SP",50,220,6,167,34.7,71],
+["Matt Prior","ENG","2000s,2010s","WK,MD",79,4099,40.2,0,0,0],
+["Alastair Cook","ENG","2000s,2010s,2020s","OP",161,12472,45.4,0,0,0],
+["Ian Bell","ENG","2000s,2010s","MD",118,7727,42.7,0,0,0],
+["Jonathan Trott","ENG","2010s","MD",52,3835,44.1,0,0,0],
+["Graeme Swann","ENG","2000s,2010s","SP",60,1370,22,255,29.96,60],
+["James Anderson","ENG","2000s,2010s,2020s","PC",188,1356,9.3,704,26.45,57],
+["Stuart Broad","ENG","2000s,2010s,2020s","PC",167,3662,18.3,604,27.68,58],
+["Joe Root","ENG","2010s,2020s","TOP",150,12700,50.5,73,38.4,0],
+["Ben Stokes","ENG","2010s,2020s","AR,PC,MD",105,6400,36,205,32,58],
+["Jos Buttler","ENG","2010s,2020s","WK,MD",57,2907,31.9,0,0,0],
+["Jonny Bairstow","ENG","2010s,2020s","WK,MD",100,6000,36,0,0,0],
+["Harry Brook","ENG","2020s","MD",30,2500,55,0,0,0],
+["Zak Crawley","ENG","2020s","OP",55,3300,32,0,0,0],
+["Mark Wood","ENG","2010s,2020s","PC",40,800,12,120,31,49],
+["Jack Leach","ENG","2010s,2020s","SP",40,500,11,135,34,73],
+["George Headley","WI","1930s,1940s,1950s","TOP",22,2190,60.8,0,0,0],
+["Learie Constantine","WI","1930s","AR,PC",18,635,19.2,58,30.1,0],
+["Clyde Walcott","WI","1940s,1950s","TOP,WK",44,3798,56.7,11,37,0],
+["Everton Weekes","WI","1940s,1950s","TOP",48,4455,58.6,1,77,0],
+["Frank Worrell","WI","1940s,1950s,1960s","AR,PC,TOP",51,3860,49.5,69,38.7,0],
+["Garry Sobers","WI","1950s,1960s,1970s","AR,PC,SP,TOP",93,8032,57.8,235,34,92],
+["Rohan Kanhai","WI","1950s,1960s,1970s","TOP",79,6227,47.5,0,0,0],
+["Wes Hall","WI","1950s,1960s","PC",48,818,15.7,192,26.4,54],
+["Lance Gibbs","WI","1950s,1960s,1970s","SP",79,488,6.97,309,29.1,88],
+["Conrad Hunte","WI","1950s,1960s","OP",44,3245,45.1,0,0,0],
+["Clive Lloyd","WI","1960s,1970s,1980s","MD",110,7515,46.7,10,62.2,0],
+["Gordon Greenidge","WI","1970s,1980s,1990s","OP",108,7558,44.7,0,0,0],
+["Desmond Haynes","WI","1970s,1980s,1990s","OP",116,7487,42.3,1,8,0],
+["Viv Richards","WI","1970s,1980s,1990s","TOP",121,8540,50.2,32,61.4,0],
+["Alvin Kallicharran","WI","1970s,1980s","MD",66,4399,44.4,0,0,0],
+["Andy Roberts","WI","1970s,1980s","PC",47,762,12.4,202,25.6,55],
+["Michael Holding","WI","1970s,1980s","PC",60,910,13.8,249,23.7,51],
+["Joel Garner","WI","1970s,1980s","PC",58,672,12.4,259,20.98,51],
+["Malcolm Marshall","WI","1980s,1990s","PC",81,1810,18.9,376,20.94,47],
+["Colin Croft","WI","1970s,1980s","PC",27,158,6,125,23.3,49],
+["Jeff Dujon","WI","1980s,1990s","WK,MD",81,3322,31.9,0,0,0],
+["Larry Gomes","WI","1970s,1980s","MD",60,3171,39.6,15,52,0],
+["Curtly Ambrose","WI","1980s,1990s,2000s","PC",98,1439,12.4,405,20.99,54],
+["Courtney Walsh","WI","1980s,1990s,2000s","PC",132,936,7.5,519,24.4,57],
+["Brian Lara","WI","1990s,2000s","TOP",131,11953,52.9,0,0,0],
+["Shivnarine Chanderpaul","WI","1990s,2000s,2010s","MD",164,11867,51.4,9,98,0],
+["Carl Hooper","WI","1980s,1990s,2000s","AR,SP,MD",102,5762,36.5,114,49.4,0],
+["Richie Richardson","WI","1980s,1990s","MD",86,5949,44.4,0,0,0],
+["Chris Gayle","WI","2000s,2010s","OP",103,7214,42.2,73,42.7,0],
+["Ramnaresh Sarwan","WI","2000s,2010s","MD",87,5842,40,23,49,0],
+["Kemar Roach","WI","2000s,2010s,2020s","PC",81,1300,11,261,27.5,52],
+["Jason Holder","WI","2010s,2020s","AR,PC",65,2500,30,150,27.5,55],
+["Kraigg Brathwaite","WI","2010s,2020s","OP",90,5800,33,0,0,0],
+["Vijay Merchant","IND","1930s,1940s,1950s","OP",10,859,47.7,0,0,0],
+["Vinoo Mankad","IND","1940s,1950s","AR,SP",44,2109,31.5,162,32.3,0],
+["Polly Umrigar","IND","1950s,1960s","MD",59,3631,42.2,35,42.1,0],
+["Subhash Gupte","IND","1950s,1960s","SP",36,183,6,149,29.5,76],
+["Nari Contractor","IND","1950s,1960s","OP",31,1611,31.6,0,0,0],
+["Bishan Bedi","IND","1960s,1970s","SP",67,656,8.98,266,28.7,80],
+["Erapalli Prasanna","IND","1960s,1970s","SP",49,735,11.5,189,30.4,76],
+["Bhagwat Chandrasekhar","IND","1960s,1970s","SP",58,167,4,242,29.7,66],
+["Sunil Gavaskar","IND","1970s,1980s","OP",125,10122,51.1,0,0,0],
+["Gundappa Viswanath","IND","1970s,1980s","MD",91,6080,41.9,0,0,0],
+["Mohinder Amarnath","IND","1970s,1980s","AR,PC,MD",69,4378,42.5,32,55.7,0],
+["Kapil Dev","IND","1970s,1980s,1990s","AR,PC",131,5248,31.1,434,29.6,64],
+["Dilip Vengsarkar","IND","1970s,1980s,1990s","TOP",116,6868,42.1,0,0,0],
+["Syed Kirmani","IND","1970s,1980s","WK,MD",88,2759,27,0,0,0],
+["Mohammad Azharuddin","IND","1980s,1990s,2000s","MD",99,6215,45,0,0,0],
+["Ravi Shastri","IND","1980s,1990s","AR,SP,MD",80,3830,35.8,151,40.96,0],
+["Navjot Sidhu","IND","1980s,1990s","OP",51,3202,42.1,0,0,0],
+["Anil Kumble","IND","1990s,2000s","SP",132,2506,17.8,619,29.6,66],
+["Sachin Tendulkar","IND","1990s,2000s,2010s","TOP",200,15921,53.8,46,54.2,0],
+["Rahul Dravid","IND","1990s,2000s,2010s","TOP",164,13288,52.3,0,0,0],
+["Sourav Ganguly","IND","1990s,2000s","MD",113,7212,42.2,32,52.5,0],
+["VVS Laxman","IND","1990s,2000s,2010s","MD",134,8781,45.97,0,0,0],
+["Javagal Srinath","IND","1990s,2000s","PC",67,1009,11,236,30.5,57],
+["Virender Sehwag","IND","2000s,2010s","OP",104,8586,49.3,40,47.3,0],
+["Harbhajan Singh","IND","2000s,2010s","SP",103,2225,18.2,417,32.5,68],
+["Zaheer Khan","IND","2000s,2010s","PC",92,1231,11.9,311,32.9,60],
+["Gautam Gambhir","IND","2000s,2010s","OP",58,4154,41.96,0,0,0],
+["MS Dhoni","IND","2000s,2010s","WK,MD",90,4876,38.1,0,0,0],
+["Virat Kohli","IND","2010s,2020s","TOP",113,8848,49.2,0,0,0],
+["Cheteshwar Pujara","IND","2010s,2020s","TOP",103,7195,43.6,0,0,0],
+["Ravichandran Ashwin","IND","2010s,2020s","SP,AR",100,3300,25.8,516,24,53],
+["Ravindra Jadeja","IND","2010s,2020s","AR,SP,MD",73,3122,36,294,24.6,57],
+["Jasprit Bumrah","IND","2010s,2020s","PC",45,180,5,205,20.1,45],
+["Rohit Sharma","IND","2010s,2020s","OP",67,4300,45,0,0,0],
+["Rishabh Pant","IND","2010s,2020s","WK,MD",43,2900,43,0,0,0],
+["Mohammed Shami","IND","2010s,2020s","PC",64,750,11,229,27.7,50],
+["Hanif Mohammad","PAK","1950s,1960s","OP",55,3915,43.98,0,0,0],
+["Fazal Mahmood","PAK","1950s,1960s","PC",34,620,14.1,139,24.7,62],
+["Saeed Ahmed","PAK","1950s,1960s","MD",41,2991,40.4,0,0,0],
+["Asif Iqbal","PAK","1960s,1970s","AR,PC,MD",58,3575,38.9,53,28.3,0],
+["Majid Khan","PAK","1960s,1970s,1980s","OP",63,3931,38.9,0,0,0],
+["Zaheer Abbas","PAK","1970s,1980s","TOP",78,5062,44.8,0,0,0],
+["Mushtaq Mohammad","PAK","1960s,1970s","AR,SP,MD",57,3643,39.2,79,29.2,0],
+["Imran Khan","PAK","1970s,1980s,1990s","AR,PC,MD",88,3807,37.7,362,22.8,54],
+["Javed Miandad","PAK","1970s,1980s,1990s","TOP",124,8832,52.6,0,0,0],
+["Abdul Qadir","PAK","1980s,1990s","SP",67,1029,15.6,236,32.8,72],
+["Wasim Akram","PAK","1980s,1990s,2000s","PC,AR",104,2898,22.6,414,23.6,54],
+["Waqar Younis","PAK","1980s,1990s,2000s","PC",87,1010,10.2,373,23.6,44],
+["Saleem Malik","PAK","1980s,1990s","MD",103,5768,43.7,0,0,0],
+["Inzamam-ul-Haq","PAK","1990s,2000s","MD",120,8830,49.6,0,0,0],
+["Saeed Anwar","PAK","1990s,2000s","OP",55,4052,45.5,0,0,0],
+["Mushtaq Ahmed","PAK","1990s,2000s","SP",52,656,11,185,32.97,71],
+["Saqlain Mushtaq","PAK","1990s,2000s","SP",49,927,14.5,208,29.8,67],
+["Moin Khan","PAK","1990s,2000s","WK,MD",69,2741,28.6,0,0,0],
+["Mohammad Yousuf","PAK","1990s,2000s","TOP",90,7530,52.3,0,0,0],
+["Younis Khan","PAK","2000s,2010s","TOP",118,10099,52.05,0,0,0],
+["Shoaib Akhtar","PAK","2000s,2010s","PC",46,544,9,178,25.7,46],
+["Misbah-ul-Haq","PAK","2000s,2010s","MD",75,5222,46.6,0,0,0],
+["Saeed Ajmal","PAK","2000s,2010s","SP",35,447,11,178,28.1,57],
+["Azhar Ali","PAK","2010s,2020s","OP",97,7100,42,0,0,0],
+["Babar Azam","PAK","2010s,2020s","TOP",55,4000,46,0,0,0],
+["Yasir Shah","PAK","2010s,2020s","SP",48,700,12,244,30.6,53],
+["Sarfaraz Ahmed","PAK","2010s,2020s","WK,MD",54,3000,36,0,0,0],
+["Dudley Nourse","SA","1930s,1940s,1950s","TOP",34,2960,53.8,0,0,0],
+["Hugh Tayfield","SA","1950s,1960s","SP",37,862,15.5,170,25.9,80],
+["Trevor Goddard","SA","1950s,1960s","AR,PC,MD",41,2516,34.5,123,26.2,0],
+["Graeme Pollock","SA","1960s,1970s","TOP",23,2256,60.97,0,0,0],
+["Barry Richards","SA","1970s","OP",4,508,72.6,0,0,0],
+["Mike Procter","SA","1960s,1970s","AR,PC",7,226,25.1,41,15,40],
+["Allan Donald","SA","1990s,2000s","PC",72,652,10,330,22.25,47],
+["Gary Kirsten","SA","1990s,2000s","OP",101,7289,45.3,0,0,0],
+["Jonty Rhodes","SA","1990s,2000s","MD",52,2532,35.7,0,0,0],
+["Shaun Pollock","SA","1990s,2000s","AR,PC,MD",108,3781,32.3,421,23.1,58],
+["Jacques Kallis","SA","1990s,2000s,2010s","AR,PC,TOP",166,13289,55.4,292,32.6,68],
+["Mark Boucher","SA","1990s,2000s,2010s","WK,MD",147,5515,30.3,0,0,0],
+["Makhaya Ntini","SA","1990s,2000s","PC",101,699,9,390,28.8,54],
+["Graeme Smith","SA","2000s,2010s","OP",117,9265,48.3,0,0,0],
+["Herschelle Gibbs","SA","2000s","OP",90,6167,41.95,0,0,0],
+["AB de Villiers","SA","2000s,2010s","WK,TOP",114,8765,50.7,0,0,0],
+["Hashim Amla","SA","2000s,2010s","TOP",124,9282,46.6,0,0,0],
+["Dale Steyn","SA","2000s,2010s","PC",93,1251,13.5,439,22.95,42],
+["Morne Morkel","SA","2000s,2010s","PC",86,944,13,309,27.7,54],
+["Vernon Philander","SA","2010s","PC",64,1779,24,224,22.3,51],
+["Faf du Plessis","SA","2010s,2020s","MD",69,4163,40,0,0,0],
+["Quinton de Kock","SA","2010s,2020s","WK,MD",54,3300,38.8,0,0,0],
+["Kagiso Rabada","SA","2010s,2020s","PC",70,1100,12,320,22,40],
+["Bert Sutcliffe","NZ","1940s,1950s","OP",42,2727,40.1,0,0,0],
+["John Reid","NZ","1950s,1960s","AR,PC,MD",58,3428,33.3,85,33.4,0],
+["Glenn Turner","NZ","1970s,1980s","OP",41,2991,44.6,0,0,0],
+["Richard Hadlee","NZ","1970s,1980s,1990s","AR,PC",86,3124,27.2,431,22.3,51],
+["John Wright","NZ","1980s,1990s","OP",82,5334,37.8,0,0,0],
+["Martin Crowe","NZ","1980s,1990s","TOP",77,5444,45.4,0,0,0],
+["Daniel Vettori","NZ","1990s,2000s,2010s","SP,AR",113,4531,30,362,34.4,79],
+["Stephen Fleming","NZ","1990s,2000s","MD",111,7172,40.1,0,0,0],
+["Nathan Astle","NZ","1990s,2000s","MD",81,4702,37,51,42,0],
+["Chris Cairns","NZ","1990s,2000s","AR,PC,MD",62,3320,33.5,218,29.4,57],
+["Shane Bond","NZ","2000s","PC",18,168,8,87,22.1,38],
+["Brendon McCullum","NZ","2000s,2010s","WK,MD",101,6453,38.6,0,0,0],
+["Ross Taylor","NZ","2000s,2010s,2020s","MD",112,7683,44.7,0,0,0],
+["Kane Williamson","NZ","2010s,2020s","TOP",100,8743,54.9,0,0,0],
+["Tim Southee","NZ","2000s,2010s,2020s","PC",100,2300,17,380,28.5,57],
+["Trent Boult","NZ","2010s,2020s","PC",78,700,11,317,27.5,57],
+["Tom Latham","NZ","2010s,2020s","OP",80,5300,42,0,0,0],
+["BJ Watling","NZ","2010s,2020s","WK,MD",75,3790,37.5,0,0,0],
+["Neil Wagner","NZ","2010s,2020s","PC",64,750,12,260,27.6,52],
+["Duleep Mendis","SL","1980s","MD",24,1329,31.6,0,0,0],
+["Arjuna Ranatunga","SL","1980s,1990s,2000s","MD",93,5105,35.7,16,69,0],
+["Aravinda de Silva","SL","1980s,1990s,2000s","TOP",93,6361,42.97,29,41.7,0],
+["Sanath Jayasuriya","SL","1990s,2000s","OP,AR,SP",110,6973,40.1,98,34.3,0],
+["Marvan Atapattu","SL","1990s,2000s","OP",90,5502,39,0,0,0],
+["Muttiah Muralitharan","SL","1990s,2000s,2010s","SP",133,1261,11.7,800,22.72,55],
+["Chaminda Vaas","SL","1990s,2000s","PC",111,3089,24.3,355,29.6,66],
+["Kumar Sangakkara","SL","2000s,2010s","WK,TOP",134,12400,57.4,0,0,0],
+["Mahela Jayawardene","SL","1990s,2000s,2010s","TOP",149,11814,49.8,0,0,0],
+["Tillakaratne Dilshan","SL","2000s,2010s","OP",87,5492,40.98,39,38,0],
+["Rangana Herath","SL","2000s,2010s","SP",93,1699,14,433,28,66],
+["Angelo Mathews","SL","2010s,2020s","AR,PC,MD",110,7800,44,33,50,0],
+["Dimuth Karunaratne","SL","2010s,2020s","OP",90,6500,40,0,0,0],
+["Dave Houghton","ZIM","1990s","MD,WK",22,1464,43.1,0,0,0],
+["Andy Flower","ZIM","1990s,2000s","WK,MD",63,4794,51.5,0,0,0],
+["Grant Flower","ZIM","1990s,2000s","OP",67,3457,29.5,25,52,0],
+["Heath Streak","ZIM","1990s,2000s","AR,PC",65,1990,22.3,216,28.1,63],
+["Murray Goodwin","ZIM","1990s,2000s","TOP",19,1414,42.8,0,0,0],
+["Brendan Taylor","ZIM","2000s,2010s","WK,MD",34,2320,36.3,0,0,0],
+["Habibul Bashar","BAN","2000s","MD",50,3026,30.9,0,0,0],
+["Mohammad Ashraful","BAN","2000s,2010s","MD",61,2737,24,21,76,0],
+["Shakib Al Hasan","BAN","2000s,2010s,2020s","AR,SP,MD",70,4500,38,237,31.7,66],
+["Tamim Iqbal","BAN","2000s,2010s,2020s","OP",70,5134,38.9,0,0,0],
+["Mushfiqur Rahim","BAN","2000s,2010s,2020s","WK,MD",88,5676,37,0,0,0],
+["Mahmudullah","BAN","2000s,2010s,2020s","AR,SP,MD",50,2914,33.5,43,52,0],
+["Mehidy Hasan","BAN","2010s,2020s","SP,AR",45,1500,22,170,33,62],
+["Taijul Islam","BAN","2010s,2020s","SP",45,700,11,200,31.5,60],
+// ---------- expansion batch ----------
+["Bill Brown","AUS","1930s,1940s","OP",22,1592,46.8,0,0,0],
+["Sid Barnes","AUS","1940s","OP",13,1072,63.05,0,0,0],
+["Colin McDonald","AUS","1950s,1960s","OP",47,3107,39.3,0,0,0],
+["Bob Cowper","AUS","1960s","MD",27,2061,46.8,36,31.6,0],
+["Ian Redpath","AUS","1960s,1970s","OP",66,4737,43.5,0,0,0],
+["Max Walker","AUS","1970s","PC",34,586,16.7,138,27.5,67],
+["Gary Gilmour","AUS","1970s","AR,PC",15,483,23,74,26,55],
+["Bruce Yardley","AUS","1980s","SP",33,978,19.9,126,31.6,75],
+["Wayne Phillips","AUS","1980s","WK,MD",27,1485,32.9,0,0,0],
+["Bruce Reid","AUS","1980s,1990s","PC",27,93,5,113,24.6,55],
+["Michael Bevan","AUS","1990s","MD",18,785,29.1,29,24.2,0],
+["Matthew Elliott","AUS","1990s","OP",21,1172,33.5,0,0,0],
+["Damien Fleming","AUS","1990s,2000s","PC",20,305,12,75,25.9,53],
+["Simon Katich","AUS","2000s,2010s","OP,MD",56,4188,45,21,30,0],
+["Andrew Symonds","AUS","2000s","AR,PC,MD",26,1462,40.6,24,37.3,0],
+["Shane Watson","AUS","2000s,2010s","AR,PC,MD",59,3731,35.2,75,33.7,62],
+["Phillip Hughes","AUS","2010s","OP",26,1535,32.7,0,0,0],
+["Shaun Marsh","AUS","2010s","MD",38,2265,34.3,0,0,0],
+["Tim Paine","AUS","2010s,2020s","WK,MD",35,1534,32.6,0,0,0],
+["Mitchell Marsh","AUS","2010s,2020s","AR,PC",40,1900,30,49,38,62],
+["Scott Boland","AUS","2020s","PC",16,200,11,55,18,40],
+["Patsy Hendren","ENG","1930s","MD",51,3525,47.6,1,31,0],
+["Maurice Leyland","ENG","1930s","MD",41,2764,46.1,6,29.3,0],
+["Bill Edrich","ENG","1930s,1940s,1950s","MD",39,2440,40,41,41.3,0],
+["Trevor Bailey","ENG","1950s","AR,PC",61,2290,29.7,132,29.2,80],
+["Tom Graveney","ENG","1950s,1960s","MD",79,4882,44.4,0,0,0],
+["Ray Illingworth","ENG","1960s,1970s","AR,SP",61,1836,23.2,122,31.2,90],
+["Keith Fletcher","ENG","1970s","MD",59,3272,39.9,0,0,0],
+["Bob Taylor","ENG","1970s,1980s","WK,MD",57,1156,16.3,0,0,0],
+["Chris Old","ENG","1970s","PC",46,845,14,143,28.1,58],
+["Mike Brearley","ENG","1970s","OP",39,1442,22.9,0,0,0],
+["Phil DeFreitas","ENG","1980s,1990s","AR,PC",44,934,14.8,140,33.6,70],
+["Robin Smith","ENG","1980s,1990s","MD",62,4236,43.7,0,0,0],
+["Phil Tufnell","ENG","1990s","SP",42,153,5.1,121,37.7,86],
+["Mark Butcher","ENG","1990s,2000s","OP",71,4288,34.6,15,52,0],
+["Ashley Giles","ENG","2000s","SP",54,1421,20.7,143,40.6,87],
+["Paul Collingwood","ENG","2000s,2010s","AR,PC,MD",68,4259,40.6,17,52,0],
+["Chris Woakes","ENG","2010s,2020s","AR,PC",50,1500,28,160,30,57],
+["Ollie Pope","ENG","2020s","MD",55,3300,35,0,0,0],
+["Rory Burns","ENG","2010s,2020s","OP",32,1800,30.5,0,0,0],
+["Moeen Ali","ENG","2010s,2020s","AR,SP",68,3094,28.3,204,37,64],
+["Jeffrey Stollmeyer","WI","1940s,1950s","OP",32,2159,42.3,13,39,0],
+["Sonny Ramadhin","WI","1950s","SP",43,361,8.2,158,28.9,87],
+["Alf Valentine","WI","1950s","SP",36,141,5,139,30.3,93],
+["Collie Smith","WI","1950s","MD",26,1331,31.7,48,33.9,0],
+["Seymour Nurse","WI","1960s","TOP",29,2523,47.6,0,0,0],
+["Basil Butcher","WI","1960s","TOP",44,3104,43.1,5,30,0],
+["Roy Fredericks","WI","1970s","OP",59,4334,42.5,7,78,0],
+["Deryck Murray","WI","1970s","WK,MD",62,1993,22.9,0,0,0],
+["Gus Logie","WI","1980s","MD",52,2470,35.8,0,0,0],
+["Patrick Patterson","WI","1980s","PC",28,145,6,93,30.9,55],
+["Ian Bishop","WI","1990s","PC",43,632,12,161,24.3,52],
+["Jimmy Adams","WI","1990s","MD",54,3012,41.3,27,49.5,0],
+["Ridley Jacobs","WI","2000s","WK,MD",65,2577,28.4,0,0,0],
+["Darren Bravo","WI","2010s,2020s","MD",56,3500,38,0,0,0],
+["Shai Hope","WI","2010s,2020s","WK,MD",45,1900,26.5,0,0,0],
+["Roston Chase","WI","2010s,2020s","AR,SP",50,2200,28,85,40,72],
+["Vijay Hazare","IND","1940s,1950s","TOP",30,2192,47.6,20,61,0],
+["Vijay Manjrekar","IND","1950s,1960s","TOP",55,3208,39.1,1,44,0],
+["Chandu Borde","IND","1950s,1960s","AR,SP,MD",55,3061,35.6,52,46.5,0],
+["Farokh Engineer","IND","1960s,1970s","WK,OP",46,2611,31.1,0,0,0],
+["Ajit Wadekar","IND","1960s,1970s","MD",37,2113,31.1,0,0,0],
+["Eknath Solkar","IND","1970s","AR,PC",27,1068,25.4,18,59,0],
+["Madan Lal","IND","1970s,1980s","AR,PC",39,1042,22.6,71,40.1,80],
+["Dilip Doshi","IND","1980s","SP",33,129,6,114,30.7,80],
+["Krishnamachari Srikkanth","IND","1980s","OP",43,2062,29.9,0,0,0],
+["Maninder Singh","IND","1980s","SP",35,99,5,88,37.4,86],
+["Sanjay Manjrekar","IND","1980s,1990s","MD",37,2043,37.1,0,0,0],
+["Nayan Mongia","IND","1990s","WK,MD",44,1442,24,0,0,0],
+["Venkatesh Prasad","IND","1990s,2000s","PC",33,203,7,96,35,68],
+["Wasim Jaffer","IND","2000s","OP",31,1944,34.1,0,0,0],
+["Yuvraj Singh","IND","2000s,2010s","MD",40,1900,33.9,9,60,0],
+["Ishant Sharma","IND","2000s,2010s,2020s","PC",105,785,9,311,32.4,62],
+["Murali Vijay","IND","2010s","OP",61,3982,38.3,0,0,0],
+["Ajinkya Rahane","IND","2010s,2020s","MD",85,5000,38.5,0,0,0],
+["KL Rahul","IND","2010s,2020s","OP",50,3000,34,0,0,0],
+["Shubman Gill","IND","2020s","OP",32,1900,35.5,0,0,0],
+["Axar Patel","IND","2020s","AR,SP,MD",18,650,32,55,21,45],
+["Mohammed Siraj","IND","2020s","PC",33,200,8,85,29.5,52],
+["Imtiaz Ahmed","PAK","1950s,1960s","WK,MD",41,2079,29.3,0,0,0],
+["Intikhab Alam","PAK","1960s,1970s","AR,SP",47,1493,22.3,125,35.9,90],
+["Sadiq Mohammad","PAK","1970s","OP",41,2579,35.8,0,0,0],
+["Mudassar Nazar","PAK","1970s,1980s","OP",76,4114,38.1,66,38.4,0],
+["Wasim Bari","PAK","1970s,1980s","WK,MD",81,1366,15.9,0,0,0],
+["Sarfraz Nawaz","PAK","1970s,1980s","PC",55,1045,17.7,177,32.7,73],
+["Mohsin Khan","PAK","1980s","OP",48,2709,37.1,0,0,0],
+["Ramiz Raja","PAK","1980s,1990s","OP",57,2833,31.8,0,0,0],
+["Aamer Sohail","PAK","1990s","OP",47,2823,35.7,25,46,0],
+["Ijaz Ahmed","PAK","1990s","MD",60,3315,37.6,0,0,0],
+["Rashid Latif","PAK","1990s,2000s","WK,MD",37,1381,28.7,0,0,0],
+["Mohammad Asif","PAK","2000s","PC",23,121,6,106,24.3,49],
+["Umar Gul","PAK","2000s,2010s","PC",47,577,12,163,34.1,60],
+["Kamran Akmal","PAK","2000s,2010s","WK,MD",53,2648,30.8,0,0,0],
+["Asad Shafiq","PAK","2010s","MD",77,4660,38.4,0,0,0],
+["Mohammad Abbas","PAK","2010s,2020s","PC",25,170,7,90,22,48],
+["Shaheen Afridi","PAK","2020s","PC",30,400,12,113,24,42],
+["Mohammad Rizwan","PAK","2020s","WK,MD",34,1900,40,0,0,0],
+["Bruce Mitchell","SA","1930s,1940s","OP",42,3471,48.9,27,51.1,0],
+["Eric Rowan","SA","1940s,1950s","OP",26,1965,43.7,0,0,0],
+["John Waite","SA","1950s,1960s","WK,MD",50,2405,30.4,0,0,0],
+["Neil Adcock","SA","1950s,1960s","PC",26,146,6,104,21.1,52],
+["Peter Pollock","SA","1960s","PC",28,607,21.7,116,24.2,55],
+["Eddie Barlow","SA","1960s,1970s","AR,PC,MD",30,2516,45.7,40,34.1,0],
+["Lance Klusener","SA","1990s,2000s","AR,PC,MD",49,1906,32.9,80,37.9,68],
+["Daryll Cullinan","SA","1990s,2000s","TOP",70,4554,44.2,0,0,0],
+["Andrew Hudson","SA","1990s","OP",35,2007,33.4,0,0,0],
+["Brian McMillan","SA","1990s","AR,PC,MD",38,1968,39.4,75,33.8,72],
+["Paul Adams","SA","1990s,2000s","SP",45,360,8,134,32.9,72],
+["JP Duminy","SA","2000s,2010s","MD",46,2103,32.9,42,37,68],
+["Dean Elgar","SA","2010s,2020s","OP",86,5000,37.5,18,50,0],
+["Temba Bavuma","SA","2010s,2020s","MD",60,3000,36.5,0,0,0],
+["Keshav Maharaj","SA","2010s,2020s","SP",55,1200,16,180,30,62],
+["Bevan Congdon","NZ","1960s,1970s","AR,PC,MD",61,3448,32.2,59,36.5,0],
+["Geoff Howarth","NZ","1970s,1980s","MD",47,2531,32.4,0,0,0],
+["Lance Cairns","NZ","1980s","PC",43,928,16.3,130,32.9,68],
+["Jeremy Coney","NZ","1980s","MD",52,2668,37.6,27,46,0],
+["Ewen Chatfield","NZ","1980s","PC",43,180,8,123,32.2,75],
+["Ian Smith","NZ","1980s,1990s","WK,MD",63,1815,25.2,0,0,0],
+["Andrew Jones","NZ","1990s","TOP",39,2922,44.3,0,0,0],
+["Danny Morrison","NZ","1990s","PC",48,379,9,160,34.7,66],
+["Adam Parore","NZ","1990s,2000s","WK,MD",78,2865,26.3,0,0,0],
+["Craig McMillan","NZ","2000s","MD",55,3116,38.5,28,51,0],
+["Mark Richardson","NZ","2000s","OP",38,2776,44.8,0,0,0],
+["Henry Nicholls","NZ","2010s,2020s","MD",55,3300,38,0,0,0],
+["Tom Blundell","NZ","2010s,2020s","WK,MD",38,1800,32,0,0,0],
+["Devon Conway","NZ","2020s","OP",26,1700,45,0,0,0],
+["Matt Henry","NZ","2010s,2020s","PC",35,600,12,95,27,52],
+["Kyle Jamieson","NZ","2020s","AR,PC",20,650,22,80,20,46],
+["Asanka Gurusinha","SL","1980s,1990s","MD",41,2452,38.9,8,75,0],
+["Roshan Mahanama","SL","1990s","MD",52,2576,29.3,0,0,0],
+["Hashan Tillakaratne","SL","1990s,2000s","MD,WK",83,4545,42.9,0,0,0],
+["Romesh Kaluwitharana","SL","1990s,2000s","WK,MD",49,1933,26.1,0,0,0],
+["Thilan Samaraweera","SL","2000s,2010s","MD",81,5462,48.8,15,55,0],
+["Lasith Malinga","SL","2000s,2010s","PC",30,275,10,101,33.2,53],
+["Dinesh Chandimal","SL","2010s,2020s","WK,MD",75,4800,41,0,0,0],
+["Suranga Lakmal","SL","2010s,2020s","PC",70,1100,12,170,36,68],
+["Dhananjaya de Silva","SL","2010s,2020s","AR,SP,MD",55,3300,37,50,38,66],
+["Alistair Campbell","ZIM","1990s,2000s","MD",60,2858,27.2,0,0,0],
+["Tatenda Taibu","ZIM","2000s","WK,MD",28,1546,30.3,0,0,0],
+["Ray Price","ZIM","2000s","SP",22,261,8,80,36,84],
+["Sean Williams","ZIM","2010s,2020s","AR,SP,MD",13,1000,42,20,35,0],
+["Craig Ervine","ZIM","2010s,2020s","MD",25,1400,32,0,0,0],
+["Mohammad Rafique","BAN","2000s","SP,AR",33,1059,18,100,40.8,75],
+["Khaled Mashud","BAN","2000s","WK,MD",44,1409,19,0,0,0],
+["Mominul Haque","BAN","2010s,2020s","MD",60,4000,37,5,40,0],
+["Litton Das","BAN","2010s,2020s","WK,MD",42,2300,35,0,0,0],
+["Najmul Hossain Shanto","BAN","2020s","MD",35,2000,32,0,0,0],
+["Taskin Ahmed","BAN","2020s","PC",16,200,8,42,35,55]
+];
+
+const P=RAW.map(a=>({n:a[0],c:a[1],decs:a[2].split(","),pos:a[3].split(","),mat:a[4],runs:a[5],avg:a[6],wkts:a[7],bavg:a[8],sr:a[9]}));
+
+/* ---- per-era stats ----
+   ACCURATE CORE: hand-built real decade splits [mat,runs,batAvg,wkts,bowlAvg,catches/dis].
+   Each player's decade lines reconcile to their career totals. Best-effort hand figures
+   (no live database access); flag any that look off and they'll be corrected.
+   Players NOT in this map fall back to a derived split, shown with a ≈ marker. */
+const ERA_STATS={
+ "Shane Warne":{"1990s":[62,1130,15.1,293,23.6,46],"2000s":[83,2024,17.9,415,26.6,79]},
+ "Glenn McGrath":{"1990s":[51,300,6.5,243,22.5,7],"2000s":[73,341,8.1,320,20.9,12]},
+ "Muttiah Muralitharan":{"1990s":[43,430,9.0,266,24.0,8],"2000s":[78,720,13.0,484,22.0,12],"2010s":[12,111,8.0,50,20.5,2]},
+ "Anil Kumble":{"1990s":[58,1090,16.0,266,28.5,18],"2000s":[74,1416,19.3,353,30.5,17]},
+ "Sachin Tendulkar":{"1990s":[70,5824,57.1,15,52.0,40],"2000s":[95,6996,54.2,22,55.0,55],"2010s":[35,3101,46.3,9,58.0,18]},
+ "Brian Lara":{"1990s":[72,6300,51.2,0,0,90],"2000s":[59,5653,54.8,0,0,74]},
+ "Ricky Ponting":{"1990s":[20,1230,41.0,0,0,18],"2000s":[110,8859,58.4,0,0,130],"2010s":[38,3289,42.2,0,0,48]},
+ "Rahul Dravid":{"1990s":[44,3162,52.0,0,0,52],"2000s":[96,7741,55.3,0,0,130],"2010s":[24,2385,44.0,0,0,28]},
+ "Steve Waugh":{"1980s":[27,1300,35.0,8,40.0,15],"1990s":[86,5800,55.0,60,36.5,60],"2000s":[55,3827,55.5,24,38.0,37]},
+ "Allan Border":{"1970s":[12,700,40.0,2,50.0,12],"1980s":[96,7000,51.5,30,38.0,90],"1990s":[48,3474,49.6,7,40.0,54]},
+ "Virat Kohli":{"2010s":[86,7240,54.0,0,0,80],"2020s":[27,1608,35.0,0,0,20]},
+ "Steve Smith":{"2010s":[73,6700,62.0,12,50.0,90],"2020s":[36,2985,49.0,7,60.0,40]},
+ "Sunil Gavaskar":{"1970s":[60,4600,49.0,0,0,50],"1980s":[65,5522,53.1,0,0,58]},
+ "Kapil Dev":{"1970s":[25,900,28.0,75,32.0,12],"1980s":[85,3600,33.0,278,28.5,30],"1990s":[21,748,28.0,81,31.0,11]},
+ "Viv Richards":{"1970s":[37,2900,52.0,5,60.0,40],"1980s":[64,4600,51.0,20,60.0,60],"1990s":[20,1040,42.0,7,62.0,22]},
+ "Wasim Akram":{"1980s":[28,500,16.0,103,22.0,8],"1990s":[55,1800,25.0,234,23.5,18],"2000s":[21,598,24.0,77,25.0,7]},
+ "Imran Khan":{"1970s":[24,800,28.0,90,28.0,8],"1980s":[48,2400,45.0,210,19.5,18],"1990s":[16,607,40.0,62,22.0,6]},
+ "Richard Hadlee":{"1970s":[30,900,22.0,140,28.0,10],"1980s":[48,1900,30.0,250,20.5,15],"1990s":[8,324,28.0,41,24.0,3]},
+ "Kumar Sangakkara":{"2000s":[78,6900,55.0,0,0,120],"2010s":[56,5500,60.0,0,0,80]},
+ "Mahela Jayawardene":{"1990s":[14,700,35.0,0,0,15],"2000s":[90,7500,52.0,0,0,120],"2010s":[45,3614,48.0,0,0,70]}
+};
+const _eraCache={};
+function eraLine(p,dec){
+  const key=p.n+"|"+dec; if(_eraCache[key])return _eraCache[key];
+  const isWK=p.pos.includes("WK");
+  const ov=ERA_STATS[p.n]&&ERA_STATS[p.n][dec];
+  let line;
+  if(ov){
+    line={mat:ov[0],runs:ov[1],avg:ov[2],wkts:ov[3],bavg:ov[4],sr:p.sr,dis:ov[5],isWK,exact:true};
+  }else{
+    const n=p.decs.length;
+    const raw=p.decs.map((d,i)=> n===1?1 : (i===0?0.6 : i===n-1?0.7 : 1.0));
+    const sum=raw.reduce((a,b)=>a+b,0);
+    const idx=p.decs.indexOf(dec); const w=idx<0?0:raw[idx]/sum;
+    const disTotal=Math.round(p.mat*(isWK?4.0:0.65));
+    line={mat:Math.max(1,Math.round(p.mat*w)),runs:Math.round(p.runs*w),avg:p.avg,
+      wkts:Math.round(p.wkts*w),bavg:p.bavg,sr:p.sr,dis:Math.round(disTotal*w),isWK,exact:false};
+  }
+  _eraCache[key]=line; return line;
+}
+
+/* ---- hidden era-adjusted ratings (sim only) ---- */
+const clamp=(x,lo,hi)=>Math.max(lo,Math.min(hi,x));
+function batRating(p,dec){if(p.avg<=0)return 5;const pf=Math.max(...p.pos.map(r=>POS_FACTOR[r]||1));return Math.round(clamp(47+((p.avg*pf)/batPar[dec]-1)*78,5,100));}
+function bowlRating(p,dec){if(!p.wkts||p.bavg<=0)return 0;const isSpin=p.pos.includes("SP"),isPace=p.pos.includes("PC");const srp=isSpin?SR_PAR.SP:isPace?SR_PAR.PC:SR_PAR.AR;const avgS=bowlPar[dec]/p.bavg;const srS=p.sr>0?srp/p.sr:avgS;return Math.round(clamp(47+(0.6*avgS+0.4*srS-1)*82,5,100));}
+function isBowlerType(p){return p.pos.includes("PC")||p.pos.includes("SP")||(p.pos.includes("AR")&&p.wkts>120);}
+
+/* ---- roles ---- */
+const ROLE_SHORT={OP:"OPEN",TOP:"TOP",MD:"MID",AR:"ALL-RND",PC:"PACE",SP:"SPIN",WK:"KEEPER"};
+
+/* ---- slot template (strict typing) ----
+   Each batting position is its own role: opener, top order, middle order.
+   A player can only fill a slot their role allows. All-rounders carry an explicit
+   bowling type (PC or SP) plus a batting role, so a spinning all-rounder cannot fill
+   a fast-bowling slot and vice versa. The keeper is not a slot.
+   Slot 7 is flexible: an extra middle-order bat OR a bowler. */
+const SLOT_DEF=[
+ {label:"Opener",acc:["OP"]},
+ {label:"Opener",acc:["OP"]},
+ {label:"Top order",acc:["TOP"]},
+ {label:"Top order",acc:["TOP"]},
+ {label:"Middle order",acc:["MD"]},
+ {label:"Middle order",acc:["MD"]},
+ {label:"Middle order / bowler",acc:["MD","PC","SP"]},
+ {label:"Spinner",acc:["SP"]},
+ {label:"Fast bowler",acc:["PC"]},
+ {label:"Fast bowler",acc:["PC"]},
+ {label:"Bowler (pace/spin)",acc:["PC","SP"]}
+];
+const NEED_KEEPER=false;  // keeper not mandatory — a side without one is heavily penalised in the sim
+const NO_KEEPER_BAT=0.93, NO_KEEPER_BOWL=0.82; // index multipliers when no keeper is picked
+
+/* ---- state ---- */
+let mode="scorecard",round=0,picks=new Array(XI_SIZE).fill(null),used=new Set();
+let respT=RESPIN_T,respE=RESPIN_E,curT=null,curE=null;
+let sel=null,activeSlot=null,filter="ALL",sortKey="runs",searchStr="";
+const $=id=>document.getElementById(id);
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+
+/* nation/decade availability — only cells (team×era) with at least MIN_CELL players count */
+const cellSize=(c,dec)=>P.filter(p=>p.c===c&&p.decs.includes(dec)).length;
+const nationDecades={};
+Object.keys(NATIONS).forEach(c=>{nationDecades[c]=DECADES.filter(d=>cellSize(c,d)>=MIN_CELL);});
+const playable=Object.keys(NATIONS).filter(c=>nationDecades[c].length)
+  .sort((a,b)=>NATIONS[a].localeCompare(NATIONS[b]));   // alphabetical team order
+const DEF_TEAM=playable[0];          // Australia (first alphabetically)
+const DEF_ERA=nationDecades[DEF_TEAM][0];   // earliest qualifying decade for the default team
+const defTeamTxt=()=>ABBR[DEF_TEAM];
+const defEraTxt=()=>eraShort(DEF_ERA);
+const nationsInDecade=dec=>playable.filter(c=>nationDecades[c].includes(dec));
+const cellPlayers=(c,dec)=>P.filter(p=>p.c===c&&p.decs.includes(dec)&&!used.has(p.n));
+
+/* ---- feasibility: can remaining open slots still be filled from remaining players ---- */
+const eligible=(slotDef,p)=>slotDef.acc.some(r=>p.pos.includes(r));
+const isKeeper=p=>p.pos.includes("WK");
+const hasKeeper=()=>picks.some(p=>p&&isKeeper(p));
+function openSlotIdx(){const o=[];for(let i=0;i<XI_SIZE;i++)if(!picks[i])o.push(i);return o;}
+function availPlayers(){return P.filter(p=>!used.has(p.n));}
+/* which open slots can this player legally take — pure role match (players are never
+   dimmed; one simply has no glowing slot if no open slot accepts their role) */
+function slotsForPlayer(p){
+  if(!p)return [];
+  return openSlotIdx().filter(i=>eligible(SLOT_DEF[i],p));
+}
+const selectable=p=>slotsForPlayer(p).length>0;
+/* a cell is valid to spin if it contains a player who fits some still-open slot */
+function cellValid(c,dec){return cellPlayers(c,dec).some(selectable);}
+
+/* ---- UI events ---- */
+$("modes").addEventListener("click",e=>{const b=e.target.closest(".modebtn");if(!b)return;mode=b.dataset.mode;
+  [...document.querySelectorAll(".modebtn")].forEach(x=>x.classList.toggle("on",x===b));});
+$("startBtn").onclick=start;
+$("againBtn").onclick=()=>location.reload();
+$("ftabs").addEventListener("click",e=>{const b=e.target.closest(".ftab");if(!b)return;filter=b.dataset.f;
+  [...document.querySelectorAll(".ftab")].forEach(x=>x.classList.toggle("on",x===b));renderList();});
+$("search").addEventListener("input",e=>{searchStr=e.target.value.toLowerCase();renderList();});
+$("sortsel").addEventListener("change",e=>{sortKey=e.target.value;renderList();});
+
+function start(){
+  round=0;picks=new Array(XI_SIZE).fill(null);used=new Set();respT=RESPIN_T;respE=RESPIN_E;
+  sel=null;activeSlot=null;filter="ALL";sortKey="runs";searchStr="";
+  $("search").value="";$("sortsel").value="runs";
+  [...document.querySelectorAll(".ftab")].forEach(x=>x.classList.toggle("on",x.dataset.f==="ALL"));
+  $("title").classList.add("hidden");$("result").classList.add("hidden");$("draft").classList.remove("hidden");
+  $("rsT").textContent=respT;$("rsE").textContent=respE;
+  renderSlots();nextRound();
+}
+
+function spinCell(){
+  let cells=[];
+  DECADES.forEach(dec=>nationsInDecade(dec).forEach(c=>{if(cellPlayers(c,dec).length)cells.push({c,dec});}));
+  const valid=cells.filter(x=>cellValid(x.c,x.dec));
+  return rnd(valid.length?valid:cells);
+}
+function nextRound(){
+  if(round>=XI_SIZE){simulate();return;}
+  sel=null;activeSlot=null;
+  $("roundNo").textContent=round+1;
+  const cell=spinCell();curT=cell.c;curE=cell.dec;   // decided now; reels land on it
+  renderSlots();                                       // keep XI visible during the spin
+  showSpinStage(true);
+}
+
+/* ---- lotto spin ---- */
+let spinning=false;
+function showSpinStage(fresh){
+  $("draftgrid").classList.add("hidden");
+  $("cellChips").style.visibility="hidden";
+  $("respinWrap").style.visibility="hidden";
+  $("spinstage").classList.remove("hidden");
+  $("reelTeam").parentElement.classList.remove("landed","spinning");
+  $("reelEra").parentElement.classList.remove("landed","spinning");
+  const btn=$("spinBtn");
+  if(fresh){
+    $("reelTeam").textContent=defTeamTxt();$("reelEra").textContent=defEraTxt();
+    btn.classList.remove("hidden");btn.disabled=false;btn.textContent=round===0?"Spin the machine":"Spin — pick "+(round+1);
+    $("spinNote").textContent="Spin to draw a nation and a decade";
+  }
+}
+function doSpin(animT,animE){
+  if(spinning)return; spinning=true;
+  const btn=$("spinBtn");btn.disabled=true;btn.textContent="Spinning…";$("spinNote").textContent="";
+  const cT=$("reelTeam").parentElement, cE=$("reelEra").parentElement;
+  if(animT)cT.classList.add("spinning"); if(animE)cE.classList.add("spinning");
+  const teams=playable.map(c=>ABBR[c]), eras=DECADES.map(eraShort);
+  let t=0; const teamStop=animT?16:0, eraStop=animE?24:0, end=Math.max(teamStop,eraStop);
+  const iv=setInterval(()=>{
+    t++;
+    if(animT){ if(t<teamStop)$("reelTeam").textContent=rnd(teams);
+      else if(t===teamStop){$("reelTeam").textContent=ABBR[curT];cT.classList.remove("spinning");cT.classList.add("landed");} }
+    if(animE){ if(t<eraStop)$("reelEra").textContent=rnd(eras);
+      else if(t===eraStop){$("reelEra").textContent=eraShort(curE);cE.classList.remove("spinning");cE.classList.add("landed");} }
+    if(t>=end){clearInterval(iv);
+      $("reelTeam").textContent=ABBR[curT];$("reelEra").textContent=eraShort(curE);
+      spinning=false;setTimeout(revealPicks,520);}
+  },70);
+}
+function revealPicks(){
+  $("spinstage").classList.add("hidden");
+  $("draftgrid").classList.remove("hidden");
+  $("cellChips").style.visibility="visible";
+  $("respinWrap").style.visibility="visible";
+  $("chipTeam").textContent=ABBR[curT];$("chipEra").textContent=eraShort(curE);
+  $("respinTeam").disabled = respT<=0 || nationsInDecade(curE).filter(n=>n!==curT&&cellPlayers(n,curE).length).length===0;
+  $("respinEra").disabled  = respE<=0 || nationDecades[curT].filter(d=>d!==curE&&cellPlayers(curT,d).length).length===0;
+  renderList();renderSlots();
+}
+
+$("spinBtn").onclick=()=>doSpin(true,true);
+$("respinTeam").onclick=()=>{
+  if(respT<=0||spinning)return;
+  let opts=nationsInDecade(curE).filter(n=>n!==curT&&cellPlayers(n,curE).length&&cellValid(n,curE));
+  if(!opts.length)opts=nationsInDecade(curE).filter(n=>n!==curT&&cellPlayers(n,curE).length);
+  if(!opts.length)return;
+  respT--;$("rsT").textContent=respT;curT=rnd(opts);sel=null;activeSlot=null;
+  showSpinStage(false);$("spinBtn").classList.add("hidden");
+  $("reelTeam").textContent=defTeamTxt();$("reelEra").textContent=eraShort(curE);
+  doSpin(true,false);
+};
+$("respinEra").onclick=()=>{
+  if(respE<=0||spinning)return;
+  let opts=nationDecades[curT].filter(d=>d!==curE&&cellPlayers(curT,d).length&&cellValid(curT,d));
+  if(!opts.length)opts=nationDecades[curT].filter(d=>d!==curE&&cellPlayers(curT,d).length);
+  if(!opts.length)return;
+  respE--;$("rsE").textContent=respE;curE=rnd(opts);sel=null;activeSlot=null;
+  showSpinStage(false);$("spinBtn").classList.add("hidden");
+  $("reelTeam").textContent=ABBR[curT];$("reelEra").textContent=defEraTxt();
+  doSpin(false,true);
+};
+
+/* ---- left list ---- */
+function passFilter(p){
+  if(filter==="BAT") return p.pos.includes("OP")||p.pos.includes("TOP")||p.pos.includes("MD");
+  if(filter==="BOWL")return p.pos.includes("PC")||p.pos.includes("SP");
+  if(filter==="AR")  return p.pos.includes("AR");
+  if(filter==="WK")  return p.pos.includes("WK");
+  return true;
+}
+function renderList(){
+  let list=cellPlayers(curT,curE).filter(passFilter);
+  if(searchStr)list=list.filter(p=>p.n.toLowerCase().includes(searchStr));
+  const line=p=>eraLine(p,curE);
+  const cmp={runs:(a,b)=>line(b).runs-line(a).runs,
+             wkts:(a,b)=>line(b).wkts-line(a).wkts,
+             avg:(a,b)=>(b.avg)-(a.avg),
+             dis:(a,b)=>line(b).dis-line(a).dis,
+             mat:(a,b)=>line(b).mat-line(a).mat,
+             name:(a,b)=>a.n.localeCompare(b.n)};
+  list.sort(cmp[sortKey]);
+  const total=cellPlayers(curT,curE).length;
+  $("avail").textContent=`${list.length} of ${total} ${NATIONS[curT]} player${total!==1?"s":""} · ${eraShort(curE)}`;
+  const box=$("plist");box.innerHTML="";
+  list.forEach(p=>{
+    const L=line(p);
+    const row=document.createElement("div");
+    row.className="prow"+(sel&&sel.n===p.n?" sel":"");   // never dimmed
+    let roleTxt=p.pos.map(r=>ROLE_SHORT[r]).join(" · ");
+    let html=`<div class="pid"><div class="pn">${p.n}</div><div class="pr">${roleTxt} <span class="dim">· ${ABBR[p.c]} ${eraShort(curE)}</span></div></div>`;
+    if(mode==="scorecard"){
+      const hot=k=>sortKey===k?" hot":"";const ax=L.exact?"":"≈";
+      html+=`<div class="stats">
+        <div class="st${hot('mat')}"><div class="v">${ax}${L.mat}</div><div class="k">M</div></div>
+        <div class="st${hot('runs')}"><div class="v">${ax}${L.runs}</div><div class="k">Runs</div></div>
+        <div class="st${hot('avg')}"><div class="v">${L.avg>0?L.avg.toFixed(1):"–"}</div><div class="k">Avg</div></div>
+        <div class="st${hot('wkts')}"><div class="v">${L.wkts?ax+L.wkts:"–"}</div><div class="k">Wkts</div></div>
+        <div class="st${hot('dis')}"><div class="v">${ax}${L.dis}</div><div class="k">${L.isWK?"Dis":"Ct"}</div></div>
+      </div>`;
+    }
+    row.innerHTML=html;
+    row.onclick=()=>selectPlayer(p);
+    box.appendChild(row);
+  });
+  if(!list.length){box.innerHTML=`<div style="color:#5e7368;font-style:italic;padding:18px;text-align:center">No players match.</div>`;}
+}
+
+function selectPlayer(p){
+  sel=(sel&&sel.n===p.n)?null:p;
+  if(sel&&activeSlot!=null&&slotsForPlayer(sel).includes(activeSlot)){place(sel,activeSlot);return;}
+  renderList();renderSlots();
+  if(!sel){$("sheetHint").textContent="Pick a player, then choose a glowing slot.";return;}
+  const slots=slotsForPlayer(sel);
+  if(!slots.length){$("sheetHint").textContent="No open slot fits "+sel.n+" — those positions are already filled.";}
+  else $("sheetHint").textContent="Choose a glowing slot for "+sel.n+".";
+}
+
+/* ---- slot helpers ---- */
+function slotShort(i){const l=SLOT_DEF[i].label;
+  return l==="Opener"?"OP":l==="Top order"?"TOP":l==="Middle order"?"MID":l.indexOf("Middle order /")===0?"FLEX":l==="Spinner"?"SPIN":l==="Fast bowler"?"PACE":"BWL";}
+function initials(name){const w=name.replace(/[^A-Za-z .'-]/g,"").split(" ").filter(Boolean);return ((w[0]?.[0]||"")+(w.length>1?w[w.length-1][0]:"")).toUpperCase();}
+function surname(name){const w=name.split(" ");return w[w.length-1];}
+
+/* ---- right team sheet + mobile bar ---- */
+function renderSlots(){
+  const open=openSlotIdx();
+  const elig = sel?slotsForPlayer(sel):[];
+  $("xiCount").textContent=round+" / 11";
+  // keeper status (not mandatory — informational; sim penalises an XI without one)
+  const kp=picks.find(p=>p&&isKeeper(p));
+  const kb=$("keeperBadge");
+  if(kp){kb.className="kbadge met";kb.innerHTML=`<span>&#x1F9E4; Wicket-keeper</span><span>&#10003; ${kp.n}</span>`;}
+  else{kb.className="kbadge warn";kb.innerHTML=`<span>&#x1F9E4; Wicket-keeper</span><span>none yet &mdash; team will be penalised</span>`;}
+  // desktop sidebar slots
+  const box=$("slots");box.innerHTML="";
+  for(let i=0;i<XI_SIZE;i++){
+    const def=SLOT_DEF[i], p=picks[i];
+    const d=document.createElement("div");
+    let cls="slot";
+    if(p)cls+=" filled";
+    else{cls+=" open";if(sel&&elig.includes(i))cls+=" eligible";if(activeSlot===i)cls+=" active";}
+    d.className=cls;
+    if(p){
+      d.innerHTML=`<span class="num">${i+1}</span><div class="body">
+        <div class="filledname">${p.n}${isKeeper(p)?'<span class="kglove">&#x1F9E4;&#10003;</span>':''}</div>
+        <div class="filledsub">${ABBR[p.c]} · ${eraShort(p._dec)} · ${p.pos.map(r=>ROLE_SHORT[r]).join("/")}</div></div>`;
+    }else{
+      d.innerHTML=`<span class="num">${i+1}</span><div class="body"><div class="role">${def.label}</div></div>`;
+      d.onclick=()=>clickSlot(i);
+    }
+    box.appendChild(d);
+  }
+  // mobile bottom bar circles — initials only, role label below, glove signifier for keeper
+  const row=$("sbRow");row.innerHTML="";
+  for(let i=0;i<XI_SIZE;i++){
+    const p=picks[i];
+    const c=document.createElement("div");
+    let cls="scell";
+    if(p)cls+=" filled";else{if(sel&&elig.includes(i))cls+=" eligible";if(activeSlot===i)cls+=" active";}
+    c.className=cls;
+    const ringTxt = p?initials(p.n):slotShort(i);
+    c.innerHTML=`<div class="ring">${ringTxt}${p&&isKeeper(p)?'<span class="kg">&#x1F9E4;</span>':''}</div><div class="slbl">${slotShort(i)}</div>`;
+    if(!p)c.onclick=()=>clickSlot(i);
+    row.appendChild(c);
+  }
+  $("sbCount").textContent=round+" / 11";
+  const sbk=$("sbKeeper");
+  if(kp){sbk.className="k kept";sbk.innerHTML="&#x1F9E4; &#10003;";}        // glove signifier only, no name
+  else{sbk.className="k warn";sbk.innerHTML="&#x1F9E4; &mdash;";}
+  $("sbHint").textContent = sel?("Tap a glowing slot"):"Tap a player";
+}
+function clickSlot(i){
+  if(sel&&slotsForPlayer(sel).includes(i)){place(sel,i);return;}
+  activeSlot=(activeSlot===i)?null:i;
+  renderSlots();
+}
+function place(p,i){
+  p._dec=curE;picks[i]=p;used.add(p.n);round++;
+  sel=null;activeSlot=null;
+  $("sheetHint").textContent="Pick a player, then choose a glowing slot.";
+  nextRound();
+}
+
+/* ---- toast ---- */
+let toastT;
+function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),1800);}
+
+/* ---- season engine ---- */
+const BW=[.20,.18,.16,.14,.12,.10,.10];
+const WW=[.30,.26,.22,.14,.08];
+function weighted(vals,w){vals=vals.slice().sort((a,b)=>b-a);return vals.slice(0,w.length).reduce((s,x,i)=>s+x*w[i],0);}
+function indices(){
+  const bats=picks.map(p=>batRating(p,p._dec));
+  const bowls=picks.map(p=>bowlRating(p,p._dec));
+  return {bat:weighted(bats.map(v=>Math.max(v,12)),BW),bowl:weighted(bowls.map(v=>Math.max(v,8)),WW)};
+}
+function perTest(bat,bowl){
+  const b=bat/100,w=bowl/100,S=0.45*b+0.55*w,pen=1-0.55*Math.abs(b-w),core=S*pen;
+  let pWin=Math.min(0.90,Math.pow(core,2.0)*1.25);
+  let pDraw=(1-w)*0.55*(0.4+0.6*b);if(pDraw>1-pWin)pDraw=1-pWin;
+  let pLoss=1-pWin-pDraw;if(pLoss<0)pLoss=0;
+  return {pWin,pDraw,pLoss};
+}
+function simulate(){
+  $("draft").classList.add("hidden");$("result").classList.remove("hidden");
+  let {bat,bowl}=indices();
+  const noKeeper=!picks.some(isKeeper);
+  if(noKeeper){bat*=NO_KEEPER_BAT;bowl*=NO_KEEPER_BOWL;}
+  const {pWin,pDraw}=perTest(bat,bowl);
+  let W=0,D=0,L=0;for(let i=0;i<SEASON;i++){const r=Math.random();if(r<pWin)W++;else if(r<pWin+pDraw)D++;else L++;}
+  const odds=Math.pow(pWin,SEASON)*100;
+  $("sBat").textContent=Math.round(bat);$("sBowl").textContent=Math.round(bowl);
+  $("sWin").textContent=Math.round(pWin*100)+"%";
+  $("sOdds").textContent=(odds>=1?odds.toFixed(0):odds.toFixed(odds>=0.1?1:2))+"%";
+  $("record").innerHTML=`<span class="w">${W}</span><span style="color:var(--cream-dim)">-</span><span class="d">${D}</span><span style="color:var(--cream-dim)">-</span><span class="l">${L}</span>`;
+  let v,msg,cls="";
+  if(W===SEASON){v="13-0";cls="grail";msg="The Invincibles, beaten. Eleven legends who bowled the world out twice, thirteen times running. No real side has ever done it. Frame this one.";}
+  else if(L===0){v="UNBEATEN";msg=`Not one defeat in thirteen Tests, but ${D} draw${D>1?"s":""}. Draws are not wins — you could not force the result often enough.`;}
+  else if(W>=10){v=`${W}-${L}`;msg="A monster year, one of the best XIs ever assembled. But 13-0 forgives nothing — one more match-winner.";}
+  else if(W>=6){v=`${W}-${L}`;msg="A fine side, not yet immortal. One pillar carried the team while the other leaked. Balance is the whole game.";}
+  else{v=`${W}-${L}`;msg="The field found you out. Either you could not bowl them out twice, or the runs dried up.";}
+  if(noKeeper)msg+=" And you took the field with no specialist wicket-keeper — byes leaked and chances went down, a heavy self-inflicted handicap.";
+  if(bowl<72&&W<SEASON)msg+=" Your bowling index is the bottleneck — twenty wickets a match wins Tests.";
+  else if(bat<72&&W<SEASON)msg+=" Your batting index is the bottleneck — too few runs to control games.";
+  $("verdict").className="verdict "+cls;$("verdict").textContent=v;$("vmsg").textContent=msg;
+  const box=$("resultXi");box.innerHTML="";
+  picks.forEach((p,i)=>{const L=eraLine(p,p._dec);
+    const row=document.createElement("div");row.className="xirow";
+    row.innerHTML=`<span class="num">${i+1}</span>
+      <span class="who">${p.n} <small>${ABBR[p.c]} · ${eraShort(p._dec)} · ${p.pos.map(r=>ROLE_SHORT[r]).join("/")}</small></span>
+      <span class="role">${L.runs} runs${L.wkts?" · "+L.wkts+" wkts":""}</span>`;box.appendChild(row);});
+  $("footnote").innerHTML="Marquee players carry real per-decade stats; the rest are shown with a ≈ derived split until real data is loaded for them. Sides are scored under the hood on era-adjusted runs and twenty-wickets-a-match (longevity excluded); ratings are deliberately hidden in the draft.";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+</script>
+</body>
+</html>

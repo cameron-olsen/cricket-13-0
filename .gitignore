@@ -1,0 +1,8 @@
+# scratch / test artifacts
+**/_test-*
+data/*-FLAGGED.txt
+# OS / editor
+.DS_Store
+Thumbs.db
+node_modules/
+*.log
