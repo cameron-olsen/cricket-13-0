@@ -823,8 +823,10 @@ function eraLine(p,dec){
 
 /* ---- hidden era-adjusted ratings (sim only) ---- */
 const clamp=(x,lo,hi)=>Math.max(lo,Math.min(hi,x));
-function batRating(p,dec){if(p.avg<=0)return 5;const pf=Math.max(...p.pos.map(r=>POS_FACTOR[r]||1));return Math.round(clamp(47+((p.avg*pf)/batPar[dec]-1)*78,5,100));}
-function bowlRating(p,dec){if(!p.wkts||p.bavg<=0)return 0;const isSpin=p.pos.includes("SP"),isPace=p.pos.includes("PC");const srp=isSpin?SR_PAR.SP:isPace?SR_PAR.PC:SR_PAR.AR;const avgS=bowlPar[dec]/p.bavg;const srS=p.sr>0?srp/p.sr:avgS;return Math.round(clamp(47+(0.6*avgS+0.4*srS-1)*82,5,100));}
+const SAMPLE_K=30;   // careers shorter than this regress toward the mean (kills small-sample freaks)
+const damp=(r,mat)=>50+(r-50)*Math.min(1,mat/SAMPLE_K);
+function batRating(p,dec){if(p.avg<=0)return 5;const pf=Math.max(...p.pos.map(r=>POS_FACTOR[r]||1));return Math.round(clamp(damp(47+((p.avg*pf)/batPar[dec]-1)*78,p.mat),5,100));}
+function bowlRating(p,dec){if(!p.wkts||p.bavg<=0)return 0;const isSpin=p.pos.includes("SP"),isPace=p.pos.includes("PC");const srp=isSpin?SR_PAR.SP:isPace?SR_PAR.PC:SR_PAR.AR;const avgS=bowlPar[dec]/p.bavg;const srS=p.sr>0?srp/p.sr:avgS;return Math.round(clamp(damp(50+(0.6*avgS+0.4*srS-1)*100,p.mat),5,100));}
 function isBowlerType(p){return p.pos.includes("PC")||p.pos.includes("SP")||(p.pos.includes("AR")&&p.wkts>120);}
 
 /* ---- roles ---- */
@@ -854,6 +856,7 @@ const NO_KEEPER_BAT=0.93, NO_KEEPER_BOWL=0.82; // index multipliers when no keep
 
 /* ---- state ---- */
 let mode="scorecard",round=0,picks=new Array(XI_SIZE).fill(null),used=new Set();
+let usedCells=new Set();   // team|era cells already drafted from — never offered again
 let respT=RESPIN_T,respE=RESPIN_E,curT=null,curE=null;
 let sel=null,activeSlot=null,filter="ALL",sortKey="runs",searchStr="";
 const $=id=>document.getElementById(id);
@@ -871,6 +874,7 @@ const defTeamTxt=()=>ABBR[DEF_TEAM];
 const defEraTxt=()=>eraShort(DEF_ERA);
 const nationsInDecade=dec=>playable.filter(c=>nationDecades[c].includes(dec));
 const cellPlayers=(c,dec)=>P.filter(p=>p.c===c&&p.decs.includes(dec)&&!used.has(p.n));
+const cellOpen=(c,dec)=>!usedCells.has(c+"|"+dec);   // not already drafted from
 
 /* ---- feasibility: can remaining open slots still be filled from remaining players ---- */
 const eligible=(slotDef,p)=>slotDef.acc.some(r=>p.pos.includes(r));
@@ -899,7 +903,7 @@ $("search").addEventListener("input",e=>{searchStr=e.target.value.toLowerCase();
 $("sortsel").addEventListener("change",e=>{sortKey=e.target.value;renderList();});
 
 function start(){
-  round=0;picks=new Array(XI_SIZE).fill(null);used=new Set();respT=RESPIN_T;respE=RESPIN_E;
+  round=0;picks=new Array(XI_SIZE).fill(null);used=new Set();usedCells=new Set();respT=RESPIN_T;respE=RESPIN_E;
   sel=null;activeSlot=null;filter="ALL";sortKey="runs";searchStr="";
   $("search").value="";$("sortsel").value="runs";
   [...document.querySelectorAll(".ftab")].forEach(x=>x.classList.toggle("on",x.dataset.f==="ALL"));
@@ -910,7 +914,7 @@ function start(){
 
 function spinCell(){
   let cells=[];
-  DECADES.forEach(dec=>nationsInDecade(dec).forEach(c=>{if(cellPlayers(c,dec).length)cells.push({c,dec});}));
+  DECADES.forEach(dec=>nationsInDecade(dec).forEach(c=>{if(cellOpen(c,dec)&&cellPlayers(c,dec).length)cells.push({c,dec});}));
   const valid=cells.filter(x=>cellValid(x.c,x.dec));
   return rnd(valid.length?valid:cells);
 }
@@ -963,16 +967,16 @@ function revealPicks(){
   $("cellChips").style.visibility="visible";
   $("respinWrap").style.visibility="visible";
   $("chipTeam").textContent=ABBR[curT];$("chipEra").textContent=eraShort(curE);
-  $("respinTeam").disabled = respT<=0 || nationsInDecade(curE).filter(n=>n!==curT&&cellPlayers(n,curE).length).length===0;
-  $("respinEra").disabled  = respE<=0 || nationDecades[curT].filter(d=>d!==curE&&cellPlayers(curT,d).length).length===0;
+  $("respinTeam").disabled = respT<=0 || nationsInDecade(curE).filter(n=>n!==curT&&cellOpen(n,curE)&&cellPlayers(n,curE).length).length===0;
+  $("respinEra").disabled  = respE<=0 || nationDecades[curT].filter(d=>d!==curE&&cellOpen(curT,d)&&cellPlayers(curT,d).length).length===0;
   renderList();renderSlots();
 }
 
 $("spinBtn").onclick=()=>doSpin(true,true);
 $("respinTeam").onclick=()=>{
   if(respT<=0||spinning)return;
-  let opts=nationsInDecade(curE).filter(n=>n!==curT&&cellPlayers(n,curE).length&&cellValid(n,curE));
-  if(!opts.length)opts=nationsInDecade(curE).filter(n=>n!==curT&&cellPlayers(n,curE).length);
+  let opts=nationsInDecade(curE).filter(n=>n!==curT&&cellOpen(n,curE)&&cellPlayers(n,curE).length&&cellValid(n,curE));
+  if(!opts.length)opts=nationsInDecade(curE).filter(n=>n!==curT&&cellOpen(n,curE)&&cellPlayers(n,curE).length);
   if(!opts.length)return;
   respT--;$("rsT").textContent=respT;curT=rnd(opts);sel=null;activeSlot=null;
   showSpinStage(false);$("spinBtn").classList.add("hidden");
@@ -981,8 +985,8 @@ $("respinTeam").onclick=()=>{
 };
 $("respinEra").onclick=()=>{
   if(respE<=0||spinning)return;
-  let opts=nationDecades[curT].filter(d=>d!==curE&&cellPlayers(curT,d).length&&cellValid(curT,d));
-  if(!opts.length)opts=nationDecades[curT].filter(d=>d!==curE&&cellPlayers(curT,d).length);
+  let opts=nationDecades[curT].filter(d=>d!==curE&&cellOpen(curT,d)&&cellPlayers(curT,d).length&&cellValid(curT,d));
+  if(!opts.length)opts=nationDecades[curT].filter(d=>d!==curE&&cellOpen(curT,d)&&cellPlayers(curT,d).length);
   if(!opts.length)return;
   respE--;$("rsE").textContent=respE;curE=rnd(opts);sel=null;activeSlot=null;
   showSpinStage(false);$("spinBtn").classList.add("hidden");
@@ -1105,7 +1109,7 @@ function clickSlot(i){
   renderSlots();
 }
 function place(p,i){
-  p._dec=curE;picks[i]=p;used.add(p.n);round++;
+  p._dec=curE;picks[i]=p;used.add(p.n);usedCells.add(curT+"|"+curE);round++;
   sel=null;activeSlot=null;
   $("sheetHint").textContent="Pick a player, then choose a glowing slot.";
   nextRound();
@@ -1116,8 +1120,8 @@ let toastT;
 function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),1800);}
 
 /* ---- season engine ---- */
-const BW=[.20,.18,.16,.14,.12,.10,.10];
-const WW=[.30,.26,.22,.14,.08];
+const BW=[.20,.18,.16,.14,.12,.10,.10];   // top-7 batting contributions
+const WW=[.34,.28,.22,.16];               // a Test attack is ~4 frontline bowlers
 function weighted(vals,w){vals=vals.slice().sort((a,b)=>b-a);return vals.slice(0,w.length).reduce((s,x,i)=>s+x*w[i],0);}
 function indices(){
   const bats=picks.map(p=>batRating(p,p._dec));
@@ -1125,9 +1129,9 @@ function indices(){
   return {bat:weighted(bats.map(v=>Math.max(v,12)),BW),bowl:weighted(bowls.map(v=>Math.max(v,8)),WW)};
 }
 function perTest(bat,bowl){
-  const b=bat/100,w=bowl/100,S=0.45*b+0.55*w,pen=1-0.55*Math.abs(b-w),core=S*pen;
-  let pWin=Math.min(0.90,Math.pow(core,2.0)*1.25);
-  let pDraw=(1-w)*0.55*(0.4+0.6*b);if(pDraw>1-pWin)pDraw=1-pWin;
+  const b=bat/100,w=bowl/100,S=0.45*b+0.55*w,pen=1-0.45*Math.abs(b-w),core=S*pen;
+  let pWin=Math.min(0.96,Math.pow(core,1.63)*1.39);
+  let pDraw=(1-w)*0.50*(0.4+0.6*b);if(pDraw>1-pWin)pDraw=1-pWin;
   let pLoss=1-pWin-pDraw;if(pLoss<0)pLoss=0;
   return {pWin,pDraw,pLoss};
 }
