@@ -518,7 +518,7 @@
       <p>Eleven picks. Each pick the reels land a <b>nation &times; decade</b> &mdash; say <i>Australia, 90s</i>. The left panel lists every Australian of that decade; sort by runs, wickets or dismissals, search, filter, then choose one and drop them into an open slot in your XI.</p>
       <p>The team sheet sets the shape: <b>2 openers</b>, <b>2 top order</b> (3&ndash;4), <b>3 middle order</b> (one of which can instead be a bowler), a <b>spinner</b>, two <b>fast bowlers</b> and a flexible bowling slot. Roles are strict — an opener only fills an opener's spot, a No.3 only a top-order spot. <b>All-rounders</b> carry their real bowling type, so a spinning all-rounder can't fill a fast-bowling slot, and a quick can't fill the spinner's. A wicket-keeper isn't compulsory, but field an XI without one and the side is <b>heavily penalised</b>. Glowing slots show where the selected player can go. You get one <b>Team</b> re-spin and one <b>Era</b> re-spin.</p>
       <p>Every player carries <b>only the stats from the decade you drafted them in</b> &mdash; not their full career. A legend who spanned eras brings just the runs and wickets he posted in that ten-year window, so the same name can be a very different player in the 90s than in the 2000s. Your side is then scored on runs and twenty-wickets-a-match, era-adjusted under the hood &mdash; so a 50 against 1980s pace beats a flat-track 50.</p>
-      <p>That's the <b>Open Tour</b>. Every season is a tour, drawn at random and named before you draft &mdash; a <b>World Tour</b> of mixed decks, a spin-soaked <b>Subcontinent Tour</b>, a fast-and-bouncy <b>Down Under</b>, or an <b>English Summer</b> of swing (with a couple of Tests over in Ireland). The mix of pitches is shown up top, so build for it: load up on spin for the dustbowls, seam for the green tops. The same XI that sweeps one tour can come unstuck on another.</p>
+      <p>That's the <b>Open Tour</b>. Every season is a tour, drawn at random and named before you draft &mdash; a <b>World Tour</b> of mixed decks, a spin-soaked <b>Subcontinent Tour</b>, a fast-and-bouncy <b>Down Under</b>, or an <b>English Summer</b> of swing (with a couple of Tests over in Ireland). The mix of pitches is shown up top, so build for it: load up on spin for the dustbowls, seam for the green tops. The same XI that sweeps one tour can come unstuck on another. Every Test plays out <b>ball by ball</b> against a graded local XI &mdash; tap any match on the result screen for the full scorecard, and a <b>share link replays the exact tour</b>, all thirteen scorecards included.</p>
       <p>Or take the <b>Legend Tour</b>. Pick one of the great sides of history &mdash; the 1948 Invincibles, the 1980s West Indies, the 2000s Australians and more &mdash; and play thirteen Tests <b>in their home conditions</b>, against their actual XI. You draft as normal, but you <b>can't pick the side you're touring</b> (no stealing Bradman to beat the Invincibles), and every Test plays out innings by innings: tap any match on the result screen for a <b>full scorecard</b>, with a series summary and a Player of the Series at the end. Each tour is reproducible, so you can <b>share a link</b> and a friend can read the exact same thirteen scorecards.</p>
       <p class="credit">Inspired by <a href="https://www.82-0.com" target="_blank" rel="noopener">82-0</a>, the football original that started the one-perfect-season idea.</p>
     </details>
@@ -1903,7 +1903,7 @@ function openPicker(){
 $("oppBack").onclick=()=>{$("challenge").classList.add("hidden");$("title").classList.remove("hidden");};
 $("oppRandom").onclick=()=>start(rnd(LEGENDS));
 $("oppGrid").addEventListener("click",e=>{const c=e.target.closest(".oppcard");if(c)start(LEGENDS[+c.dataset.opp]);});
-$("tourStrip").addEventListener("click",e=>{const f=e.target.closest(".ts-click");if(f&&challengeTests)renderCard(+f.dataset.test);});
+$("tourStrip").addEventListener("click",e=>{const f=e.target.closest(".ts-click");if(f&&curTests())renderCard(+f.dataset.test);});
 $("cardClose").onclick=()=>$("cardModal").classList.add("hidden");
 $("cardModal").addEventListener("click",e=>{if(e.target.id==="cardModal")$("cardModal").classList.add("hidden");});
 
@@ -1918,14 +1918,18 @@ function renderHow(how,bn,kn){
     .replace(/lbw b (\d+)/,(m,j)=>`lbw b ${bn[+j]}`)
     .replace(/^b (\d+)/,(m,j)=>`b ${bn[+j]}`);
 }
+/* a Test's opposition: the per-fixture XI on an Open Tour, the legend side on a challenge */
+const tOpp=t=>(t&&t._opp)||{players:challengeOpp._players,team:challengeOpp.team};
+const curTests=()=>challengeTests||tourTests;
 function renderCard(i){
-  const t=challengeTests[i]; if(!t)return;
-  const yourNames=picks.map(p=>p.n), oppNames=challengeOpp._players.map(p=>p.n);
-  const yk=(picks.find(isKeeper)||{}).n||"", ok=(challengeOpp._players.find(isKeeper)||{}).n||"";
-  const resTxt = t.outcome==="W"?`Your XI won by ${t.margin}`:t.outcome==="L"?`${challengeOpp.team} won by ${t.margin}`:(t.margin==="rain"?"Match abandoned — rain":(t.lost>=90?"Match drawn — rain-affected":"Match drawn"));
+  const t=curTests()[i]; if(!t)return;
+  const opp=tOpp(t);
+  const yourNames=picks.map(p=>p.n), oppNames=opp.players.map(p=>p.n);
+  const yk=(picks.find(isKeeper)||{}).n||"", ok=(opp.players.find(isKeeper)||{}).n||"";
+  const resTxt = t.outcome==="W"?`Your XI won by ${t.margin}`:t.outcome==="L"?`${opp.team} won by ${t.margin}`:(t.margin==="rain"?"Match abandoned — rain":(t.lost>=90?"Match drawn — rain-affected":"Match drawn"));
   const star=matchStarLine(t);
   let html=`<div class="card-head"><div class="card-eyebrow">Test ${i+1} of 13</div><div class="card-venue">${t.venue}</div><div class="card-result">${resTxt}</div><div><span class="card-cond c-${t.cond}">${COND_LABEL[t.cond]}</span></div></div>`;
-  if(t.inn.length){ html+=`<div style="font-family:'Spectral',serif;font-size:11.5px;font-style:italic;color:var(--cream-dim);margin:0 0 4px">&#129689; ${t.tossYou?"Your XI":challengeOpp.team} batted first</div>`;
+  if(t.inn.length){ html+=`<div style="font-family:'Spectral',serif;font-size:11.5px;font-style:italic;color:var(--cream-dim);margin:0 0 4px">&#129689; ${t.tossYou?"Your XI":opp.team} batted first</div>`;
     if(t.lost>40)html+=`<div style="font-family:Spectral,serif;font-size:11px;font-style:italic;color:#7fb0ff;margin:0 0 4px">&#127783; Rain cost about ${t.lost} overs${t.lost>=90?` (~${(t.lost/90).toFixed(1)} days)`:""}</div>`;
     html+=`<div class="card-story">${matchStory(t)}</div>`;
     if(star)html+=`<div class="card-mom"><span>Player of the Match</span> ${star.name} &mdash; ${star.line}</div>`; }
@@ -1934,7 +1938,7 @@ function renderCard(i){
     const batNames=(it.side==="A"?yourNames:oppNames).map(surnameOf);
     const bowlNames=(it.side==="A"?oppNames:yourNames).map(surnameOf);
     const bowlKeeper=surnameOf(it.side==="A"?ok:yk);
-    const teamName=it.side==="A"?"Your XI":challengeOpp.team;
+    const teamName=it.side==="A"?"Your XI":opp.team;
     html+=`<div class="inn-block"><div class="inn-head"><span class="inn-team">${teamName}</span><span class="inn-score">${it.total}/${it.wkts}${it.declared?"d":""}<span class="inn-overs">${it.overs} ov</span></span></div>`;
     it.bat.forEach((b,bi)=>{ if(b.dnb)return; const hl=b.r>=100?" ton":b.r>=50?" fifty":"";
       html+=`<div class="bat-row ${b.out?"":"no"}${hl}"><span class="bn">${batNames[bi]}</span><span class="bh">${renderHow(b.how,bowlNames,bowlKeeper)}</span><span class="br">${b.r}${b.out?"":"*"}</span></div>`;});
@@ -1942,7 +1946,7 @@ function renderCard(i){
     if(dnb.length)html+=`<div class="bat-dnb">Did not bat: ${dnb.join(", ")}</div>`;
     const fow=genFoW(it.total,it.wkts,(i*131+ii*17+it.total*7+it.wkts)>>>0);
     if(fow.length)html+=`<div class="fow"><span>FoW</span> ${fow.map((s,k)=>(k+1)+"-"+s).join(", ")}</div>`;
-    const bowlPlayers=it.side==="A"?challengeOpp._players:picks;   // bowling side
+    const bowlPlayers=it.side==="A"?opp.players:picks;   // bowling side
     const spinFirst=t.cond==="turner";   // pace opens, except a turner where spin leads
     const grp=p=>{const sp=p.pos.includes("SP"),pc=p.pos.includes("PC");return spinFirst?(sp?0:pc?1:2):(pc?0:sp?2:1);};
     const figs=it.bowlFig.map((f,j)=>({f,j})).filter(x=>x.f.o>0||x.f.w>0)
@@ -1950,7 +1954,7 @@ function renderCard(i){
       .map(x=>`<span class="${x.f.w>=5?"fiver":""}"><b>${bowlNames[x.j]}</b> ${x.f.o}-${x.f.m}-${x.f.r}-${x.f.w}</span>`).join("");
     html+=`<div class="bowl-fig">${figs}</div></div>`;
   });
-  html+=`<div class="card-nav"><button id="cardPrev" ${i<=0?"disabled":""}>&larr; Prev</button><button id="cardNext" ${i>=challengeTests.length-1?"disabled":""}>Next &rarr;</button></div>`;
+  html+=`<div class="card-nav"><button id="cardPrev" ${i<=0?"disabled":""}>&larr; Prev</button><button id="cardNext" ${i>=curTests().length-1?"disabled":""}>Next &rarr;</button></div>`;
   $("cardBody").innerHTML=html;$("cardModal").classList.remove("hidden");$("cardBody").parentElement.scrollTop=0;
   const pv=$("cardPrev"),nx=$("cardNext");if(pv)pv.onclick=()=>renderCard(i-1);if(nx)nx.onclick=()=>renderCard(i+1);
 }
@@ -1960,7 +1964,7 @@ $("search").addEventListener("input",e=>{searchStr=e.target.value.toLowerCase();
 $("sortsel").addEventListener("change",e=>{sortKey=e.target.value;renderList();});
 
 function start(opp){
-  gameMode=(opp&&opp.id)?"challenge":"tour"; challengeOpp=(opp&&opp.id)?opp:null; challengeTests=null;
+  gameMode=(opp&&opp.id)?"challenge":"tour"; challengeOpp=(opp&&opp.id)?opp:null; challengeTests=null; tourTests=null;
   round=0;picks=new Array(XI_SIZE).fill(null);used=new Set();usedCells=new Set();respT=RESPIN_T;respE=RESPIN_E;
   sel=null;activeSlot=null;filter="ALL";sortKey="runs";searchStr="";
   $("search").value="";$("sortsel").value="runs";
@@ -2472,17 +2476,26 @@ function challengeFixtures(opp,rng){
 }
 /* ---- series narrative: leaders + Player of the Series across the 13 Tests ---- */
 function seriesBoard(tests){
-  function agg(sideKey,players){
-    const S=players.map(p=>({n:p.n,runs:0,inns:0,no:0,wkts:0,rc:0,ct:0,st:0}));
-    for(const t of tests){ if(!t.inn)continue;
-      for(const it of t.inn){
-        if(it.side===sideKey){it.bat.forEach((b,i)=>{if(b.dnb)return; if(b.out||b.r>0){S[i].inns++;S[i].runs+=b.r;if(!b.out)S[i].no++;}});}
-        else{it.bat.forEach(b=>{if(b.byBowler>=0)S[b.byBowler].wkts++; if(b.byField>=0){if(/^st/.test(b.how))S[b.byField].st++;else S[b.byField].ct++;}}); it.bowlFig.forEach((f,j)=>{S[j].rc+=f.r;});}
-      }}
-    return S.map(s=>({...s,avg:(s.inns-s.no)>0?s.runs/(s.inns-s.no):s.runs,bavg:s.wkts>0?s.rc/s.wkts:0}));
-  }
-  const A=agg("A",picks).map(s=>({...s,team:"you"}));
-  const B=agg("B",challengeOpp._players).map(s=>({...s,team:"opp"}));
+  // side A (your XI) is the same eleven all series; side B may be a different XI each Test on
+  // an Open Tour, so opposition stats merge by player name across the tour.
+  const am=picks.map(p=>({n:p.n,runs:0,inns:0,no:0,wkts:0,rc:0,ct:0,st:0}));
+  const bm={};
+  const bGet=(op,i)=>{const p=op[i];return bm[p.n]||(bm[p.n]={n:p.n,runs:0,inns:0,no:0,wkts:0,rc:0,ct:0,st:0});};
+  for(const t of tests){ if(!t.inn)continue; const op=tOpp(t).players;
+    for(const it of t.inn){
+      if(it.side==="A"){
+        it.bat.forEach((b,i)=>{if(b.dnb)return; if(b.out||b.r>0){am[i].inns++;am[i].runs+=b.r;if(!b.out)am[i].no++;}});
+        it.bat.forEach(b=>{if(b.byBowler>=0)bGet(op,b.byBowler).wkts++; if(b.byField>=0){const s=bGet(op,b.byField);if(/^st/.test(b.how))s.st++;else s.ct++;}});
+        it.bowlFig.forEach((f,j)=>{bGet(op,j).rc+=f.r;});
+      } else {
+        it.bat.forEach((b,i)=>{if(b.dnb)return; if(b.out||b.r>0){const s=bGet(op,i);s.inns++;s.runs+=b.r;if(!b.out)s.no++;}});
+        it.bat.forEach(b=>{if(b.byBowler>=0)am[b.byBowler].wkts++; if(b.byField>=0){if(/^st/.test(b.how))am[b.byField].st++;else am[b.byField].ct++;}});
+        it.bowlFig.forEach((f,j)=>{am[j].rc+=f.r;});
+      }
+    }}
+  const fin=s=>({...s,avg:(s.inns-s.no)>0?s.runs/(s.inns-s.no):s.runs,bavg:s.wkts>0?s.rc/s.wkts:0});
+  const A=am.map(s=>({...fin(s),team:"you"}));
+  const B=Object.values(bm).map(s=>({...fin(s),team:"opp"}));
   const all=A.concat(B);
   const bats=all.filter(s=>s.runs>0).sort((a,b)=>b.runs-a.runs).slice(0,5);
   const bowls=all.filter(s=>s.wkts>0).sort((a,b)=>b.wkts-a.wkts).slice(0,5);
@@ -2503,7 +2516,7 @@ function matchStarLine(t){
   if(!t.inn||!t.inn.length)return null;
   const tally={};
   const key=(side,i)=>side+":"+i;
-  const nm=(side,i)=>surnameOf((side==="A"?picks:challengeOpp._players)[i].n);
+  const nm=(side,i)=>surnameOf((side==="A"?picks:tOpp(t).players)[i].n);
   function bump(side,i,f,v){const k=key(side,i);(tally[k]=tally[k]||{side,i,runs:0,wkts:0,rc:0,ct:0})[f]+=v;}
   t.inn.forEach(it=>{
     it.bat.forEach((b,i)=>{if(!b.dnb&&(b.out||b.r>0))bump(it.side,i,"runs",b.r);});
@@ -2521,11 +2534,11 @@ function matchStory(t){
   if(!t.inn||!t.inn.length)return t.margin==="rain"?"Washed out — not a ball bowled.":"Match drawn.";
   let bestBat={r:0,name:""}, bestBowl={w:0,r:0,name:""};
   t.inn.forEach(it=>{
-    const bn=it.side==="A"?picks:challengeOpp._players, wn=it.side==="A"?challengeOpp._players:picks;
+    const bn=it.side==="A"?picks:tOpp(t).players, wn=it.side==="A"?tOpp(t).players:picks;
     it.bat.forEach((b,bi)=>{if(b.r>bestBat.r)bestBat={r:b.r,name:surnameOf(bn[bi].n)};});
     it.bowlFig.forEach((f,j)=>{if(f.w>bestBowl.w)bestBowl={w:f.w,r:f.r,name:surnameOf(wn[j].n)};});
   });
-  const winner=t.outcome==="W"?"Your XI":t.outcome==="L"?challengeOpp.team:null;
+  const winner=t.outcome==="W"?"Your XI":t.outcome==="L"?tOpp(t).team:null;
   const rain=(t.lost||0)>=90;
   const head=winner?`${winner} won by ${t.margin}`:(rain?`Rain cost about ${Math.round(t.lost)} overs and the Test drifted to a draw`:"Match drawn");
   let star="";
@@ -2535,7 +2548,53 @@ function matchStory(t){
   else if(bestBat.r>0)star=`${bestBat.name} top-scored with ${bestBat.r}`;
   return star?`${head} &mdash; ${star}.`:`${head}.`;
 }
-let gameMode="tour", challengeOpp=null, challengeTests=null;
+let gameMode="tour", challengeOpp=null, challengeTests=null, tourTests=null, lastOpenFixtures=null;
+
+/* ===== Open Tour on the ball-by-ball engine =====
+   Each fixture is a real Test vs a seeded, graded local XI drafted from the whole pool —
+   no more single-probability-roll Tests or generated box scores. The legend-side engine
+   (mPlayTest/mInnings) is untouched, so challenge records and the HoF are unaffected. */
+const OPEN_SK=[0.20,0.30,0.40,0.50,0.55,0.62,0.68,0.75,0.82,0.88,0.93,1.0,1.0];  // grade ladder, weak -> elite, in fixture order
+function draftOpenOpp(rng,skill,excl){
+  const team=new Array(XI_SIZE).fill(null),u=new Set(excl||[]);   // never field a player who's in your XI
+  for(let r=0;r<XI_SIZE;r++){let placed=false;
+    for(let t=0;t<240&&!placed;t++){
+      const c=playable[Math.floor(rng()*playable.length)];
+      const ds=nationDecades[c]; if(!ds.length)continue;
+      const dec=ds[Math.floor(rng()*ds.length)];
+      let cand=P.filter(p=>p.c===c&&p.decs.includes(dec)&&!u.has(p.n));
+      if(!cand.length)continue;
+      if(rng()<skill)cand=cand.slice().sort((a,b)=>(batRating(b,dec)+bowlRating(b,dec))-(batRating(a,dec)+bowlRating(a,dec)));
+      for(const p of cand){const sl=SLOT_DEF.findIndex((s,i)=>!team[i]&&eligible(s,p));if(sl>=0){team[sl]={...p,_dec:dec};u.add(p.n);placed=true;break;}}
+    }
+    if(!placed)return null;
+  }
+  return team;
+}
+function simulateOpen(){
+  lastTourType=tourType;
+  const fixtures=tour.slice(); lastOpenFixtures=fixtures;
+  const youInp=statInputs();
+  const seed=hashStr(picks.map(p=>p.n+"."+p._dec).join("-")+"|"+fixturesEnc(fixtures)+"|O1");
+  const orng=mulberry32((seed^0x9e3779b9)>>>0);                      // opponent stream, separate from match stream
+  const yours=picks.map(p=>p.n);
+  const opps=fixtures.map((fx,i)=>{let xi=null,g=0;while(!xi&&g<50){xi=draftOpenOpp(orng,OPEN_SK[i]??0.6,yours);g++;}return xi;});
+  const oppInps=opps.map(o=>inputsOf(o));
+  const rng=mulberry32(seed);
+  const tests=fixtures.map((fx,i)=>{const t=mPlayTest(youInp,oppInps[i],fx.cond,rng);
+    t.venue=fx.venue; t._opp={players:opps[i],team:fx.venue+" XI"}; return t;});
+  let W=0,D=0,L=0; tests.forEach(t=>{t.outcome==="W"?W++:t.outcome==="D"?D++:L++;});
+  tourTests=tests; challengeTests=null; lastTour=null; lastResult={W,D,L};
+  const {bat,bowl}=indices();
+  // light Monte-Carlo for win/Test and the odds of a 13-0 sweep on this exact tour
+  let wins=0,sweeps=0,TR=30;
+  for(let s=0;s<TR;s++){const r2=mulberry32((seed^(s*2654435761))>>>0);let w=0;
+    for(let i=0;i<fixtures.length;i++){if(mPlayTest(youInp,oppInps[i],fixtures[i].cond,r2).outcome==="W")w++;}
+    wins+=w; if(w===SEASON)sweeps++;}
+  lastResult.pWin=wins/(TR*SEASON); lastResult.odds=sweeps/TR*100;
+  lastStats=aggregateSeries(tests,youInp,Math.round(bat),Math.round(bowl),W,D,L);
+  renderResultView(W,D,L);
+}
 function simulateChallenge(){
   const youInp=statInputs(), oppInp=challengeOpp._inp;
   const seed=hashStr(picks.map(p=>p.n+"."+p._dec).join("-")+"|"+challengeOpp.id);
@@ -2555,7 +2614,7 @@ function simulateChallenge(){
 
 function simulate(){
   if(gameMode==="challenge"){simulateChallenge();return;}
-  if(tour){simulateTour();return;}
+  if(tour){simulateOpen();return;}                    // Open Tour now plays ball-by-ball (simulateTour retired)
   lastTour=null;
   let {bat,bowl}=indices();
   const noKeeper=!picks.some(isKeeper);
@@ -2571,8 +2630,9 @@ function renderResultView(W,D,L){
   const noKeeper=!picks.some(isKeeper);
   if(noKeeper){bat*=NO_KEEPER_BAT;bowl*=NO_KEEPER_BOWL;}
   const isChal=gameMode==="challenge"&&challengeTests;
+  const isOpen=!isChal&&!!tourTests;
   let pWinD,oddsD;
-  if(isChal){pWinD=lastResult.pWin||0;oddsD=lastResult.odds||0;}
+  if(isChal||isOpen){pWinD=lastResult.pWin||0;oddsD=lastResult.odds||0;}
   else if(lastTour){const ws=lastTour.map(t=>t.pWin);pWinD=ws.reduce((a,b)=>a+b,0)/ws.length;oddsD=ws.reduce((a,b)=>a*b,1)*100;}
   else{const r=perTest(bat,bowl);pWinD=r.pWin;oddsD=Math.pow(r.pWin,SEASON)*100;}
   $("sBat").textContent=Math.round(bat);$("sBowl").textContent=Math.round(bowl);
@@ -2618,6 +2678,22 @@ function renderResultView(W,D,L){
     $("seriesSum").innerHTML=`<div class="sb-pos"><div class="sb-pos-lbl">Player of the Series</div><div class="sb-pos-name">${sn(pos)} ${badge(pos)}</div><div class="sb-pos-stat">${posLine}</div></div>`+
       `<div class="sb-cols"><div class="sb-col"><div class="sb-h">Leading run-scorers</div>${batRows}</div><div class="sb-col"><div class="sb-h">Leading wicket-takers</div>${bowlRows}</div></div>`;
     $("seriesSum").classList.remove("hidden");
+  } else if(isOpen){
+    if(eb&&!sharedView)eb.textContent=(lastTourType||"World Tour")+" — final standings";
+    const byc={};tourTests.forEach(t=>{(byc[t.cond]=byc[t.cond]||{W:0,D:0,L:0})[t.outcome]++;});
+    const sum=["turner","pace","swing","flat","true"].filter(k=>byc[k]).map(k=>`<span><b>${COND_LABEL[k]}</b> ${byc[k].W}-${byc[k].D}-${byc[k].L}</span>`).join("");
+    const fxs=tourTests.map((t,i)=>`<div class="ts-fx ts-click c-${t.cond}" data-test="${i}"><div class="v"><div class="ts-venue">${t.venue}</div><div class="ts-cond">${COND_LABEL[t.cond]}</div></div><div class="ts-res ${t.outcome}">${t.outcome}</div></div>`).join("");
+    strip.innerHTML=`<div class="ts-head">The tour &mdash; thirteen Tests across the conditions &middot; <span class="ts-tap">tap a Test for the scorecard</span></div><div class="ts-grid">${fxs}</div><div class="ts-sum">${sum}</div>`;
+    strip.classList.remove("hidden");
+    const sb=seriesBoard(tourTests);
+    const sn=x=>surnameOf(x.n), badge=x=>x.team==="you"?'<span class="sb-you">you</span>':'<span class="sb-opp">opp</span>';
+    const batRows=sb.bats.map(x=>`<div class="sb-row"><span class="sb-n">${sn(x)} ${badge(x)}</span><span class="sb-v"><b>${x.runs.toLocaleString("en-US")}</b> @ ${x.avg.toFixed(1)}</span></div>`).join("");
+    const bowlRows=sb.bowls.map(x=>`<div class="sb-row"><span class="sb-n">${sn(x)} ${badge(x)}</span><span class="sb-v"><b>${x.wkts}</b> @ ${x.bavg.toFixed(1)}</span></div>`).join("");
+    const pos=sb.pos;
+    const posLine=[pos.runs>0?`${pos.runs.toLocaleString("en-US")} runs`:"",pos.wkts>0?`${pos.wkts} wkts`:"",(pos.ct+pos.st)>0?`${pos.ct+pos.st} ct`:""].filter(Boolean).join(" &middot; ");
+    $("seriesSum").innerHTML=`<div class="sb-pos"><div class="sb-pos-lbl">Player of the Series</div><div class="sb-pos-name">${sn(pos)} ${badge(pos)}</div><div class="sb-pos-stat">${posLine}</div></div>`+
+      `<div class="sb-cols"><div class="sb-col"><div class="sb-h">Leading run-scorers</div>${batRows}</div><div class="sb-col"><div class="sb-h">Leading wicket-takers</div>${bowlRows}</div></div>`;
+    $("seriesSum").classList.remove("hidden");
   } else if(lastTour){
     $("seriesSum").classList.add("hidden");
     if(eb&&!sharedView)eb.textContent=(lastTourType||"World Tour")+" — final standings";
@@ -2647,6 +2723,8 @@ function renderResultView(W,D,L){
   if(isChal&&!sharedView)refreshPostBtn();                          // dim it if this tour is already posted
   $("footnote").innerHTML=isChal
     ? "Every Test is simulated innings-by-innings against the legend side in their own conditions, so each scorecard's result is real — tap a Test above to read it. The box score and team rating are an ICC-style approximation, not official figures."
+    : isOpen
+    ? "Every Test is simulated ball by ball against a graded local XI in that fixture's conditions, so each scorecard's result is real — tap a Test above to read it. The team rating is an ICC-style approximation, not an official figure."
     : "Runs, wickets and catches are a simulated box score across the thirteen Tests, shaped by each player's era-adjusted rating and the conditions. The team rating is an approximation in the style of the ICC team ratings, not an official figure.";
   window.scrollTo({top:0,behavior:"smooth"});
 }
@@ -2670,11 +2748,28 @@ function decodeShare(code){
     const opp=LEGENDS.find(L=>L.id===seg[2]); if(!opp)return null;
     return {picksArr:arr,challenge:true,opp};
   }
+  if(seg[0]==="O"){                                  // shared Open Tour: XI + tour type + fixtures (replays deterministically)
+    const arr=parseXI(seg[1]); if(!arr)return null;
+    const fx=fixturesDec(seg[3]||""); if(!fx)return null;
+    const tt=TOUR_TYPES[+seg[2]]; return {picksArr:arr,open:true,tourType:tt?tt.name:"World Tour",fixtures:fx};
+  }
   if(seg[0]!=="1"||seg.length<3)return null;
   const arr=parseXI(seg[1]); if(!arr)return null;
   const r=seg[2].split(".").map(Number);
   const cl=x=>Math.max(0,Math.min(SEASON,Math.round(x)||0));   // clamp a shared record to 0..13
   return {picksArr:arr,W:cl(r[0]),D:cl(r[1]),L:cl(r[2])};
+}
+/* ---- Open Tour fixture codec (for O| share codes) ---- */
+const COND_KEYS=["turner","pace","swing","flat","true"];
+const VENUE_ALL=[...new Set([].concat(...Object.values(VPOOL),IRE_SWING))];
+function fixturesEnc(fx){return fx.map(f=>COND_KEYS.indexOf(f.cond)+"."+VENUE_ALL.indexOf(f.venue)).join("~");}
+function fixturesDec(str){const fx=[];
+  for(const tok of str.split("~")){const a=tok.split(".").map(Number);const cond=COND_KEYS[a[0]],venue=VENUE_ALL[a[1]];
+    if(!cond||venue===undefined)return null; fx.push({cond,venue});}
+  return fx.length===SEASON?fx:null;}
+function shareCodeOpen(){
+  const ti=Math.max(0,TOUR_TYPES.findIndex(t=>t.name===lastTourType));
+  return b64e("O|"+xiParts()+"|"+ti+"|"+fixturesEnc(lastOpenFixtures));
 }
 /* ---- render the result as a shareable PNG (no backend — drawn on a canvas) ---- */
 function drawBall(x,cx,cy,r){
@@ -2739,10 +2834,13 @@ function openShareModal(){
     `<div class="smode">${modeLbl}</div><div class="srows">${rows}</div>`+
     `<div class="scardfoot"><span>Can you go 13-0?</span><span class="sdot">13-0.app</span></div>`;
   const isChal=gameMode==="challenge"&&challengeTests;
-  const url=location.origin+location.pathname+"?s="+(isChal?shareCodeChallenge():shareCode(W,D,L));
+  const isOpen=!isChal&&!!tourTests;
+  const url=location.origin+location.pathname+"?s="+(isChal?shareCodeChallenge():isOpen?shareCodeOpen():shareCode(W,D,L));
   const rec=D?`${W}-${D}-${L}`:`${W}-${L}`;
   $("shareUrl").value=url;
-  const msg=isChal?`I toured ${challengeOpp.team} and went ${rec} — can you beat them?`:`I just went ${rec}, think you can go 13-0?`;
+  const msg=isChal?`I toured ${challengeOpp.team} and went ${rec} — can you beat them?`
+    :isOpen?`I went ${rec} on the ${lastTourType||"World Tour"} — every Test is in the link. Think you can go 13-0?`
+    :`I just went ${rec}, think you can go 13-0?`;
   $("shareBlurb").textContent=msg;
   const tags="#Cricket #13and0";
   const full=`${msg} ${url} ${tags}`;                       // message + link inline (X / Bluesky / WhatsApp)
@@ -3229,6 +3327,14 @@ loadSession(); updateAcct(); applyMode(preferredMode());
     gameMode="challenge"; challengeOpp=d.opp;
     simulateChallenge();                                // rebuilds the exact fixtures + scorecards and renders the result
     const eb=document.querySelector("#result .eyebrow"); if(eb)eb.textContent="A shared tour of "+challengeOpp.team;
+    $("againBtn").textContent="Build your own XI";
+    $("shareBtn").textContent="Share this tour";
+    return;
+  }
+  if(d.open){                                           // replay a shared Open Tour deterministically
+    gameMode="tour"; challengeOpp=null; tour=d.fixtures; tourType=d.tourType;
+    simulateOpen();                                     // rebuilds the same opponents + scorecards from the seed
+    const eb=document.querySelector("#result .eyebrow"); if(eb)eb.textContent="A shared "+d.tourType+" — replayed Test by Test";
     $("againBtn").textContent="Build your own XI";
     $("shareBtn").textContent="Share this tour";
     return;
