@@ -1,0 +1,68 @@
+WICKETKEEPERS WITHOUT A BATTING POSITION (currently defaulting to MIDDLE ORDER)
+54 players
+
+### AUS
+   WB Phillips  27m 1485r  (1980s)
+   ATW Grout  51m 890r  (1950s,1960s)
+   WAS Oldfield  34m 728r  (1930s)
+   BN Jarman  18m 399r  (1960s)
+   GRA Langley  26m 374r  (1950s)
+   D Tallon  15m 340r  (1940s)
+   TJ Zoehrer  10m 246r  (1980s)
+### ENG
+   JL Smith  21m 1326r  (2020s)
+   RW Taylor  57m 1156r  (1970s,1980s)
+   GRJ Roope  21m 860r  (1970s)
+   BT Foakes  20m 807r  (2020s)
+   PR Downton  30m 785r  (1980s)
+   JT Ikin  18m 606r  (1940s,1950s)
+   NV Knight  12m 585r  (1990s)
+   JT Murray  21m 506r  (1960s)
+   BN French  16m 308r  (1980s)
+   CJ Richards  8m 285r  (1980s)
+   G Duckworth  13m 111r  (1930s)
+### IND
+   NR Mongia  40m 1343r  (1990s)
+   KS More  49m 1285r  (1980s,1990s)
+   BK Kunderan  18m 981r  (1960s)
+   KD Karthik  22m 973r  (2000s)
+   NS Tamhane  19m 222r  (1950s)
+   PG Joshi  11m 155r  (1950s)
+### WI
+   JR Murray  31m 917r  (1990s)
+   JED Sealy  11m 478r  (1930s)
+   JL Hendriks  20m 447r  (1960s)
+   FCM Alexander  15m 369r  (1950s)
+   IM Barrow  11m 276r  (1930s)
+   DA Murray  10m 273r  (1980s)
+### PAK
+   Wasim Bari  72m 1251r  (1970s,1980s)
+   Saleem Yousuf  25m 878r  (1980s)
+   Rashid Latif  22m 659r  (1990s)
+   Aamer Malik  10m 472r  (1980s)
+   Anil Dalpat  9m 167r  (1980s)
+### SA
+   DJ Richardson  42m 1359r  (1990s)
+   DT Lindsay  17m 1021r  (1960s)
+   HB Cameron  17m 816r  (1930s)
+### SL
+   SAR Silva  9m 353r  (1980s)
+   HM Goonatilleke  5m 177r  (1980s)
+   RG de Alwis  11m 152r  (1980s)
+### NZ
+   IDS Smith  49m 1376r  (1980s)
+   KJ Wadsworth  24m 886r  (1970s)
+   GD Phillips  18m 809r  (2020s)
+   AE Dick  17m 370r  (1960s)
+   FLH Mooney  11m 244r  (1950s)
+   WK Lees  9m 221r  (1980s)
+   EC Petrie  11m 143r  (1950s)
+### ZIM
+   RW Chakabva  22m 1061r  (2020s,2010s)
+   PJ Moor  8m 533r  (2010s)
+   TE Tsiga  9m 206r  (2020s)
+### IRE
+   LJ Tucker  10m 753r  (2020s)
+### AFG
+   Afsar Zazai  10m 367r  (2020s,2010s)
+   Rahmanullah Gurbaz  3m 97r  (2020s)

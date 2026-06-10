@@ -1,0 +1,696 @@
+[
+  {
+    "id": "sa2000s",
+    "team": "South Africa",
+    "era": "2000s",
+    "title": "South Africa, 2000s",
+    "blurb": "World No.1 for a reason — Kallis the colossus, Smith and Gibbs up top, Steyn, Ntini and Pollock to bowl. Pace and bounce.",
+    "home": {
+      "pace": 5,
+      "true": 4,
+      "swing": 3,
+      "flat": 1
+    },
+    "venues": [
+      "Johannesburg",
+      "Cape Town",
+      "Durban",
+      "Centurion",
+      "Port Elizabeth",
+      "Bloemfontein"
+    ],
+    "xi": [
+      [
+        "GC Smith",
+        "2000s"
+      ],
+      [
+        "HH Gibbs",
+        "2000s"
+      ],
+      [
+        "HM Amla",
+        "2000s"
+      ],
+      [
+        "JH Kallis",
+        "2000s"
+      ],
+      [
+        "ND McKenzie",
+        "2000s"
+      ],
+      [
+        "AG Prince",
+        "2000s"
+      ],
+      [
+        "MV Boucher",
+        "2000s"
+      ],
+      [
+        "SM Pollock",
+        "2000s"
+      ],
+      [
+        "DW Steyn",
+        "2000s"
+      ],
+      [
+        "M Ntini",
+        "2000s"
+      ],
+      [
+        "N Boje",
+        "2000s"
+      ]
+    ],
+    "tier": "approachable"
+  },
+  {
+    "id": "eng2010s",
+    "team": "England",
+    "era": "2010s",
+    "title": "England, 2010s",
+    "blurb": "The side that climbed to #1. Cook and Root bat all day; Anderson and Broad swing it both ways under grey skies.",
+    "home": {
+      "swing": 6,
+      "true": 3,
+      "pace": 2,
+      "flat": 2
+    },
+    "venues": [
+      "Lord's",
+      "The Oval",
+      "Edgbaston",
+      "Trent Bridge",
+      "Headingley",
+      "Old Trafford",
+      "Cardiff",
+      "Southampton",
+      "Chester-le-Street"
+    ],
+    "xi": [
+      [
+        "AN Cook",
+        "2010s"
+      ],
+      [
+        "IJL Trott",
+        "2010s"
+      ],
+      [
+        "JE Root",
+        "2010s"
+      ],
+      [
+        "KP Pietersen",
+        "2010s"
+      ],
+      [
+        "IR Bell",
+        "2010s"
+      ],
+      [
+        "BA Stokes",
+        "2010s"
+      ],
+      [
+        "JM Bairstow",
+        "2010s"
+      ],
+      [
+        "MM Ali",
+        "2010s"
+      ],
+      [
+        "GP Swann",
+        "2010s"
+      ],
+      [
+        "SCJ Broad",
+        "2010s"
+      ],
+      [
+        "JM Anderson",
+        "2010s"
+      ]
+    ],
+    "tier": "approachable"
+  },
+  {
+    "id": "pak1990s",
+    "team": "Pakistan",
+    "era": "1990s",
+    "title": "Pakistan, 1990s",
+    "blurb": "Wasim and Waqar reverse it at 90mph, Mushtaq and Saqlain bamboozle — the most hostile new-and-old-ball attack of its time.",
+    "home": {
+      "flat": 5,
+      "turner": 3,
+      "true": 3,
+      "swing": 2
+    },
+    "venues": [
+      "Karachi",
+      "Lahore",
+      "Faisalabad",
+      "Rawalpindi",
+      "Multan",
+      "Peshawar",
+      "Sialkot"
+    ],
+    "xi": [
+      [
+        "Saeed Anwar",
+        "1990s"
+      ],
+      [
+        "Aamer Sohail",
+        "1990s"
+      ],
+      [
+        "Saleem Malik",
+        "1990s"
+      ],
+      [
+        "Inzamam-ul-Haq",
+        "1990s"
+      ],
+      [
+        "Ijaz Ahmed",
+        "1990s"
+      ],
+      [
+        "Moin Khan",
+        "1990s"
+      ],
+      [
+        "Wasim Akram",
+        "1990s"
+      ],
+      [
+        "Azhar Mahmood",
+        "1990s"
+      ],
+      [
+        "Saqlain Mushtaq",
+        "1990s"
+      ],
+      [
+        "Mushtaq Ahmed",
+        "1990s"
+      ],
+      [
+        "Waqar Younis",
+        "1990s"
+      ]
+    ],
+    "tier": "hard"
+  },
+  {
+    "id": "eng1950s",
+    "team": "England",
+    "era": "1950s",
+    "title": "England, 1950s",
+    "blurb": "May and Compton to bat, the spin twins Laker and Lock plus Trueman and Bailey to bowl — masters of an uncovered pitch.",
+    "home": {
+      "swing": 5,
+      "true": 3,
+      "flat": 2,
+      "turner": 2,
+      "pace": 1
+    },
+    "venues": [
+      "Lord's",
+      "The Oval",
+      "Old Trafford",
+      "Headingley",
+      "Trent Bridge",
+      "Edgbaston"
+    ],
+    "xi": [
+      [
+        "L Hutton",
+        "1950s"
+      ],
+      [
+        "PE Richardson",
+        "1950s"
+      ],
+      [
+        "PBH May",
+        "1950s"
+      ],
+      [
+        "DCS Compton",
+        "1950s"
+      ],
+      [
+        "MC Cowdrey",
+        "1950s"
+      ],
+      [
+        "TW Graveney",
+        "1950s"
+      ],
+      [
+        "TG Evans",
+        "1950s"
+      ],
+      [
+        "TE Bailey",
+        "1950s"
+      ],
+      [
+        "JC Laker",
+        "1950s"
+      ],
+      [
+        "GAR Lock",
+        "1950s"
+      ],
+      [
+        "FS Trueman",
+        "1950s"
+      ]
+    ],
+    "tier": "hard"
+  },
+  {
+    "id": "aus2000s",
+    "team": "Australia",
+    "era": "2000s",
+    "title": "Australia, 2000s",
+    "blurb": "Sixteen Tests in a row, twice. Warne and McGrath with the ball, Gilchrist at seven — the modern juggernaut.",
+    "home": {
+      "pace": 5,
+      "true": 5,
+      "flat": 2,
+      "swing": 1
+    },
+    "venues": [
+      "Melbourne",
+      "Sydney",
+      "Brisbane",
+      "Perth",
+      "Adelaide",
+      "Hobart",
+      "Darwin",
+      "Cairns"
+    ],
+    "xi": [
+      [
+        "JL Langer",
+        "2000s"
+      ],
+      [
+        "ML Hayden",
+        "2000s"
+      ],
+      [
+        "RT Ponting",
+        "2000s"
+      ],
+      [
+        "DR Martyn",
+        "2000s"
+      ],
+      [
+        "SR Waugh",
+        "2000s"
+      ],
+      [
+        "MJ Clarke",
+        "2000s"
+      ],
+      [
+        "AC Gilchrist",
+        "2000s"
+      ],
+      [
+        "SK Warne",
+        "2000s"
+      ],
+      [
+        "B Lee",
+        "2000s"
+      ],
+      [
+        "JN Gillespie",
+        "2000s"
+      ],
+      [
+        "GD McGrath",
+        "2000s"
+      ]
+    ],
+    "tier": "hard"
+  },
+  {
+    "id": "aus1970s",
+    "team": "Australia",
+    "era": "1970s",
+    "title": "Australia, 1970s",
+    "blurb": "The Chappell era — Lillee and Thomson at the speed of fright on hard, bouncy decks, with Marsh behind the stumps.",
+    "home": {
+      "pace": 5,
+      "true": 5,
+      "flat": 2,
+      "swing": 1
+    },
+    "venues": [
+      "Melbourne",
+      "Sydney",
+      "Brisbane",
+      "Adelaide",
+      "Perth"
+    ],
+    "xi": [
+      [
+        "IR Redpath",
+        "1970s"
+      ],
+      [
+        "RB McCosker",
+        "1970s"
+      ],
+      [
+        "IM Chappell",
+        "1970s"
+      ],
+      [
+        "GS Chappell",
+        "1970s"
+      ],
+      [
+        "KD Walters",
+        "1970s"
+      ],
+      [
+        "RW Marsh",
+        "1970s"
+      ],
+      [
+        "GJ Gilmour",
+        "1970s"
+      ],
+      [
+        "DK Lillee",
+        "1970s"
+      ],
+      [
+        "MHN Walker",
+        "1970s"
+      ],
+      [
+        "JR Thomson",
+        "1970s"
+      ],
+      [
+        "AA Mallett",
+        "1970s"
+      ]
+    ],
+    "tier": "hard"
+  },
+  {
+    "id": "wi1980s",
+    "team": "West Indies",
+    "era": "1980s",
+    "title": "West Indies, 1980s",
+    "blurb": "Fifteen years unbeaten in a series. Four fast bowlers, no mercy, and Viv at his peak.",
+    "home": {
+      "pace": 6,
+      "true": 4,
+      "swing": 2,
+      "flat": 1
+    },
+    "venues": [
+      "Bridgetown",
+      "Kingston",
+      "Port of Spain",
+      "Georgetown",
+      "St John's",
+      "Gros Islet",
+      "Basseterre",
+      "Providence",
+      "Roseau"
+    ],
+    "xi": [
+      [
+        "CG Greenidge",
+        "1980s"
+      ],
+      [
+        "DL Haynes",
+        "1980s"
+      ],
+      [
+        "RB Richardson",
+        "1980s"
+      ],
+      [
+        "IVA Richards",
+        "1980s"
+      ],
+      [
+        "CH Lloyd",
+        "1980s"
+      ],
+      [
+        "HA Gomes",
+        "1980s"
+      ],
+      [
+        "PJL Dujon",
+        "1980s"
+      ],
+      [
+        "MD Marshall",
+        "1980s"
+      ],
+      [
+        "J Garner",
+        "1980s"
+      ],
+      [
+        "MA Holding",
+        "1980s"
+      ],
+      [
+        "AME Roberts",
+        "1980s"
+      ]
+    ],
+    "tier": "hard"
+  },
+  {
+    "id": "ind2010s",
+    "team": "India",
+    "era": "2010s",
+    "title": "India, 2010s",
+    "blurb": "The world-#1 home fortress. Kohli and Pujara pile up the runs; Ashwin and Jadeja spin you out on a dustbowl.",
+    "home": {
+      "turner": 7,
+      "flat": 3,
+      "true": 2,
+      "swing": 1
+    },
+    "venues": [
+      "Chennai",
+      "Mumbai",
+      "Kolkata",
+      "Delhi",
+      "Bengaluru",
+      "Nagpur",
+      "Ahmedabad",
+      "Pune",
+      "Visakhapatnam",
+      "Mohali",
+      "Ranchi"
+    ],
+    "xi": [
+      [
+        "M Vijay",
+        "2010s"
+      ],
+      [
+        "S Dhawan",
+        "2010s"
+      ],
+      [
+        "CA Pujara",
+        "2010s"
+      ],
+      [
+        "V Kohli",
+        "2010s"
+      ],
+      [
+        "AM Rahane",
+        "2010s"
+      ],
+      [
+        "RA Jadeja",
+        "2010s"
+      ],
+      [
+        "MS Dhoni",
+        "2010s"
+      ],
+      [
+        "R Ashwin",
+        "2010s"
+      ],
+      [
+        "Mohammed Shami",
+        "2010s"
+      ],
+      [
+        "I Sharma",
+        "2010s"
+      ],
+      [
+        "UT Yadav",
+        "2010s"
+      ]
+    ],
+    "tier": "hard"
+  },
+  {
+    "id": "aus1940s",
+    "team": "Australia",
+    "era": "1940s",
+    "title": "Australia, 1948 — the Invincibles",
+    "blurb": "Bradman's unbeaten tourists. The original perfect side, with Miller and Lindwall to bowl.",
+    "home": {
+      "true": 5,
+      "flat": 4,
+      "pace": 3,
+      "swing": 1
+    },
+    "venues": [
+      "Melbourne",
+      "Sydney",
+      "Brisbane",
+      "Adelaide"
+    ],
+    "xi": [
+      [
+        "SG Barnes",
+        "1940s"
+      ],
+      [
+        "AR Morris",
+        "1940s"
+      ],
+      [
+        "DG Bradman",
+        "1940s"
+      ],
+      [
+        "AL Hassett",
+        "1940s"
+      ],
+      [
+        "KR Miller",
+        "1940s"
+      ],
+      [
+        "D Tallon",
+        "1940s"
+      ],
+      [
+        "IWG Johnson",
+        "1940s"
+      ],
+      [
+        "RR Lindwall",
+        "1940s"
+      ],
+      [
+        "WA Johnston",
+        "1940s"
+      ],
+      [
+        "CL McCool",
+        "1940s"
+      ],
+      [
+        "ERH Toshack",
+        "1940s"
+      ]
+    ],
+    "tier": "brutal"
+  },
+  {
+    "id": "ind2000s",
+    "team": "India",
+    "era": "2000s",
+    "title": "India, 2000s",
+    "blurb": "A batting fortress — Sehwag, Dravid, Tendulkar, Laxman, Ganguly — with Kumble and Harbhajan spinning you out at home.",
+    "home": {
+      "turner": 6,
+      "flat": 4,
+      "true": 2,
+      "swing": 1
+    },
+    "venues": [
+      "Mumbai",
+      "Chennai",
+      "Kolkata",
+      "Delhi",
+      "Bengaluru",
+      "Mohali",
+      "Nagpur",
+      "Ahmedabad"
+    ],
+    "xi": [
+      [
+        "V Sehwag",
+        "2000s"
+      ],
+      [
+        "G Gambhir",
+        "2000s"
+      ],
+      [
+        "R Dravid",
+        "2000s"
+      ],
+      [
+        "SR Tendulkar",
+        "2000s"
+      ],
+      [
+        "VVS Laxman",
+        "2000s"
+      ],
+      [
+        "SC Ganguly",
+        "2000s"
+      ],
+      [
+        "MS Dhoni",
+        "2000s"
+      ],
+      [
+        "A Kumble",
+        "2000s"
+      ],
+      [
+        "Harbhajan Singh",
+        "2000s"
+      ],
+      [
+        "Z Khan",
+        "2000s"
+      ],
+      [
+        "IK Pathan",
+        "2000s"
+      ]
+    ],
+    "tier": "brutal"
+  }
+]
