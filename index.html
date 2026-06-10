@@ -569,7 +569,6 @@
     <div style="margin-top:14px;display:flex;gap:18px;justify-content:center;align-items:center;flex-wrap:wrap">
       <a id="hofLink" class="hofcta" href="#">&#127942; Hall of Fame <span id="hofBait"></span> &rarr;</a>
     </div>
-    <div class="myrec" id="myRec" style="display:none"></div>
     <details class="howto">
       <summary>How it works</summary>
       <p>Eleven picks. Each pick the reels land a <b>nation &times; decade</b> &mdash; say <i>Australia, 90s</i>. The left panel lists every Australian of that decade; sort by runs, wickets or dismissals, search, filter, then choose one and drop them into an open slot in your XI.</p>
@@ -3552,7 +3551,7 @@ $("postSubmit").onclick=async()=>{
 };
 
 /* ---- boot auth + remembered tour mode ---- */
-loadSession(); updateAcct(); applyMode(preferredMode()); showRec(); applyMotionPref();
+loadSession(); updateAcct(); applyMode(preferredMode()); applyMotionPref();   // (personal best still recorded via recSeason — display retired from the title)
 
 /* live Hall of Fame numbers on the title button (fails silently offline) */
 (async function(){try{
