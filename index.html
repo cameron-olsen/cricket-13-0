@@ -155,6 +155,19 @@
   .hofcta:hover{background:rgba(227,179,65,.1)}
   #hofBait{color:var(--cream-dim);letter-spacing:.05em}
   .prow:focus-visible,.slot:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  /* title footer: everything informational lives down here, quietly */
+  .sitefoot{margin-top:84px;padding-top:22px;border-top:1px solid var(--line)}
+  .footrow{display:flex;gap:34px;justify-content:center;align-items:center;flex-wrap:wrap}
+  .footlink{font-family:"Oswald",sans-serif;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:#7d958a;text-decoration:none;cursor:pointer;list-style:none}
+  .footlink::-webkit-details-marker{display:none}
+  .footlink:hover{color:var(--cream)}
+  .footlink.gold{color:var(--gold)}
+  .footlink.gold:hover{color:var(--cream)}
+  #hofBait{color:#7d958a;letter-spacing:.05em}
+  .footrow details.howto{margin:0;border:none;padding:0;max-width:none;text-align:center}
+  .footrow details.howto[open]{flex-basis:100%;text-align:left;max-width:680px;margin:6px auto 0}
+  .authfield textarea{width:100%;box-sizing:border-box;background:var(--panel);border:1px solid var(--line);border-radius:8px;color:var(--cream);padding:10px 12px;font-family:"Spectral",serif;font-size:14px;resize:vertical;min-height:110px}
+  .authfield textarea:focus{outline:none;border-color:var(--gold)}
   .myrec{font-family:"Oswald",sans-serif;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:#9fb8ac;margin-top:10px}
   .myrec b{color:var(--gold)}
   .hofauth{display:flex;justify-content:flex-end;margin:-8px 0 10px}
@@ -566,18 +579,21 @@
     <label class="hardtog"><input type="checkbox" id="hardMode"><span class="sw"></span><span class="lbl">Hard mode<small>Hide every player's stats &mdash; draft on knowledge alone</small></span></label>
     <br>
     <button class="cta" id="startBtn">Spin the machine</button>
-    <div style="margin-top:14px;display:flex;gap:18px;justify-content:center;align-items:center;flex-wrap:wrap">
-      <a id="hofLink" class="hofcta" href="#">&#127942; Hall of Fame <span id="hofBait"></span> &rarr;</a>
-    </div>
-    <details class="howto">
-      <summary>How it works</summary>
+    <footer class="sitefoot">
+      <div class="footrow">
+        <a id="hofLink" class="footlink gold" href="#">&#127942; Hall of Fame <span id="hofBait"></span></a>
+        <details class="howto">
+          <summary class="footlink">How it works</summary>
       <p>Eleven picks. Each pick the reels land a <b>nation &times; decade</b> &mdash; say <i>Australia, 90s</i>. The left panel lists every Australian of that decade; sort by runs, wickets or dismissals, search, filter, then choose one and drop them into an open slot in your XI.</p>
       <p>The team sheet sets the shape: <b>2 openers</b>, <b>2 top order</b> (3&ndash;4), <b>3 middle order</b> (one of which can instead be a bowler), a <b>spinner</b>, two <b>fast bowlers</b> and a flexible bowling slot. Roles are strict — an opener only fills an opener's spot, a No.3 only a top-order spot. <b>All-rounders</b> carry their real bowling type, so a spinning all-rounder can't fill a fast-bowling slot, and a quick can't fill the spinner's. A wicket-keeper isn't compulsory, but field an XI without one and the side is <b>heavily penalised</b>. Glowing slots show where the selected player can go. You get one <b>Team</b> re-spin and one <b>Era</b> re-spin.</p>
       <p>Every player carries <b>only the stats from the decade you drafted them in</b> &mdash; not their full career. A legend who spanned eras brings just the runs and wickets he posted in that ten-year window, so the same name can be a very different player in the 90s than in the 2000s. Your side is then scored on runs and twenty-wickets-a-match, era-adjusted under the hood &mdash; so a 50 against 1980s pace beats a flat-track 50.</p>
       <p>That's the <b>Open Tour</b>. Every season is a tour, drawn at random and named before you draft &mdash; a <b>World Tour</b> of mixed decks, a spin-soaked <b>Subcontinent Tour</b>, a fast-and-bouncy <b>Down Under</b>, or an <b>English Summer</b> of swing (with a couple of Tests over in Ireland). The mix of pitches is shown up top, so build for it: load up on spin for the dustbowls, seam for the green tops. The same XI that sweeps one tour can come unstuck on another. Every Test plays out <b>ball by ball</b> against a graded local XI &mdash; tap any match on the result screen for the full scorecard, and a <b>share link replays the exact tour</b>, all thirteen scorecards included.</p>
       <p>Or take the <b>Legend Tour</b>. Pick one of the great sides of history &mdash; the 1948 Invincibles, the 1980s West Indies, the 2000s Australians and more &mdash; and play thirteen Tests <b>in their home conditions</b>, against their actual XI. You draft as normal, but you <b>can't pick the side you're touring</b> (no stealing Bradman to beat the Invincibles), and every Test plays out innings by innings: tap any match on the result screen for a <b>full scorecard</b>, with a series summary and a Player of the Series at the end. Each tour is reproducible, so you can <b>share a link</b> and a friend can read the exact same thirteen scorecards.</p>
-      <p class="credit">Inspired by <a href="https://www.82-0.com" target="_blank" rel="noopener">82-0</a>, the football original that started the one-perfect-season idea.</p>
-    </details>
+          <p class="credit">Inspired by <a href="https://www.82-0.com" target="_blank" rel="noopener">82-0</a>, the football original that started the one-perfect-season idea.</p>
+        </details>
+        <a id="fbLink" class="footlink" href="#">Send feedback</a>
+      </div>
+    </footer>
   </section>
 
   <!-- CHALLENGE: opponent picker -->
@@ -749,6 +765,26 @@
     <div class="sfootbtns">
       <button class="scopy" id="shareCopy">&#128279; Copy link</button>
       <button class="scopy alt" id="shareSave">&#128247; Save image</button>
+    </div>
+  </div>
+</div>
+
+<!-- FEEDBACK MODAL -->
+<div id="fbModal" class="smodal hidden" role="dialog" aria-modal="true" aria-label="Send feedback">
+  <div class="ssheet">
+    <button class="sclose" id="fbClose" aria-label="Close">&times;</button>
+    <h2 class="stitle">Send feedback</h2>
+    <p class="hofsub">Bugs, ideas, players we got wrong &mdash; it all helps. Completely anonymous; leave a contact only if you'd like a reply.</p>
+    <div class="authfield">
+      <label for="fbText">What's on your mind?</label>
+      <textarea id="fbText" maxlength="2000" placeholder="The 1948 Invincibles are too easy&hellip;"></textarea>
+    </div>
+    <div class="authfield">
+      <label for="fbContact">Contact (optional)</label>
+      <input id="fbContact" maxlength="200" autocomplete="off" placeholder="email or @handle — only if you want a reply">
+    </div>
+    <div class="sfootbtns">
+      <button class="scopy alt" id="fbSend">Send feedback</button>
     </div>
   </div>
 </div>
@@ -2491,6 +2527,7 @@ const MORD=[1.12,1.12,1.10,1.07,1.04,1.0,0.94,0.82,0.72,0.62,0.55];
 /* ===== ball-by-ball Test engine (player-driven, era-normalized) ===== */
 const ERA_SR={"1930s":[42.2,77.1],"1940s":[40.6,121],"1950s":[40.6,86.2],"1960s":[38.1,92.4],"1970s":[39.7,101],"1980s":[41.6,89.5],"1990s":[42.2,92.6],"2000s":[47.4,79.4],"2010s":[51,78.2],"2020s":[50.8,69.7]};
 const CONDBAT={turner:0.83,pace:0.88,swing:0.85,flat:1.10,true:1.0};
+/*ENGINE-CORE:T13 BEGIN — generated from engine-core.js by tools_sync_engine.js; edit engine-core.js, not this block*/
 /* Engine tuning v2 ("B"): sharper skill leverage (TWRX/TBRX), bounded condition leverage
    (WCOND compressed toward 1), softer collapse tails (new-ball/set multipliers).
    ENG_V1 preserves the launch engine EXACTLY — pre-v2 share codes (C|, O|) replay and verify
@@ -2589,6 +2626,7 @@ function mPlayTest(A,B,cond,rng,E){
   if(!youFirst&&outcome!=="D")outcome=outcome==="W"?"L":"W";
   return{cond,outcome,margin,inn,tossYou:youFirst,lost:Math.round(lost)};
 }
+/*ENGINE-CORE:T13 END*/
 /* aggregate the player's (side A) box score from the series cards, with ICC-style ratings */
 function aggregateSeries(tests,youInp,batIdx,bowlIdx,W,D,L){
   const n=youInp.length, S=youInp.map(()=>({runs:0,inns:0,no:0,wkts:0,rc:0,ct:0,st:0}));
@@ -3405,7 +3443,7 @@ $("hofClose").onclick=()=>$("hofModal").classList.add("hidden");
 $("hofModal").addEventListener("click",e=>{if(e.target.id==="hofModal")$("hofModal").classList.add("hidden");});
 $("hofBtn")&&($("hofBtn").onclick=()=>openHof("overall"));
 $("hofLink")&&($("hofLink").onclick=e=>{e.preventDefault();openHof("overall");});
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("hofModal").classList.add("hidden");$("postModal").classList.add("hidden");$("authModal").classList.add("hidden");$("profileModal").classList.add("hidden");}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("hofModal").classList.add("hidden");$("postModal").classList.add("hidden");$("authModal").classList.add("hidden");$("profileModal").classList.add("hidden");const fb=$("fbModal");if(fb)fb.classList.add("hidden");}});
 document.addEventListener("keydown",e=>{if(e.key==="Enter"&&!$("authModal").classList.contains("hidden")){const b=$("authSubmit");if(b&&!b.disabled)b.click();}});
 
 /* ---- auth modal ---- */
@@ -3552,6 +3590,24 @@ $("postSubmit").onclick=async()=>{
 
 /* ---- boot auth + remembered tour mode ---- */
 loadSession(); updateAcct(); applyMode(preferredMode()); applyMotionPref();   // (personal best still recorded via recSeason — display retired from the title)
+
+/* ---- anonymous feedback (insert-only Supabase table; nobody can read it back from the client) ---- */
+{const fl=$("fbLink");if(fl)fl.onclick=e=>{e.preventDefault();$("fbModal").classList.remove("hidden");setTimeout(()=>{const t=$("fbText");if(t)t.focus();},50);};}
+$("fbClose")&&($("fbClose").onclick=()=>$("fbModal").classList.add("hidden"));
+$("fbModal")&&$("fbModal").addEventListener("click",e=>{if(e.target.id==="fbModal")$("fbModal").classList.add("hidden");});
+$("fbSend")&&($("fbSend").onclick=async()=>{
+  const msg=($("fbText").value||"").trim(), contact=($("fbContact").value||"").trim();
+  if(msg.length<3){toast("Tell us a little more first");return;}
+  const b=$("fbSend");b.disabled=true;b.textContent="Sending…";
+  try{
+    const r=await fetch(SB_URL+"/rest/v1/feedback",{method:"POST",
+      headers:{...SB_HEAD,"Content-Type":"application/json",Prefer:"return=minimal"},
+      body:JSON.stringify({game:"13-0",message:msg.slice(0,2000),contact:contact?contact.slice(0,200):null})});
+    if(r.status>=200&&r.status<300){$("fbModal").classList.add("hidden");$("fbText").value="";$("fbContact").value="";toast("Thanks — feedback sent");}
+    else toast("Could not send — try again in a moment");
+  }catch(_){toast("Could not send — check your connection");}
+  b.disabled=false;b.textContent="Send feedback";
+});
 
 /* live Hall of Fame numbers on the title button (fails silently offline) */
 (async function(){try{
