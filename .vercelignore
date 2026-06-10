@@ -1,0 +1,15 @@
+# Keep the deployment to just the game + its assets.
+# Exclude the raw data, build scripts and dev notes.
+data
+README.md
+.gitignore
+13-0.html
+*.txt
+# Node artifacts from `npm i @vercel/analytics` — not needed for a static site,
+# and their presence would make Vercel try to run a build.
+node_modules
+package.json
+package-lock.json
+
+# Dev tooling (engine tests + difficulty harness) — not deployed
+tools

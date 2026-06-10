@@ -1,8 +1,17 @@
 # scratch / test artifacts
 **/_test-*
+**/_sample*
 data/*-FLAGGED.txt
 # OS / editor
 .DS_Store
 Thumbs.db
 node_modules/
 *.log
+.vercel
+.env*
+14-0-project/
+14-0.html
+IPL_player_metadata.xlsx
+tools/
+node_modules/
+.DS_Store
