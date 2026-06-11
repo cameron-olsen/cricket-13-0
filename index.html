@@ -690,7 +690,7 @@
   .rvtile .rvv{font-family:"IBM Plex Mono",monospace;font-size:7.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--cream-dim);white-space:normal;line-height:1.35;padding:0 3px;overflow-wrap:break-word}
   @media(max-width:760px){.rvgrid{grid-template-columns:repeat(7,1fr);row-gap:14px}}
   /* A2: modal sheets in the skin language */
-  .ssheet{background:linear-gradient(180deg,var(--panel),var(--night));border:1px solid var(--line);border-radius:10px}
+  .ssheet:not(.cardsheet):not(.careersheet){background:linear-gradient(180deg,var(--panel),var(--night));border:1px solid var(--line);border-radius:10px}
   .ssheet h2,.ssheet h3{font-family:"Playfair Display",Georgia,serif;font-weight:800}
   .hofrow{border-bottom:1px solid #16241c;border-radius:0;background:none;border-left:none;border-right:none;border-top:none}
   .hofrow:hover{background:var(--panel)}
