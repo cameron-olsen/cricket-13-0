@@ -22,17 +22,18 @@
 <meta name="twitter:image" content="https://13-0.app/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;0,900;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --night:#0a1f18;--panel:#08160f;--panel2:#0b2419;--line:#1c4334;--line2:#2a5742;
-    --cream:#f4ead5;--cream-dim:#bcae90;--ball:#c0392b;--ball-bright:#e0492f;
-    --gold:#e3b341;--willow:#cdd6a0;--shadow:0 18px 40px -18px rgba(0,0,0,.8);
+    --night:#0b1410;--panel:#101b15;--panel2:#15231b;--line:#1f2f25;--line2:#2a4334;
+    --cream:#ece7d3;--cream-dim:#93a496;--ball:#c0392b;--ball-bright:#e0492f;
+    --gold:#d8b25e;--willow:#86b297;--shadow:0 18px 40px -18px rgba(0,0,0,.8);
+    --ccard:#f0e8d1;--ccard2:#e7dcc0;--cink:#231f14;--cmut:#6e6448;--crule:#cdc1a4;--maroon:#7a2a22;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
   body{
-    font-family:"Spectral",Georgia,serif;color:var(--cream);
+    font-family:"Playfair Display",Georgia,serif;color:var(--cream);
     background:
       radial-gradient(1200px 600px at 50% -10%, rgba(18,70,52,.35) 0%, transparent 60%),
       radial-gradient(900px 700px at 50% 120%, rgba(192,57,43,.10) 0%, transparent 60%),
@@ -41,8 +42,8 @@
     min-height:100%;-webkit-font-smoothing:antialiased;line-height:1.5;
   }
   .wrap{max-width:1180px;margin:0 auto;padding:20px 18px 70px;position:relative;z-index:1}
-  .mono{font-family:"Oswald",Impact,sans-serif}
-  .eyebrow{font-family:"Oswald",sans-serif;letter-spacing:.28em;text-transform:uppercase;font-size:12px;color:var(--cream-dim)}
+  .mono{font-family:"IBM Plex Mono",monospace}
+  .eyebrow{font-family:"IBM Plex Mono",monospace;letter-spacing:.28em;text-transform:uppercase;font-size:12px;color:var(--cream-dim)}
 
   /* ---------- title ---------- */
   #title{text-align:center;padding:48px 0 32px;max-width:720px;margin:0 auto}
@@ -51,7 +52,7 @@
   .minicrest{width:32px;height:32px;flex:0 0 auto;color:var(--gold);vertical-align:middle}
   .minicrest.center{display:block;width:52px;height:46px;margin:0 auto 10px;
     filter:drop-shadow(0 4px 10px rgba(0,0,0,.4))}
-  .bigscore{font-family:"Oswald",sans-serif;font-weight:700;line-height:.82;margin:20px 0 4px;
+  .bigscore{font-family:"IBM Plex Mono",monospace;font-weight:700;line-height:.82;margin:20px 0 4px;
     font-size:clamp(86px,17vw,164px);letter-spacing:-.02em;color:var(--cream);text-shadow:0 0 36px rgba(227,179,65,.18)}
   .bigscore .dash{color:var(--ball)}
   .bigscore .ball{height:.74em;width:.74em;display:inline-block;vertical-align:-.04em;margin-left:.03em;
@@ -75,13 +76,13 @@
     border-radius:18px;padding:20px 18px 18px;box-shadow:0 30px 80px -20px rgba(0,0,0,.8);margin:auto}
   .sclose{position:absolute;top:12px;right:14px;background:none;border:none;color:var(--cream-dim);font-size:26px;line-height:1;cursor:pointer}
   .sclose:hover{color:var(--cream)}
-  .stitle{font-family:"Oswald",sans-serif;font-size:22px;font-weight:600;margin:0 0 14px}
+  .stitle{font-family:"IBM Plex Mono",monospace;font-size:22px;font-weight:600;margin:0 0 14px}
   /* ---- Hall of Fame ---- */
   .hofsheet{max-width:560px}
   .hofsub{color:var(--cream-dim);font-size:13px;line-height:1.45;margin:-6px 0 14px}
   .hofbar{display:flex;gap:8px;align-items:center;margin-bottom:12px}
   .hofbar select{flex:1;background:var(--panel);color:var(--cream);border:1px solid var(--line2);border-radius:9px;
-    padding:9px 10px;font-family:"Oswald",sans-serif;font-size:13px;letter-spacing:.02em}
+    padding:9px 10px;font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.02em}
   .hoflist{display:flex;flex-direction:column;gap:6px;max-height:56vh;overflow-y:auto;margin:0 -2px;padding:0 2px}
   .hofrow{display:grid;grid-template-columns:30px 1fr auto;align-items:center;gap:10px;background:linear-gradient(160deg,#0c2418,#06140d);
     border:1px solid var(--line);border-radius:11px;padding:9px 11px;cursor:pointer;transition:border-color .12s,transform .06s}
@@ -89,48 +90,48 @@
   .hofrow:active{transform:scale(.995)}
   .hofrow.perfect{border-color:rgba(227,179,65,.55);background:linear-gradient(160deg,#1c2410,#0c1908)}
   .hofrow.unverified{opacity:.6}
-  .hofrank{font-family:"Oswald",sans-serif;font-weight:700;font-size:17px;color:var(--cream-dim);text-align:center}
+  .hofrank{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:17px;color:var(--cream-dim);text-align:center}
   .hofrow.perfect .hofrank{color:var(--gold)}
   .hofmid{min-width:0}
-  .hofname{font-family:"Oswald",sans-serif;font-weight:600;font-size:15px;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .hofopp{font-family:"Spectral",Georgia,serif;font-size:12px;color:#7f8f83;margin-top:1px}
+  .hofname{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:15px;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hofopp{font-family:"Playfair Display",Georgia,serif;font-size:12px;color:#7f8f83;margin-top:1px}
   .hofright{text-align:right;white-space:nowrap}
-  .hofrec{font-family:"Oswald",sans-serif;font-weight:700;font-size:16px;color:var(--willow)}
+  .hofrec{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:16px;color:var(--willow)}
   .hofrow.perfect .hofrec{color:var(--gold)}
   .hofcrown{font-size:13px;margin-left:3px}
-  .hardbadge{font-family:"Oswald",sans-serif;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--ball-bright);border:1px solid rgba(224,73,47,.5);background:rgba(224,73,47,.08);border-radius:5px;padding:1px 5px;margin-left:6px;vertical-align:middle}
+  .hardbadge{font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--ball-bright);border:1px solid rgba(224,73,47,.5);background:rgba(224,73,47,.08);border-radius:5px;padding:1px 5px;margin-left:6px;vertical-align:middle}
   .hofrow.hard{border-color:rgba(224,73,47,.28)}
-  .hofbadge{font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.08em;margin-top:2px;display:block}
+  .hofbadge{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.08em;margin-top:2px;display:block}
   .hofbadge.ok{color:#6fae6f}
   .hofbadge.chk{color:#7f8f83}
   .hofbadge.bad{color:var(--ball-bright)}
   .hofbadge.rtg{color:var(--gold)}
   .hofempty{color:var(--cream-dim);font-size:14px;text-align:center;padding:26px 8px;font-style:italic}
-  .rankhead{font-family:"Spectral",Georgia,serif;font-size:12.5px;line-height:1.45;color:var(--cream-dim);margin:0 0 10px}
+  .rankhead{font-family:"Playfair Display",Georgia,serif;font-size:12.5px;line-height:1.45;color:var(--cream-dim);margin:0 0 10px}
   .rankhead b{color:var(--gold)}
   .postfield{margin:6px 0 4px}
-  .postfield label{font-family:"Oswald",sans-serif;font-size:11px;letter-spacing:.12em;color:#7f8f83;display:block;margin-bottom:5px}
+  .postfield label{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;color:#7f8f83;display:block;margin-bottom:5px}
   .postfield input{width:100%;background:var(--panel);color:var(--cream);border:1px solid var(--line2);border-radius:9px;
-    padding:11px 12px;font-family:"Oswald",sans-serif;font-size:16px}
+    padding:11px 12px;font-family:"IBM Plex Mono",monospace;font-size:16px}
   .postprev{background:linear-gradient(160deg,#0c2418,#06140d);border:1px solid var(--line);border-radius:11px;padding:12px 14px;margin:12px 0}
-  .postprev .pp-rec{font-family:"Oswald",sans-serif;font-weight:700;font-size:26px;color:var(--willow)}
+  .postprev .pp-rec{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:26px;color:var(--willow)}
   .postprev.perfect .pp-rec{color:var(--gold)}
-  .postprev .pp-opp{font-family:"Spectral",Georgia,serif;font-size:13px;color:var(--cream-dim);margin-top:2px}
+  .postprev .pp-opp{font-family:"Playfair Display",Georgia,serif;font-size:13px;color:var(--cream-dim);margin-top:2px}
   /* ---- auth + profile ---- */
   .authtabs{display:flex;gap:6px;margin:-2px 0 14px}
   .authtab{flex:1;background:var(--panel);color:var(--cream-dim);border:1px solid var(--line2);border-radius:9px;
-    padding:9px 0;font-family:"Oswald",sans-serif;font-size:13px;letter-spacing:.04em;cursor:pointer;text-transform:uppercase}
+    padding:9px 0;font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.04em;cursor:pointer;text-transform:uppercase}
   .authtab.on{background:var(--gold);color:#1a1206;border-color:var(--gold);font-weight:600}
   .authfield{margin:10px 0}
-  .authfield label{font-family:"Oswald",sans-serif;font-size:11px;letter-spacing:.12em;color:#7f8f83;display:block;margin-bottom:5px;text-transform:uppercase}
+  .authfield label{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;color:#7f8f83;display:block;margin-bottom:5px;text-transform:uppercase}
   .authfield input{width:100%;background:var(--panel);color:var(--cream);border:1px solid var(--line2);border-radius:9px;
-    padding:11px 12px;font-family:"Oswald",sans-serif;font-size:15px}
+    padding:11px 12px;font-family:"IBM Plex Mono",monospace;font-size:15px}
   .authfield input:focus{outline:none;border-color:var(--gold)}
-  .authhint{font-size:11px;color:#7f8f83;margin-top:4px;font-family:"Spectral",Georgia,serif}
+  .authhint{font-size:11px;color:#7f8f83;margin-top:4px;font-family:"Playfair Display",Georgia,serif}
   .authhint.bad{color:var(--ball-bright)}
   .authhint.ok{color:#6fae6f}
-  .autherr{color:var(--ball-bright);font-size:13px;min-height:18px;margin:6px 0 2px;font-family:"Spectral",Georgia,serif}
-  .acctchip{display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-family:"Oswald",sans-serif;
+  .autherr{color:var(--ball-bright);font-size:13px;min-height:18px;margin:6px 0 2px;font-family:"Playfair Display",Georgia,serif}
+  .acctchip{display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-family:"IBM Plex Mono",monospace;
     text-transform:uppercase;letter-spacing:.1em;font-size:12px;color:var(--cream-dim);background:none;border:none}
   .acctchip b{color:var(--gold);font-weight:600}
   .acctchip:hover{color:var(--cream)}
@@ -149,16 +150,16 @@
   }
   .chip.nudge{animation:chippulse 1.1s ease-in-out 3}
   @keyframes chippulse{0%,100%{box-shadow:0 0 0 0 rgba(240,168,48,0)}50%{box-shadow:0 0 10px 2px rgba(240,168,48,.55)}}
-  .howline{font-family:"Oswald",sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--cream-dim);margin-top:16px}
+  .howline{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--cream-dim);margin-top:16px}
   .howline b{color:var(--cream);font-weight:600}
-  .hofcta{display:inline-flex;align-items:center;gap:7px;font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:12.5px;color:var(--gold);text-decoration:none;border:1px solid var(--gold);border-radius:10px;padding:10px 16px;transition:.15s}
+  .hofcta{display:inline-flex;align-items:center;gap:7px;font-family:"IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.1em;font-size:12.5px;color:var(--gold);text-decoration:none;border:1px solid var(--gold);border-radius:10px;padding:10px 16px;transition:.15s}
   .hofcta:hover{background:rgba(227,179,65,.1)}
   #hofBait{color:var(--cream-dim);letter-spacing:.05em}
   .prow:focus-visible,.slot:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
   /* title footer: everything informational lives down here, quietly */
   .sitefoot{margin-top:84px;padding-top:22px;border-top:1px solid var(--line)}
   .footrow{display:flex;gap:34px;justify-content:center;align-items:center;flex-wrap:wrap}
-  .footlink{font-family:"Oswald",sans-serif;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:#7d958a;text-decoration:none;cursor:pointer;list-style:none}
+  .footlink{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:#7d958a;text-decoration:none;cursor:pointer;list-style:none}
   .footlink::-webkit-details-marker{display:none}
   .footlink:hover{color:var(--cream)}
   .footlink.gold{color:var(--gold)}
@@ -175,33 +176,33 @@
   .trif span:nth-child(3){background:#1aa84e}
   .authfield textarea{width:100%;box-sizing:border-box;background:var(--panel);border:1px solid var(--line);border-radius:8px;color:var(--cream);padding:10px 12px;font-family:"Spectral",serif;font-size:14px;resize:vertical;min-height:110px}
   .authfield textarea:focus{outline:none;border-color:var(--gold)}
-  .myrec{font-family:"Oswald",sans-serif;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:#9fb8ac;margin-top:10px}
+  .myrec{font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:#9fb8ac;margin-top:10px}
   .myrec b{color:var(--gold)}
   .hofauth{display:flex;justify-content:flex-end;margin:-8px 0 10px}
   .prof-head{background:linear-gradient(160deg,#0c2418,#06140d);border:1px solid var(--line);border-radius:13px;padding:15px 16px;margin-bottom:14px}
-  .prof-name{font-family:"Oswald",sans-serif;font-weight:700;font-size:24px;color:var(--cream)}
-  .prof-meta{font-family:"Spectral",Georgia,serif;font-size:12.5px;color:#7f8f83;margin-top:3px}
+  .prof-name{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:24px;color:var(--cream)}
+  .prof-meta{font-family:"Playfair Display",Georgia,serif;font-size:12.5px;color:#7f8f83;margin-top:3px}
   .prof-stats{display:flex;gap:8px;margin:12px 0 6px}
   .prof-stat{flex:1;background:linear-gradient(160deg,#0c2418,#06140d);border:1px solid var(--line);border-radius:11px;padding:11px 8px;text-align:center}
-  .prof-stat .v{font-family:"Oswald",sans-serif;font-weight:700;font-size:22px;color:var(--gold)}
-  .prof-stat .k{font-family:"Oswald",sans-serif;font-size:9.5px;letter-spacing:.1em;color:#7f8f83;text-transform:uppercase;margin-top:2px}
-  .prof-sub{font-family:"Oswald",sans-serif;font-size:11px;letter-spacing:.12em;color:#7f8f83;text-transform:uppercase;margin:14px 0 7px}
+  .prof-stat .v{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:22px;color:var(--gold)}
+  .prof-stat .k{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.1em;color:#7f8f83;text-transform:uppercase;margin-top:2px}
+  .prof-sub{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;color:#7f8f83;text-transform:uppercase;margin:14px 0 7px}
   .hofrow.you{border-color:rgba(227,179,65,.4)}
-  .hofyou{font-family:"Oswald",sans-serif;font-size:9px;letter-spacing:.08em;color:var(--gold);border:1px solid rgba(227,179,65,.5);border-radius:5px;padding:1px 4px;margin-left:6px;vertical-align:middle}
+  .hofyou{font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.08em;color:var(--gold);border:1px solid rgba(227,179,65,.5);border-radius:5px;padding:1px 4px;margin-left:6px;vertical-align:middle}
   .scard{background:linear-gradient(160deg,#0c2418,#06140d);border:1px solid var(--line);border-radius:14px;padding:16px 16px 12px;overflow:hidden}
   .scardtop{display:flex;justify-content:space-between;align-items:flex-start}
-  .slabel{font-family:"Oswald",sans-serif;font-size:10.5px;letter-spacing:.18em;color:#7f8f83;font-weight:600}
-  .srec{font-family:"Oswald",sans-serif;font-weight:700;font-size:52px;line-height:.95;color:#fff;margin-top:2px}
+  .slabel{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.18em;color:#7f8f83;font-weight:600}
+  .srec{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:52px;line-height:.95;color:#fff;margin-top:2px}
   .srec .sdash{color:var(--cream-dim);margin:0 2px}
   .srec .sgrade{font-size:34px;color:var(--gold);margin-left:8px}
   .sdraw{font-size:12px;color:var(--cream-dim);margin-top:3px}
   .sovr{text-align:right}
-  .sovrnum{font-family:"Oswald",sans-serif;font-weight:700;font-size:40px;line-height:1;color:var(--willow)}
+  .sovrnum{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:40px;line-height:1;color:var(--willow)}
   .smode{display:inline-block;margin:10px 0 12px;padding:3px 9px;border-radius:6px;background:rgba(110,168,196,.16);
-    color:#8fb8cc;font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.12em;font-weight:600}
+    color:#8fb8cc;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;font-weight:600}
   .srows{display:flex;flex-direction:column;gap:5px}
   .srow{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.03);border-left:3px solid var(--line2);border-radius:7px;padding:7px 10px}
-  .sbadge{flex:0 0 38px;text-align:center;font-family:"Oswald",sans-serif;font-weight:700;font-size:11px;letter-spacing:.02em;
+  .sbadge{flex:0 0 38px;text-align:center;font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:11px;letter-spacing:.02em;
     padding:4px 0;border-radius:5px;color:#0a1f18;background:#7fb3a0}
   .srow.op{border-left-color:var(--gold)} .sbadge.op{background:var(--gold)}
   .srow.top{border-left-color:var(--willow)} .sbadge.top{background:var(--willow)}
@@ -211,22 +212,22 @@
   .srow.sp{border-left-color:#6ea8c4} .sbadge.sp{background:#6ea8c4}
   .sname{flex:1;font-weight:600;color:var(--cream);font-size:15px}
   .sname .sglove{font-size:12px}
-  .smeta{color:#7f8f83;font-size:12.5px;font-family:"Oswald",sans-serif;letter-spacing:.03em}
+  .smeta{color:#7f8f83;font-size:12.5px;font-family:"IBM Plex Mono",monospace;letter-spacing:.03em}
   .scardfoot{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:1px solid var(--line);
-    font-family:"Oswald",sans-serif;font-weight:600;font-size:14px;color:var(--cream)}
+    font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:14px;color:var(--cream)}
   .scardfoot .sdot{color:var(--gold)}
   .sblurb{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--panel);border-radius:10px;padding:12px 14px;margin:14px 0;font-size:14px;color:var(--cream-dim)}
   .splay{color:var(--gold);font-weight:600;white-space:nowrap;text-decoration:none}
   .surl input{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 12px;color:var(--cream-dim);font-size:12.5px;font-family:monospace}
   .sgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
-  .sbtn{display:flex;align-items:center;justify-content:center;padding:13px 4px;border-radius:9px;color:#fff;font-family:"Oswald",sans-serif;
+  .sbtn{display:flex;align-items:center;justify-content:center;padding:13px 4px;border-radius:9px;color:#fff;font-family:"IBM Plex Mono",monospace;
     font-weight:600;font-size:13px;text-decoration:none;transition:filter .12s ease}
   .sbtn:hover{filter:brightness(1.1)}
   .sbX{background:#1d9bf0} .sbFb{background:#1877f2} .sbBs{background:#0085ff}
   .sbWa{background:#25d366} .sbTg{background:#229ed9} .sbRd{background:#ff4500}
   .sfootbtns{display:flex;gap:8px}
   .scopy{flex:1;background:var(--panel);border:1px solid var(--line2);color:var(--cream);border-radius:9px;padding:12px;
-    font-family:"Oswald",sans-serif;font-weight:600;font-size:14px;cursor:pointer}
+    font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:14px;cursor:pointer}
   .scopy:hover{border-color:var(--willow)}
   .cta.ghost{background:transparent;color:var(--willow);box-shadow:none;border:1px solid var(--line)}
   .cta.ghost:hover{border-color:var(--willow);background:rgba(255,255,255,.03)}
@@ -238,22 +239,22 @@
   .hardtog .sw::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--cream-dim);transition:.18s}
   .hardtog input:checked + .sw{background:var(--gold)}
   .hardtog input:checked + .sw::after{transform:translateX(16px);background:#0a1f18}
-  .hardtog .lbl{font-family:"Oswald",sans-serif;font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--cream)}
+  .hardtog .lbl{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--cream)}
   .hardtog .lbl small{display:block;font-family:"Spectral",serif;text-transform:none;letter-spacing:0;font-size:11.5px;color:var(--cream-dim);margin-top:1px}
   .modebtn{cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--cream);
     padding:12px 16px;border-radius:10px;text-align:left;min-width:210px;transition:.18s}
   .modebtn:hover{border-color:var(--gold)}
   .modebtn.on{border-color:var(--gold);background:rgba(227,179,65,.10)}
-  .modebtn .t{font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:14px}
+  .modebtn .t{font-family:"IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.1em;font-size:14px}
   .modebtn .d{font-size:13px;color:var(--cream-dim)}
-  .cta{cursor:pointer;font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.14em;
+  .cta{cursor:pointer;font-family:"IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.14em;
     font-size:18px;font-weight:600;color:#0a1f18;background:var(--gold);border:none;border-radius:10px;
     padding:16px 38px;margin-top:22px;box-shadow:var(--shadow);transition:.16s}
   .cta:hover{transform:translateY(-2px);filter:brightness(1.05)}
   .cta:disabled{opacity:.4;cursor:not-allowed;transform:none}
   .ghost{background:transparent;color:var(--cream);border:1px solid var(--line)}
   details.howto{margin-top:44px;text-align:left;border-top:1px solid var(--line);padding-top:18px}
-  details.howto summary{cursor:pointer;font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.12em;font-size:13px;color:var(--gold);list-style:none;display:inline-block}
+  details.howto summary{cursor:pointer;font-family:"IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.12em;font-size:13px;color:var(--gold);list-style:none;display:inline-block}
   details.howto summary::-webkit-details-marker{display:none}
   details.howto summary::after{content:" ▸";color:var(--cream-dim)}
   details.howto[open] summary::after{content:" ▾"}
@@ -266,9 +267,9 @@
   .dtop{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:16px;gap:16px;flex-wrap:wrap}
   .dtop .brand{display:flex;align-items:center;gap:14px}
   .dtop .brand .mono{font-size:26px;font-weight:700}
-  .roundpill{font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:13px;color:var(--cream-dim);border:1px solid var(--line);border-radius:20px;padding:6px 14px}
+  .roundpill{font-family:"IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.1em;font-size:13px;color:var(--cream-dim);border:1px solid var(--line);border-radius:20px;padding:6px 14px}
   .cell{display:flex;align-items:center;gap:10px}
-  .cell .chip{font-family:"Oswald",sans-serif;font-weight:600;letter-spacing:.04em;border-radius:24px;padding:8px 16px;font-size:18px;display:inline-flex;align-items:center;gap:8px;cursor:pointer;transition:.15s}
+  .cell .chip{font-family:"IBM Plex Mono",monospace;font-weight:600;letter-spacing:.04em;border-radius:24px;padding:8px 16px;font-size:18px;display:inline-flex;align-items:center;gap:8px;cursor:pointer;transition:.15s}
   .cell .chip .ic{font-size:13px;opacity:.65}
   .cell .chip.team{background:#10110f;border:1px solid var(--line2);color:var(--cream)}
   .cell .chip.era{background:rgba(227,179,65,.12);border:1px solid var(--gold);color:var(--gold)}
@@ -284,13 +285,13 @@
   .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
   .ftabs{display:flex;gap:5px}
   .ftab{cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--cream-dim);
-    font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.06em;font-size:12px;padding:7px 12px;border-radius:8px;transition:.14s}
+    font-family:"IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.06em;font-size:12px;padding:7px 12px;border-radius:8px;transition:.14s}
   .ftab:hover{border-color:var(--gold)} .ftab.on{background:var(--gold);color:#0a1f18;border-color:var(--gold);font-weight:600}
   .search{flex:1;min-width:120px;background:#04100b;border:1px solid var(--line);border-radius:8px;color:var(--cream);
     padding:8px 12px;font-family:"Spectral",serif;font-size:14px}
   .search::placeholder{color:#5e7368}
-  .sortsel{background:#04100b;border:1px solid var(--line);border-radius:8px;color:var(--cream);padding:8px 10px;font-family:"Oswald",sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:.06em;cursor:pointer}
-  .avail{font-family:"Oswald",sans-serif;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#5e7368;margin:2px 2px 8px}
+  .sortsel{background:#04100b;border:1px solid var(--line);border-radius:8px;color:var(--cream);padding:8px 10px;font-family:"IBM Plex Mono",monospace;font-size:12px;text-transform:uppercase;letter-spacing:.06em;cursor:pointer}
+  .avail{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#5e7368;margin:2px 2px 8px}
 
   .plist{max-height:560px;overflow-y:auto;padding-right:6px;display:flex;flex-direction:column;gap:8px}
   .plist::-webkit-scrollbar{width:8px}.plist::-webkit-scrollbar-thumb{background:var(--line2);border-radius:6px}
@@ -301,20 +302,20 @@
   .prow.disabled:hover{border-color:var(--line);background:rgba(255,255,255,.015)}
   .prow .pid{flex:1;min-width:0}
   .prow .pn{font-weight:600;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .prow .pr{font-family:"Oswald",sans-serif;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--ball-bright);margin-top:1px}
+  .prow .pr{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--ball-bright);margin-top:1px}
   .prow .pr .dim{color:#5e7368}
   .prow .stats{display:flex;gap:12px;text-align:center}
   .prow .st{min-width:38px}
-  .prow .st .v{font-family:"Oswald",sans-serif;font-weight:600;font-size:15px;color:var(--cream);line-height:1}
-  .prow .st .k{font-family:"Oswald",sans-serif;font-size:9px;letter-spacing:.08em;color:#5e7368;text-transform:uppercase}
+  .prow .st .v{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:15px;color:var(--cream);line-height:1}
+  .prow .st .k{font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.08em;color:#5e7368;text-transform:uppercase}
   .prow .st.hot .v{color:var(--gold)}
   @media(max-width:520px){.prow .stats{gap:7px}.prow .st{min-width:30px}.prow .st .v{font-size:13px}}
 
   /* ---------- team sheet ---------- */
   .sheet{background:linear-gradient(180deg,var(--panel2),#07180f);border:1px solid var(--line);border-radius:14px;padding:16px 16px 14px;box-shadow:var(--shadow);position:sticky;top:14px}
-  .sheet h3{font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.16em;font-size:13px;color:var(--gold);margin-bottom:4px;display:flex;justify-content:space-between}
+  .sheet h3{font-family:"IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.16em;font-size:13px;color:var(--gold);margin-bottom:4px;display:flex;justify-content:space-between}
   .sheet .hint{font-size:12.5px;color:var(--cream-dim);font-style:italic;margin-bottom:12px;min-height:18px}
-  .kbadge{font-family:"Oswald",sans-serif;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+  .kbadge{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
     border-radius:8px;padding:7px 11px;margin-bottom:10px;border:1px solid var(--line2);color:var(--cream-dim);display:flex;justify-content:space-between;align-items:center}
   .kbadge.met{border-color:var(--willow);color:var(--willow);background:rgba(205,214,160,.08)}
   .kbadge.urgent{border-color:var(--ball);color:var(--ball-bright);background:rgba(192,57,43,.08)}
@@ -328,12 +329,12 @@
   .reelcard.team{border:6px solid var(--gold)}
   .reelcard.era{border:6px solid #9b59d0}
   .reelcard .inner,.reelcard{min-width:264px}
-  .reelcard .rlabel{font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.16em;font-size:15px;color:var(--ball);margin-top:14px}
-  .reelcard .rval{font-family:"Oswald",sans-serif;font-weight:700;font-size:74px;line-height:1.05;color:#0a1f18;padding:4px 20px 20px;min-height:118px;display:flex;align-items:center;justify-content:center;white-space:nowrap}
+  .reelcard .rlabel{font-family:"IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.16em;font-size:15px;color:var(--ball);margin-top:14px}
+  .reelcard .rval{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:74px;line-height:1.05;color:#0a1f18;padding:4px 20px 20px;min-height:118px;display:flex;align-items:center;justify-content:center;white-space:nowrap}
   .reelcard.spinning .rval{color:#8a8a8a;filter:blur(.4px)}
   .reelcard.landed{animation:pop .4s ease}
   @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.07)}100%{transform:scale(1)}}
-  #spinstage .times{font-family:"Oswald",sans-serif;font-size:40px;color:var(--cream-dim)}
+  #spinstage .times{font-family:"IBM Plex Mono",monospace;font-size:40px;color:var(--cream-dim)}
   .spinbtn{display:inline-block;margin-top:42px}
   .spinnote{color:var(--cream-dim);font-style:italic;margin-top:16px;font-size:14px}
   @media(max-width:560px){.reelcard{min-width:158px}.reelcard .rval{font-size:46px;min-height:74px;padding:2px 12px 12px}}
@@ -343,16 +344,16 @@
     background:rgba(6,18,12,.97);border-top:1px solid var(--line);backdrop-filter:blur(8px);
     padding:9px 12px calc(9px + env(safe-area-inset-bottom))}
   .sbhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:7px}
-  .sbhead .k{font-family:"Oswald",sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--cream-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sbhead .k{font-family:"IBM Plex Mono",monospace;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--cream-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .sbhead .k.kept{color:var(--willow)} .sbhead .k.warn{color:var(--gold)}
   .sbrow{display:flex;gap:3px;justify-content:space-between}   /* all 11 fit, no scroll */
   .scell{flex:1 1 0;min-width:0;text-align:center}
   .ring{width:100%;max-width:32px;aspect-ratio:1;border-radius:50%;border:2px dashed var(--line2);display:flex;align-items:center;justify-content:center;
-    font-family:"Oswald",sans-serif;font-size:10px;font-weight:600;color:#5e7368;margin:0 auto;position:relative;transition:.14s}
+    font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:600;color:#5e7368;margin:0 auto;position:relative;transition:.14s}
   .scell.filled .ring{border-style:solid;border-color:var(--line2);background:rgba(255,255,255,.05);color:var(--cream)}
   .scell.eligible .ring{border-color:var(--gold);background:rgba(227,179,65,.16);color:var(--gold);cursor:pointer;box-shadow:0 0 8px rgba(227,179,65,.35)}
   .scell.active .ring{border-color:var(--gold);background:rgba(227,179,65,.28);color:var(--gold)}
-  .scell .slbl{font-family:"Oswald",sans-serif;font-size:7.5px;letter-spacing:.02em;text-transform:uppercase;color:#5e7368;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .scell .slbl{font-family:"IBM Plex Mono",monospace;font-size:7.5px;letter-spacing:.02em;text-transform:uppercase;color:#5e7368;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .scell.filled .slbl{color:var(--cream-dim)}
   .ring .kg{position:absolute;top:-6px;right:-4px;font-size:11px}
   @media(max-width:880px){
@@ -363,26 +364,26 @@
     .plist{max-height:none}
   }
   .slot{display:flex;align-items:center;gap:12px;border:1px dashed var(--line2);border-radius:10px;padding:9px 12px;margin-bottom:7px;transition:.14s;cursor:default}
-  .slot .num{font-family:"Oswald",sans-serif;color:#5e7368;width:20px;font-size:15px;text-align:center}
+  .slot .num{font-family:"IBM Plex Mono",monospace;color:#5e7368;width:20px;font-size:15px;text-align:center}
   .slot .body{flex:1;min-width:0}
-  .slot .role{font-family:"Oswald",sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#5e7368}
+  .slot .role{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#5e7368}
   .slot .filledname{font-weight:600;font-size:15px;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .slot .filledsub{font-family:"Oswald",sans-serif;font-size:11px;color:var(--cream-dim);letter-spacing:.04em}
+  .slot .filledsub{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--cream-dim);letter-spacing:.04em}
   .slot.filled{border-style:solid;border-color:var(--line2);background:rgba(255,255,255,.02)}
   .slot.open.eligible{border-color:var(--gold);background:rgba(227,179,65,.10);cursor:pointer;box-shadow:0 0 0 1px var(--gold) inset}
   .slot.open.eligible:hover{background:rgba(227,179,65,.18)}
   .slot.active{border-color:var(--gold);background:rgba(227,179,65,.14);cursor:pointer}
-  .slot .tick{font-family:"Oswald",sans-serif;font-size:11px;color:var(--willow)}
+  .slot .tick{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--willow)}
 
   /* ---------- result ---------- */
   #result{text-align:center}
-  .verdict{font-family:"Oswald",sans-serif;font-weight:700;font-size:clamp(56px,14vw,112px);letter-spacing:.01em;line-height:.9}
-  .vtag{font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.2em;font-size:14px;font-weight:600;color:var(--gold);margin:2px 0 4px}
+  .verdict{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:clamp(56px,14vw,112px);letter-spacing:.01em;line-height:.9}
+  .vtag{font-family:"IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.2em;font-size:14px;font-weight:600;color:var(--gold);margin:2px 0 4px}
   .vtag.hidden{display:none}
-  .recordline{font-family:"Oswald",sans-serif;font-size:15px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin:10px 0 0}
+  .recordline{font-family:"IBM Plex Mono",monospace;font-size:15px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin:10px 0 0}
   .recordline .w{color:var(--willow)}.recordline .d{color:var(--cream-dim)}.recordline .l{color:var(--ball)}
   /* tour mode */
-  .tourmix{max-width:560px;margin:64px auto 4px;padding:18px 10px 0;border:none;border-top:1px solid var(--line);background:transparent;text-align:center;font-family:"Oswald",sans-serif}
+  .tourmix{max-width:560px;margin:64px auto 4px;padding:18px 10px 0;border:none;border-top:1px solid var(--line);background:transparent;text-align:center;font-family:"IBM Plex Mono",monospace}
   .tourmix.hidden{display:none}
   .tourmix .tm-head{display:inline;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--cream-dim)}
   .tourmix .tm-head::after{content:" — "}
@@ -392,14 +393,14 @@
   .tm-chip{padding:4px 10px;border-radius:6px;background:var(--panel);border:1px solid var(--line);border-left-width:3px;color:var(--cream)}
   /* season reveal */
   #reveal{text-align:center;padding:34px 0 60px}
-  .rvrecord{font-family:"Oswald",sans-serif;font-weight:700;font-size:64px;line-height:1.05;margin:14px 0 2px}
+  .rvrecord{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:64px;line-height:1.05;margin:14px 0 2px}
   .rvrecord .rvdash{color:var(--ball)}
   .rvrecord .rvd{font-size:26px;color:var(--cream-dim)}
-  .rvsub{font-family:"Oswald",sans-serif;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--cream-dim);min-height:22px;margin-bottom:24px}
+  .rvsub{font-family:"IBM Plex Mono",monospace;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--cream-dim);min-height:22px;margin-bottom:24px}
   .rvsub b{color:var(--gold)}
   .rvgrid{display:grid;grid-template-columns:repeat(13,1fr);gap:6px;max-width:720px;margin:0 auto 6px}
   @media(max-width:720px){.rvgrid{grid-template-columns:repeat(7,1fr)}}
-  .rvtile{border-radius:9px;border:1px dashed var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:9px 2px 7px;min-height:54px;font-family:"Oswald",sans-serif;transition:all .3s}
+  .rvtile{border-radius:9px;border:1px dashed var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:9px 2px 7px;min-height:54px;font-family:"IBM Plex Mono",monospace;transition:all .3s}
   .rvtile .rvr{font-weight:700;font-size:17px;line-height:1;color:#4e6358}
   .rvtile.W .rvr{color:#a8d77a}.rvtile.L .rvr{color:#f0a08f}.rvtile.D .rvr{color:var(--cream-dim)}
   .rvtile .rvv{font-size:8.5px;font-weight:400;letter-spacing:.02em;text-transform:uppercase;color:#5d7569;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 3px}
@@ -409,51 +410,51 @@
   .rvtile.pop{animation:pop .4s ease}
   .rvstory{max-width:460px;margin:24px auto 12px;min-height:60px}
   .rvcard{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px 12px;text-align:left}
-  .rvcard .rvres{font-family:"Oswald",sans-serif;font-size:15px;font-weight:600;letter-spacing:.03em;margin-bottom:9px}
+  .rvcard .rvres{font-family:"IBM Plex Mono",monospace;font-size:15px;font-weight:600;letter-spacing:.03em;margin-bottom:9px}
   .rvcard .rvres.W{color:#a8d77a}.rvcard .rvres.L{color:#f0a08f}.rvcard .rvres.D{color:var(--cream-dim)}
-  .rvinn{display:flex;align-items:baseline;gap:10px;font-family:"Oswald",sans-serif;font-size:13.5px;color:var(--cream);padding:2px 0}
+  .rvinn{display:flex;align-items:baseline;gap:10px;font-family:"IBM Plex Mono",monospace;font-size:13.5px;color:var(--cream);padding:2px 0}
   .rvinn span{flex:1;color:var(--cream-dim)}
   .rvinn i{font-style:normal;font-size:11px;color:#5d7569}
   .rvtale{font-family:"Spectral",serif;font-style:italic;font-size:13.5px;color:var(--cream-dim);line-height:1.5;margin-top:9px}
-  .rvpom{font-family:"Oswald",sans-serif;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);margin-top:8px}
-  .rvfull{display:block;width:100%;margin-top:11px;background:transparent;border:1px solid var(--line);border-radius:8px;color:var(--cream-dim);font-family:"Oswald",sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px;cursor:pointer}
+  .rvpom{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);margin-top:8px}
+  .rvfull{display:block;width:100%;margin-top:11px;background:transparent;border:1px solid var(--line);border-radius:8px;color:var(--cream-dim);font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px;cursor:pointer}
   .rvfull:hover{border-color:var(--gold);color:var(--gold)}
   .rvbtns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px}
   .prof-pref{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 2px;border-bottom:1px solid var(--line)}
-  .prof-pref label{font-family:"Oswald",sans-serif;font-size:13px;letter-spacing:.06em;color:var(--cream-dim)}
-  .prof-pref select{background:var(--panel);border:1px solid var(--line);border-radius:8px;color:var(--cream);padding:7px 10px;font-family:"Oswald",sans-serif;font-size:12.5px}
+  .prof-pref label{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.06em;color:var(--cream-dim)}
+  .prof-pref select{background:var(--panel);border:1px solid var(--line);border-radius:8px;color:var(--cream);padding:7px 10px;font-family:"IBM Plex Mono",monospace;font-size:12.5px}
   .prefnote{font-family:"Spectral",serif;font-style:italic;font-size:12px;color:#7d958a;padding:7px 2px 2px}
   .c-turner{border-left-color:#d9a441!important} .c-pace{border-left-color:var(--ball)!important}
   .c-swing{border-left-color:#6ea8c4!important} .c-flat{border-left-color:#8a9a8e!important} .c-true{border-left-color:var(--willow)!important}
   .tourstrip{max-width:640px;margin:20px auto 0}
   .tourstrip.hidden{display:none}
-  .ts-head{font-family:"Oswald",sans-serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-dim);margin-bottom:10px;text-align:center}
+  .ts-head{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-dim);margin-bottom:10px;text-align:center}
   .ts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(116px,1fr));gap:7px}
   .ts-fx{display:flex;align-items:center;justify-content:space-between;background:var(--panel);border:1px solid var(--line);border-left-width:3px;border-radius:8px;padding:7px 10px}
   .ts-fx .v{text-align:left}
   .ts-venue{font-size:13px;color:var(--cream);font-weight:600}
-  .ts-cond{font-size:9.5px;color:var(--cream-dim);font-family:"Oswald",sans-serif;letter-spacing:.06em;text-transform:uppercase}
-  .ts-res{font-family:"Oswald",sans-serif;font-weight:700;font-size:17px;width:22px;text-align:center}
+  .ts-cond{font-size:9.5px;color:var(--cream-dim);font-family:"IBM Plex Mono",monospace;letter-spacing:.06em;text-transform:uppercase}
+  .ts-res{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:17px;width:22px;text-align:center}
   .ts-res.W{color:#5ec46a} .ts-res.D{color:#5aa6e6} .ts-res.L{color:#e0492f}   /* win green · draw blue · loss red */
-  .ts-sum{margin-top:13px;font-family:"Oswald",sans-serif;font-size:13px;color:var(--cream-dim);display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+  .ts-sum{margin-top:13px;font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--cream-dim);display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
   .ts-sum b{color:var(--cream);font-weight:600}
   .vmsg{font-style:italic;color:var(--cream);font-size:18px;max-width:600px;margin:10px auto 0}
   .stats2{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:26px 0}
   .stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 22px;min-width:150px}
-  .stat .v{font-family:"Oswald",sans-serif;font-size:38px;font-weight:700}
-  .stat .k{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-dim);font-family:"Oswald",sans-serif}
+  .stat .v{font-family:"IBM Plex Mono",monospace;font-size:38px;font-weight:700}
+  .stat .k{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-dim);font-family:"IBM Plex Mono",monospace}
   .resultxi{text-align:left;max-width:620px;margin:0 auto;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
-  .resultxi h3{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.16em;font-size:13px;color:var(--gold);margin-bottom:10px}
+  .resultxi h3{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-family:"IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.16em;font-size:13px;color:var(--gold);margin-bottom:10px}
   .teamrtg{font-size:10.5px;letter-spacing:.1em;color:var(--cream-dim);white-space:nowrap}
   .teamrtg b{color:var(--gold);font-size:16px;letter-spacing:0}
   .xirow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 0;border-bottom:1px dashed rgba(20,48,35,.5)}
   .xirow:last-child{border-bottom:none}
-  .xirow .num{font-family:"Oswald",sans-serif;color:var(--cream-dim);width:26px;font-size:15px;flex:0 0 auto}
+  .xirow .num{font-family:"IBM Plex Mono",monospace;color:var(--cream-dim);width:26px;font-size:15px;flex:0 0 auto}
   .xirow .who{flex:1;font-size:15px;min-width:0}.xirow .who small{color:var(--cream-dim);font-size:12px}
   .xiright{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex:0 0 auto}
-  .xistat{font-family:"Oswald",sans-serif;font-size:11.5px;letter-spacing:.02em;color:var(--cream-dim);text-align:right;white-space:nowrap}
+  .xistat{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.02em;color:var(--cream-dim);text-align:right;white-space:nowrap}
   .xistat b{color:var(--cream);font-weight:600}
-  .rchip{font-family:"Oswald",sans-serif;font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 7px;border-radius:5px;min-width:58px;text-align:center}
+  .rchip{font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 7px;border-radius:5px;min-width:58px;text-align:center}
   .rchip.bat{background:rgba(227,179,65,.14);color:var(--gold);border:1px solid rgba(227,179,65,.34)}
   .rchip.bowl{background:rgba(110,168,196,.14);color:#9fd0e6;border:1px solid rgba(110,168,196,.34)}
   .rchip.all{background:rgba(217,140,95,.14);color:#e0a87e;border:1px solid rgba(217,140,95,.4)}
@@ -461,26 +462,26 @@
   .footnote{margin-top:30px;color:#5e7368;font-size:12px;border-top:1px solid var(--line);padding-top:16px;text-align:left;max-width:760px;margin-left:auto;margin-right:auto}
 
   .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);opacity:0;
-    background:#10110f;border:1px solid var(--ball);color:var(--cream);font-family:"Oswald",sans-serif;
+    background:#10110f;border:1px solid var(--ball);color:var(--cream);font-family:"IBM Plex Mono",monospace;
     letter-spacing:.04em;font-size:13px;padding:10px 18px;border-radius:10px;transition:.2s;pointer-events:none;z-index:60}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
   /* ---------- challenge mode ---------- */
   .challengelink{margin-top:12px;font-size:14px;padding:10px 18px}
   #challenge{text-align:center;max-width:920px;margin:0 auto;padding-top:24px}
-  .challenge-h{font-family:"Oswald",sans-serif;font-weight:700;font-size:clamp(30px,6vw,46px);letter-spacing:.01em;margin:6px 0 0;text-transform:uppercase}
+  .challenge-h{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:clamp(30px,6vw,46px);letter-spacing:.01em;margin:6px 0 0;text-transform:uppercase}
   .challenge-sub{max-width:640px;margin:14px auto 0;color:var(--cream-dim);font-size:15px}
   .oppgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin:26px 0 8px;text-align:left}
   .oppcard{cursor:pointer;background:linear-gradient(180deg,var(--panel),#06140e);border:1px solid var(--line);border-radius:14px;padding:16px;transition:.15s;position:relative;overflow:hidden}
   .oppcard:hover{border-color:var(--gold);transform:translateY(-2px)}
-  .oppcard .tier{position:absolute;top:0;right:0;font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-bottom-left-radius:10px;font-weight:600}
+  .oppcard .tier{position:absolute;top:0;right:0;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-bottom-left-radius:10px;font-weight:600}
   .tier-approachable{background:rgba(127,179,160,.18);color:var(--willow)}
   .tier-hard{background:rgba(227,179,65,.16);color:var(--gold)}
   .tier-brutal{background:rgba(192,57,43,.18);color:#e8836f}
-  .oppcard .opp-title{font-family:"Oswald",sans-serif;font-weight:700;font-size:19px;letter-spacing:.01em;margin:4px 40px 2px 0;line-height:1.1}
+  .oppcard .opp-title{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:19px;letter-spacing:.01em;margin:4px 40px 2px 0;line-height:1.1}
   .oppcard .opp-blurb{color:var(--cream-dim);font-size:13px;margin:8px 0 12px}
   .oppcard .opp-pitch{display:flex;gap:5px;flex-wrap:wrap}
-  .oppcard .opp-pitch .tm-chip{font-family:"Oswald",sans-serif;font-size:11px;padding:3px 8px}
+  .oppcard .opp-pitch .tm-chip{font-family:"IBM Plex Mono",monospace;font-size:11px;padding:3px 8px}
   .challenge-foot{display:flex;gap:12px;justify-content:center;margin-top:18px;flex-wrap:wrap}
 
   /* clickable series tiles */
@@ -492,52 +493,171 @@
 
   /* ---------- scorecard modal ---------- */
   .cardsheet{max-width:560px}
-  #cardBody{font-family:"Spectral",Georgia,serif}
+  #cardBody{font-family:"Playfair Display",Georgia,serif}
   .card-head{text-align:center;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:6px}
-  .card-eyebrow{font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:11px;color:var(--cream-dim)}
-  .card-venue{font-family:"Oswald",sans-serif;font-weight:700;font-size:21px;margin:3px 0}
+  .card-eyebrow{font-family:"IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.14em;font-size:11px;color:var(--cream-dim)}
+  .card-venue{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:21px;margin:3px 0}
   .card-result{font-size:14px;color:var(--gold);font-style:italic}
-  .card-cond{display:inline-block;font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:5px;border-left:3px solid var(--line2);margin-top:6px;background:var(--panel)}
+  .card-cond{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:5px;border-left:3px solid var(--line2);margin-top:6px;background:var(--panel)}
   .inn-block{margin-top:16px}
-  .inn-head{display:flex;justify-content:space-between;align-items:baseline;font-family:"Oswald",sans-serif;border-bottom:1px solid var(--line2);padding-bottom:5px;margin-bottom:4px}
+  .inn-head{display:flex;justify-content:space-between;align-items:baseline;font-family:"IBM Plex Mono",monospace;border-bottom:1px solid var(--line2);padding-bottom:5px;margin-bottom:4px}
   .inn-team{font-weight:700;font-size:15px;letter-spacing:.02em}
   .inn-score{font-weight:700;font-size:16px;color:var(--cream)}
   .inn-overs{color:var(--cream-dim);font-size:12px;font-weight:400;margin-left:6px}
   .bat-row{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:3px 0;border-bottom:1px dashed rgba(20,48,35,.45)}
   .bat-row .bn{flex:0 0 30%;color:var(--cream)}
   .bat-row .bh{flex:1;color:var(--cream-dim);font-style:italic;font-size:12px}
-  .bat-row .br{font-family:"Oswald",sans-serif;font-weight:600;min-width:30px;text-align:right}
+  .bat-row .br{font-family:"IBM Plex Mono",monospace;font-weight:600;min-width:30px;text-align:right}
   .bat-row.no .bn{color:var(--gold)}
   .bat-dnb{margin-top:5px;font-size:11.5px;font-style:italic;color:var(--cream-dim)}
-  .bowl-fig{margin-top:6px;font-family:"Oswald",sans-serif;font-size:11.5px;color:var(--cream-dim);letter-spacing:.02em;display:flex;flex-wrap:wrap;gap:4px 14px}
+  .bowl-fig{margin-top:6px;font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--cream-dim);letter-spacing:.02em;display:flex;flex-wrap:wrap;gap:4px 14px}
   .bowl-fig b{color:var(--cream);font-weight:600}
   .bowl-fig .fiver b{color:var(--gold)} .bowl-fig .fiver{color:var(--gold)}
   .bat-row.ton .bn,.bat-row.ton .br{color:var(--gold);font-weight:600}
   .bat-row.fifty .br{color:var(--cream)}
-  .fow{margin-top:5px;font-size:11px;color:#6f857a;font-family:"Oswald",sans-serif;letter-spacing:.02em}
+  .fow{margin-top:5px;font-size:11px;color:#6f857a;font-family:"IBM Plex Mono",monospace;letter-spacing:.02em}
   .fow span{color:var(--cream-dim);font-weight:600;letter-spacing:.1em;margin-right:4px}
   .card-story{font-style:italic;color:var(--cream);font-size:13.5px;text-align:center;margin:8px 0 2px}
   .card-mom{text-align:center;font-size:12px;color:var(--cream-dim);margin-bottom:4px}
-  .card-mom span{font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:10px;color:var(--gold);margin-right:5px}
+  .card-mom span{font-family:"IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.1em;font-size:10px;color:var(--gold);margin-right:5px}
   /* ---- series summary ---- */
   .seriesum{max-width:620px;margin:18px auto 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
   .seriesum.hidden{display:none}
   .sb-pos{text-align:center;border-bottom:1px solid var(--line2);padding-bottom:12px;margin-bottom:12px}
-  .sb-pos-lbl{font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.18em;font-size:11px;color:var(--gold)}
-  .sb-pos-name{font-family:"Oswald",sans-serif;font-weight:700;font-size:20px;margin:3px 0 1px}
+  .sb-pos-lbl{font-family:"IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.18em;font-size:11px;color:var(--gold)}
+  .sb-pos-name{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:20px;margin:3px 0 1px}
   .sb-pos-stat{font-size:13px;color:var(--cream-dim)}
   .sb-cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
   @media(max-width:520px){.sb-cols{grid-template-columns:1fr;gap:14px}}
-  .sb-h{font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.12em;font-size:11px;color:var(--cream-dim);margin-bottom:6px}
+  .sb-h{font-family:"IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.12em;font-size:11px;color:var(--cream-dim);margin-bottom:6px}
   .sb-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:3px 0;border-bottom:1px dashed rgba(20,48,35,.45);font-size:13.5px}
   .sb-row:last-child{border-bottom:none}
-  .sb-v{font-family:"Oswald",sans-serif;color:var(--cream-dim);white-space:nowrap}.sb-v b{color:var(--cream)}
-  .sb-you,.sb-opp{font-family:"Oswald",sans-serif;font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;padding:1px 5px;border-radius:4px;vertical-align:middle;margin-left:3px}
+  .sb-v{font-family:"IBM Plex Mono",monospace;color:var(--cream-dim);white-space:nowrap}.sb-v b{color:var(--cream)}
+  .sb-you,.sb-opp{font-family:"IBM Plex Mono",monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;padding:1px 5px;border-radius:4px;vertical-align:middle;margin-left:3px}
   .sb-you{background:rgba(227,179,65,.16);color:var(--gold)} .sb-opp{background:rgba(110,168,196,.16);color:#9fd0e6}
   .card-nav{display:flex;justify-content:space-between;margin-top:18px;gap:10px}
-  .card-nav button{cursor:pointer;font-family:"Oswald",sans-serif;font-size:12px;letter-spacing:.06em;text-transform:uppercase;background:var(--panel);border:1px solid var(--line2);color:var(--cream);border-radius:8px;padding:9px 14px}
+  .card-nav button{cursor:pointer;font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;background:var(--panel);border:1px solid var(--line2);color:var(--cream);border-radius:8px;padding:9px 14px}
   .card-nav button:hover:not(:disabled){border-color:var(--gold)}
   .card-nav button:disabled{opacity:.35;cursor:default}
+
+  /* ============ SKIN F (2026-06-10): deep green + brass, serif display, mono labels,
+     almanack-card scorecards, tour line as circles. Pure overrides — wiring untouched. ============ */
+  body{font-family:"Playfair Display",Georgia,serif}
+  .eyebrow{color:var(--gold);letter-spacing:.34em;font-size:11px}
+  .herotitle{font-family:"Playfair Display",Georgia,serif;font-weight:900;font-size:56px;line-height:1.05;margin:12px 0 10px;letter-spacing:.005em}
+  .herotitle .nought{color:var(--gold)}
+  #title .sub{font-style:italic;font-size:17.5px;color:var(--cream-dim);max-width:46ch;margin:0 auto 8px}
+  .cta{font-family:"IBM Plex Mono",monospace;letter-spacing:.2em;font-size:12.5px;border-radius:4px}
+  .chip.nudge{animation:none}
+  /* landing card fan */
+  .fan{display:flex;justify-content:center;align-items:flex-end;padding:28px 0 26px}
+  .fcard{background:linear-gradient(170deg,var(--ccard),var(--ccard2));color:var(--cink);width:206px;border-radius:7px;padding:6px;box-shadow:0 14px 34px rgba(0,0,0,.5);margin:0 -24px}
+  .fcard:nth-child(1){transform:rotate(-7deg) translateY(14px)}
+  .fcard:nth-child(2){transform:translateY(-4px);z-index:2;position:relative}
+  .fcard:nth-child(3){transform:rotate(7deg) translateY(14px)}
+  .fcard:hover{transform:translateY(-12px);z-index:3;transition:transform .25s}
+  .finner{border:1px solid var(--cmut);border-radius:4px;padding:14px 12px 11px;position:relative}
+  .finner:before{content:"";position:absolute;inset:3px;border:1px solid var(--crule);border-radius:3px;pointer-events:none}
+  .fcrest{width:28px;height:28px;margin:2px auto 9px;border:1px solid var(--cmut);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:"IBM Plex Mono",monospace;font-size:8.5px;color:var(--maroon)}
+  .fnm{font-weight:800;font-size:19px;text-align:center;line-height:1.1}
+  .ftm{font-family:"IBM Plex Mono",monospace;font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--cmut);text-align:center;margin:6px 0 10px}
+  .frule{height:1px;background:var(--crule);margin:0 7px}
+  .fstats{display:flex;justify-content:space-between;padding:9px 8px 8px}
+  .fst{text-align:center}
+  .fst .fv{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:13.5px}
+  .fst .fk{font-family:"IBM Plex Mono",monospace;font-size:7.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--cmut);margin-top:2px}
+  .frole{text-align:center;font-family:"IBM Plex Mono",monospace;font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:var(--maroon);border-top:1px solid var(--crule);padding-top:8px;margin:0 7px}
+  .fancap{text-align:center;font-style:italic;font-size:14.5px;color:var(--cream-dim);padding:0;margin-top:2px}
+  .fancap b{color:var(--gold);font-style:normal;font-weight:600}
+  /* draft list: career button */
+  .careerbtn{flex:none;background:none;border:1px solid var(--line2);border-radius:6px;color:var(--cream-dim);font-size:13px;line-height:1;padding:7px 9px;cursor:pointer;margin-left:6px}
+  .careerbtn:hover{border-color:var(--gold);color:var(--gold)}
+  /* tour strip -> the tour line (circles) */
+  .ts-grid{display:grid;grid-template-columns:repeat(13,1fr);gap:0;position:relative}
+  .ts-fx{display:flex;flex-direction:column-reverse;align-items:center;gap:9px;border:none;background:none;padding:6px 0}
+  .ts-fx .v{text-align:center}
+  .ts-venue{font-family:"IBM Plex Mono",monospace;font-size:8px;letter-spacing:.05em;text-transform:uppercase;color:var(--cream-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:9em}
+  .ts-cond{font-family:"IBM Plex Mono",monospace;font-size:7.5px;letter-spacing:.05em;color:#5c7163}
+  .ts-res{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--night);display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",Georgia,serif;font-weight:800;font-size:16px;color:#5c7163}
+  .ts-res.W{border-color:#b08f3e;color:var(--gold);background:var(--night)}
+  .ts-res.D{border-color:#41584a;color:var(--willow);background:var(--night)}
+  .ts-res.L{border-color:#5a3328;color:#c96a4e;background:var(--night)}
+  .ts-fx.ts-click{cursor:pointer}
+  .ts-fx.ts-click:hover .ts-res{background:var(--panel)}
+  @media(max-width:760px){.ts-grid{grid-template-columns:repeat(7,1fr);row-gap:14px}}
+  /* result verdict in serif */
+  .verdict{font-family:"Playfair Display",Georgia,serif;font-weight:900}
+  .recordline{font-family:"Playfair Display",Georgia,serif;font-weight:800}
+  /* scorecard modal -> cream almanack card */
+  .cardsheet{background:linear-gradient(172deg,var(--ccard),var(--ccard2));color:var(--cink);border:1px solid var(--cmut);border-radius:8px;box-shadow:0 22px 60px rgba(0,0,0,.55)}
+  .cardsheet .sclose{color:var(--cmut)}
+  .cardsheet .sclose:hover{color:var(--cink)}
+  .cardsheet .card-eyebrow{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--cmut)}
+  .cardsheet .card-head{font-family:"Playfair Display",Georgia,serif;font-weight:900;color:var(--cink)}
+  .cardsheet .card-venue,.cardsheet .inn-overs{color:var(--cmut)}
+  .cardsheet .card-result{font-family:"IBM Plex Mono",monospace;letter-spacing:.24em;text-transform:uppercase;color:var(--maroon);font-weight:600}
+  .cardsheet .card-story{color:var(--cmut);font-style:italic}
+  .cardsheet .inn-block{border-color:var(--crule)}
+  .cardsheet .inn-head{border-bottom:1px solid var(--cink);color:var(--cink)}
+  .cardsheet .inn-team{font-family:"Playfair Display",Georgia,serif;font-weight:800;color:var(--cink)}
+  .cardsheet .inn-score{font-family:"IBM Plex Mono",monospace;color:var(--cink);font-weight:600}
+  .cardsheet .br{border-bottom:1px solid var(--crule);color:var(--cink)}
+  .cardsheet .bn{color:var(--cink)}
+  .cardsheet .bh{font-style:italic;color:var(--cmut)}
+  .cardsheet .bat-dnb,.cardsheet .fow{font-family:"IBM Plex Mono",monospace;color:var(--cmut)}
+  .cardsheet .fow b{color:var(--cink);font-weight:500}
+  .cardsheet .bowl-fig{font-family:"IBM Plex Mono",monospace;color:var(--cink)}
+  .cardsheet .bowl-fig b{color:var(--maroon)}
+  .cardsheet .card-mom{color:var(--maroon)}
+  .cardsheet .card-nav a,.cardsheet .card-nav button{font-family:"IBM Plex Mono",monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--cmut)}
+  /* career card */
+  .careersheet{background:linear-gradient(172deg,var(--ccard),var(--ccard2));color:var(--cink);border:1px solid var(--cmut);border-radius:8px;max-width:560px;box-shadow:0 22px 60px rgba(0,0,0,.55);padding:30px 32px 24px}
+  .careersheet .sclose{color:var(--cmut)}
+  .cc-crest{width:34px;height:34px;margin:0 auto 10px;border:1px solid var(--cmut);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--maroon)}
+  .cc-nm{font-family:"Playfair Display",Georgia,serif;font-weight:900;font-size:30px;text-align:center;line-height:1.1}
+  .cc-tm{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--cmut);text-align:center;margin:8px 0 18px}
+  .cc-head,.cc-row{display:grid;grid-template-columns:1.4fr repeat(6,1fr);gap:8px;align-items:baseline;padding:7px 2px}
+  .cc-head{font-family:"IBM Plex Mono",monospace;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cmut);border-bottom:1px solid var(--cink)}
+  .cc-head .cc-v{text-align:right}
+  .cc-row{border-bottom:1px solid var(--crule)}
+  .cc-era{font-family:"Playfair Display",Georgia,serif;font-weight:600;font-size:15px}
+  .cc-row .cc-v{font-family:"IBM Plex Mono",monospace;font-size:13px;text-align:right}
+  .cc-tot{border-bottom:none;border-top:2px solid var(--cink);margin-top:2px}
+  .cc-tot .cc-era{font-weight:800}
+  .cc-tot .cc-v{font-weight:600;color:var(--maroon)}
+  .cc-note{font-style:italic;font-size:12.5px;color:var(--cmut);text-align:center;margin-top:16px}
+  @media(max-width:560px){.careersheet{padding:22px 14px 18px}.cc-era{font-size:13px}.cc-row .cc-v,.cc-head{font-size:11px}}
+  /* legend XI sheet */
+  .oppxi{display:block;margin-top:12px;background:none;border:none;border-bottom:1px dotted var(--cream-dim);padding:0 0 2px;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream-dim);cursor:pointer}
+  .oppxi:hover{color:var(--gold);border-color:var(--gold)}
+  .cc-back{display:block;background:none;border:none;border-bottom:1px dotted var(--cmut);padding:0 0 2px;margin-bottom:14px;font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--cmut);cursor:pointer}
+  .cc-back:hover{color:var(--maroon);border-color:var(--maroon)}
+  .lx-row{display:flex;gap:12px;align-items:baseline;padding:7px 2px;border-bottom:1px solid var(--crule);cursor:pointer}
+  .lx-row:hover{background:rgba(0,0,0,.05)}
+  .lx-no{font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--cmut);width:18px;flex:none;text-align:right}
+  .lx-nm{font-family:"Playfair Display",Georgia,serif;font-weight:600;font-size:15.5px;flex:1;min-width:0}
+  .lx-nm em{font-style:italic;font-weight:500;font-size:11.5px;color:var(--cmut);margin-left:8px}
+  .lx-wk{font-size:12px}
+  .lx-st{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--cmut);text-align:right;flex:none}
+  @media(max-width:560px){.lx-nm em{display:none}.lx-st{font-size:10px}}
+
+  /* skin F rhythm: fan above the fold */
+  #title{padding:26px 0 28px}
+  .crest{width:clamp(60px,12vw,78px);margin-bottom:6px}
+  .modes{margin:26px 0 18px}
+  .hardtog{margin-bottom:10px}
+  .fcard{width:188px}
+  .fnm{font-size:18px}
+  .fstats{padding:8px 7px 7px}
+  .sitefoot{margin-top:40px}
+  @media(max-width:700px){
+    .herotitle{font-size:38px}
+    .fan{transform:scale(.74);transform-origin:top center;padding:14px 0 0;margin-bottom:-40px}
+    .fancap{font-size:13px;margin-top:46px}
+    .modes{margin:20px 0 14px}
+    #title{padding-top:18px}
+    .careerbtn{padding:6px 8px}
+  }
 </style>
 </head>
 <body>
@@ -576,10 +696,9 @@
   <!-- TITLE -->
   <section id="title">
     <svg class="crest" viewBox="0 0 260 224" role="img" aria-label="13-0 cricket crest"><use href="#crestSym"/></svg>
-    <div class="eyebrow">The all-era Test cricket draft</div>
-    <div class="bigscore">13<span class="dash">-</span>0</div>
-    <div class="tag">Can you win all thirteen Tests?</div>
-    <p class="sub">Eleven spins of <b>nation &times; decade</b>, eleven legends drafted into one all-era XI &mdash; then a full year of Tests.</p>
+    <div class="eyebrow">Ninety years of Test cricket</div>
+    <h1 class="herotitle">Thirteen Tests.<br><span class="nought">Lose none.</span></h1>
+    <p class="sub">Spin for a nation and an era. Draft eleven of the immortals. Take them around the world &mdash; every ball off their real numbers.</p>
     <div class="modes" id="modes">
       <button class="modebtn on" data-mode="scorecard"><div class="t">Open Tour</div><div class="d">Draft across all history. Tour a random year.</div></button>
       <button class="modebtn" data-mode="legend"><div class="t">Legend Tour</div><div class="d">Take on a great side in their own conditions.</div></button>
@@ -587,6 +706,27 @@
     <label class="hardtog"><input type="checkbox" id="hardMode"><span class="sw"></span><span class="lbl">Hard mode<small>Hide every player's stats &mdash; draft on knowledge alone</small></span></label>
     <br>
     <button class="cta" id="startBtn">Spin the machine</button>
+    <div class="fan" aria-hidden="true">
+      <div class="fcard"><div class="finner">
+        <div class="fcrest">AUS</div><div class="fnm">D. G. Bradman</div><div class="ftm">Australia &middot; the 1930s</div>
+        <div class="frule"></div>
+        <div class="fstats"><div class="fst"><div class="fv">33</div><div class="fk">Tests</div></div><div class="fst"><div class="fv">4,625</div><div class="fk">runs</div></div><div class="fst"><div class="fv">102.8</div><div class="fk">average</div></div></div>
+        <div class="frole">Top order</div>
+      </div></div>
+      <div class="fcard"><div class="finner">
+        <div class="fcrest">WI</div><div class="fnm">M. D. Marshall</div><div class="ftm">West Indies &middot; the 1980s</div>
+        <div class="frule"></div>
+        <div class="fstats"><div class="fst"><div class="fv">63</div><div class="fk">Tests</div></div><div class="fst"><div class="fv">323</div><div class="fk">wickets</div></div><div class="fst"><div class="fv">19.9</div><div class="fk">average</div></div></div>
+        <div class="frole">Pace bowler</div>
+      </div></div>
+      <div class="fcard"><div class="finner">
+        <div class="fcrest">SL</div><div class="fnm">M. Muralitharan</div><div class="ftm">Sri Lanka &middot; the 2000s</div>
+        <div class="frule"></div>
+        <div class="fstats"><div class="fst"><div class="fv">36</div><div class="fk">Tests</div></div><div class="fst"><div class="fv">230</div><div class="fk">wickets</div></div><div class="fst"><div class="fv">22.6</div><div class="fk">average</div></div></div>
+        <div class="frole">Spinner</div>
+      </div></div>
+    </div>
+    <div class="fancap">1,086 players in the pack, from Bradman&rsquo;s &rsquo;30s to last summer. <b>The reels decide who you meet. You decide who plays.</b></div>
     <footer class="sitefoot">
       <div class="footrow">
         <a id="hofLink" class="footlink gold" href="#">&#127942; Hall of Fame <span id="hofBait"></span></a>
@@ -752,6 +892,14 @@
   <div class="ssheet cardsheet">
     <button class="sclose" id="cardClose" aria-label="Close">&times;</button>
     <div id="cardBody"></div>
+  </div>
+</div>
+
+<!-- CAREER CARD MODAL -->
+<div id="careerModal" class="smodal hidden" role="dialog" aria-modal="true" aria-label="Career by era">
+  <div class="ssheet careersheet">
+    <button class="sclose" id="careerClose" aria-label="Close">&times;</button>
+    <div id="careerBody"></div>
   </div>
 </div>
 
@@ -1551,7 +1699,7 @@ const DATA=[
 ["SC Williams","WI","OP",{"1990s":[28,1092,24.3,0,0,26]}],
 ["AR Caddick","ENG","PC",{"1990s":[28,508,13,106,29.5,14],"2000s":[34,353,8,128,30.2,7]}],
 ["KLT Arthurton","WI","MD",{"1990s":[28,1277,32.7,1,145,20]}],
-["DL Vettori","NZ","SP",{"1990s":[28,603,17.2,91,34.7,11],"2000s":[69,3176,36.1,222,33.1,44]}],
+["DL Vettori","NZ","SP",{"1990s":[28,603,17.2,91,34.7,11],"2000s":[69,3176,36.1,222,33.1,44],"2010s":[16,752,26.9,49,39.2,0,2]}],
 ["BKV Prasad","IND","PC",{"1990s":[28,157,6.5,84,34.1,5]}],
 ["PR Adams","SA","SP",{"1990s":[28,139,6,86,29.8,20]}],
 ["HH Streak","ZIM","MD,PC,AR",{"1990s":[27,536,14.9,111,24.6,7],"2000s":[38,1454,27.4,105,31.9,10]}],
@@ -1564,7 +1712,7 @@ const DATA=[
 ["MJ Horne","NZ","OP",{"1990s":[24,1453,33.8,0,0,12]}],
 ["PV Simmons","WI","OP",{"1990s":[24,953,23.2,4,64.3,25]}],
 ["Saqlain Mushtaq","PAK","SP",{"1990s":[24,402,13,107,29.1,10],"2000s":[25,525,15.9,101,30.6,5]}],
-["MV Boucher","SA","MD,WK",{"1990s":[24,844,32.5,0,0,101],"2000s":[104,4024,30,1,6,383]}],
+["MV Boucher","SA","MD,WK",{"1990s":[24,844,32.5,0,0,101],"2000s":[104,4024,30,1,6,383],"2010s":[19,647,34.1,0,0,71,2]}],
 ["Asif Mujtaba","PAK","TOP",{"1990s":[22,889,26.9,4,75.3,16]}],
 ["DL Houghton","ZIM","WK,MD",{"1990s":[22,1464,43.1,0,0,17]}],
 ["Rashid Latif","PAK","MD,WK",{"1990s":[22,659,22.7,0,0,80]}],
@@ -1623,22 +1771,22 @@ const DATA=[
 ["DR Martyn","AUS","TOP,MD",{"2000s":[60,4089,48.7,2,84,35]}],
 ["ND McKenzie","SA","OP,MD",{"2000s":[58,3253,37.4,0,0,54]}],
 ["TM Dilshan","SL","OP,MD",{"2000s":[57,3482,42.5,13,36.2,64],"2010s":[27,1801,36.8,26,47.7,18]}],
-["TT Samaraweera","SL","MD",{"2000s":[57,3938,51.1,14,48.5,36]}],
+["TT Samaraweera","SL","MD",{"2000s":[57,3938,51.1,14,48.5,36],"2010s":[24,1524,46.2,1,10,9,2]}],
 ["JN Gillespie","AUS","PC",{"2000s":[57,985,18.9,209,27.1,23]}],
 ["KP Pietersen","ENG","TOP,MD",{"2000s":[56,4799,50,4,131.3,32],"2010s":[48,3382,43.9,6,60.2,30]}],
 ["MJ Clarke","AUS","TOP,MD",{"2000s":[56,3926,49.7,19,39.7,52],"2010s":[59,4717,48.6,12,35.8,82]}],
 ["Danish Kaneria","PAK","SP",{"2000s":[56,293,6.8,245,33.8,17]}],
-["PD Collingwood","ENG","MD",{"2000s":[55,3732,43.4,15,59.4,72]}],
+["PD Collingwood","ENG","MD",{"2000s":[55,3732,43.4,15,59.4,72],"2010s":[13,527,27.7,2,63.5,24,2]}],
 ["AB de Villiers","SA","MD,WK",{"2000s":[54,3706,43.6,2,49.5,77],"2010s":[60,5059,57.5,0,0,150]}],
 ["AF Giles","ENG","SP",{"2000s":[53,1404,21,142,40.1,33]}],
-["CS Martin","NZ","PC",{"2000s":[53,83,2.2,176,33.6,12]}],
+["CS Martin","NZ","PC",{"2000s":[53,83,2.2,176,33.6,12],"2010s":[18,40,2.9,57,34.4,2,2]}],
 ["IR Bell","ENG","TOP,MD",{"2000s":[51,3291,40.1,1,76,47],"2010s":[67,4436,44.8,0,0,53]}],
 ["Habibul Bashar","BAN","TOP",{"2000s":[50,3026,30.9,0,0,22]}],
-["Mohammad Ashraful","BAN","TOP,MD",{"2000s":[50,2149,23.1,19,58.6,22]}],
+["Mohammad Ashraful","BAN","TOP,MD",{"2000s":[50,2149,23.1,19,58.6,22],"2010s":[11,588,29.4,2,78.5,3,2]}],
 ["AN Cook","ENG","OP",{"2000s":[50,3654,43,0,0,47],"2010s":[111,8818,46.4,1,6,128]}],
-["AG Prince","SA","MD",{"2000s":[50,3137,45.5,1,47,30]}],
+["AG Prince","SA","MD",{"2000s":[50,3137,45.5,1,47,30],"2010s":[16,528,29.3,0,0,17,2]}],
 ["BB McCullum","NZ","MD,WK",{"2000s":[49,2474,32.1,0,0,164],"2010s":[52,3979,44.2,1,88,45]}],
-["SM Katich","AUS","OP",{"2000s":[47,3392,44.6,18,31.8,36]}],
+["SM Katich","AUS","OP",{"2000s":[47,3392,44.6,18,31.8,36],"2010s":[9,796,49.8,3,20.7,3,2]}],
 ["Kamran Akmal","PAK","MD,WK",{"2000s":[47,2525,34.1,0,0,179]}],
 ["MEK Hussey","AUS","TOP,MD",{"2000s":[46,3638,52,2,51.5,42],"2010s":[33,2597,50.9,5,40.6,43]}],
 ["WW Hinds","WI","OP,TOP",{"2000s":[45,2608,33,16,36.9,32]}],
@@ -1646,19 +1794,19 @@ const DATA=[
 ["Khaled Mashud","BAN","MD,WK",{"2000s":[44,1409,19,0,0,87]}],
 ["D Ganga","WI","OP",{"2000s":[44,2085,26.7,1,106,27]}],
 ["JM Anderson","ENG","PC",{"2000s":[44,452,14.6,148,34.9,17],"2010s":[106,729,8,429,24.4,74],"2020s":[38,172,5.9,127,23.8,16]}],
-["FH Edwards","WI","PC",{"2000s":[43,248,5.2,122,39.4,7]}],
+["FH Edwards","WI","PC",{"2000s":[43,248,5.2,122,39.4,7],"2010s":[12,146,12.2,43,33.4,3,2]}],
 ["N Boje","SA","SP",{"2000s":[43,1312,25.2,100,42.7,18]}],
 ["Javed Omar","BAN","OP",{"2000s":[40,1720,22.1,0,0,10]}],
 ["MS Dhoni","IND","MD,WK",{"2000s":[40,2176,40.3,0,0,120],"2010s":[50,2700,36.5,0,0,174]}],
 ["HM Amla","SA","TOP",{"2000s":[39,2587,39.8,0,0,34],"2010s":[85,6695,50,0,0,74]}],
 ["D Ramdin","WI","MD,WK",{"2000s":[39,1419,23.3,0,0,118],"2010s":[35,1479,29,0,0,99]}],
-["MS Panesar","ENG","SP",{"2000s":[39,187,5.5,126,34.4,9]}],
+["MS Panesar","ENG","SP",{"2000s":[39,187,5.5,126,34.4,9],"2010s":[11,33,3,41,35.8,0,2]}],
 ["MH Richardson","NZ","OP",{"2000s":[38,2776,44.8,1,21,26]}],
 ["DBL Powell","WI","PC",{"2000s":[37,407,7.8,85,47.9,8]}],
 ["Mashrafe Mortaza","BAN","PC",{"2000s":[36,797,12.9,78,41.5,9]}],
 ["HH Dippenaar","SA","MD",{"2000s":[36,1665,30.3,0,0,26]}],
 ["A Nel","SA","PC",{"2000s":[36,337,9.9,123,31.9,16]}],
-["JA Rudolph","SA","TOP",{"2000s":[35,2028,36.2,4,108,22]}],
+["JA Rudolph","SA","TOP",{"2000s":[35,2028,36.2,4,108,22],"2010s":[13,594,33,0,0,7,2]}],
 ["DJ Bravo","WI","MD,PC,AR",{"2000s":[34,2009,32.4,81,38.1,35]}],
 ["GO Jones","ENG","MD,WK",{"2000s":[34,1172,23.9,0,0,133]}],
 ["DW Steyn","SA","PC",{"2000s":[34,443,12.7,172,24,9],"2010s":[59,808,14.2,267,22.3,17]}],
@@ -1667,41 +1815,41 @@ const DATA=[
 ["Mohammad Sami","PAK","PC",{"2000s":[33,458,12.1,81,51.4,7]}],
 ["CRD Fernando","SL","PC",{"2000s":[33,198,7.3,88,34.9,10]}],
 ["RP Arnold","SL","TOP",{"2000s":[32,1186,24.2,5,61.2,36]}],
-["Imran Farhat","PAK","OP",{"2000s":[31,1944,34.1,3,78.3,32]}],
+["Imran Farhat","PAK","OP",{"2000s":[31,1944,34.1,3,78.3,32],"2010s":[9,456,25.3,0,0,8,2]}],
 ["W Jaffer","IND","OP",{"2000s":[31,1944,34.1,2,9,27]}],
 ["SV Carlisle","ZIM","TOP",{"2000s":[31,1440,28.2,0,0,24]}],
 ["M Dillon","WI","PC",{"2000s":[31,465,8.8,110,33.2,14]}],
-["DS Smith","WI","OP",{"2000s":[31,1315,24.8,0,0,27]}],
+["DS Smith","WI","OP",{"2000s":[31,1315,24.8,0,0,27],"2010s":[12,445,22.2,0,0,9,2]}],
 ["MS Sinclair","NZ","TOP",{"2000s":[31,1381,28.8,0,0,31]}],
-["Yuvraj Singh","IND","MD",{"2000s":[31,1545,36.8,8,50.8,28]}],
-["HAPW Jayawardene","SL","MD,WK",{"2000s":[30,1044,30.7,0,0,81]}],
+["Yuvraj Singh","IND","MD",{"2000s":[31,1545,36.8,8,50.8,28],"2010s":[9,355,25.4,1,141,3,2]}],
+["HAPW Jayawardene","SL","MD,WK",{"2000s":[30,1044,30.7,0,0,81],"2010s":[28,1080,28.4,0,0,75,2]}],
 ["MG Johnson","AUS","PC",{"2000s":[30,875,28.2,137,28.1,6],"2010s":[43,1190,19.2,176,28.7,21]}],
 ["DD Ebrahim","ZIM","OP",{"2000s":[29,1225,22.7,0,0,16]}],
 ["MN Samuels","WI","TOP,MD",{"2000s":[29,1408,28.7,7,127,13],"2010s":[42,2509,35.3,34,45.8,15]}],
 ["CD Collymore","WI","PC",{"2000s":[29,180,7.5,92,31.5,6]}],
 ["SB Styris","NZ","TOP",{"2000s":[29,1586,36,20,50.8,23]}],
-["JE Taylor","WI","PC",{"2000s":[29,629,15.7,82,35.6,5]}],
+["JE Taylor","WI","PC",{"2000s":[29,629,15.7,82,35.6,5],"2010s":[17,227,8.7,48,32.4,2,2]}],
 ["PT Collins","WI","PC",{"2000s":[29,221,6.3,98,33.8,7]}],
 ["IK Pathan","IND","PC",{"2000s":[29,1105,31.6,100,32.3,8]}],
 ["Shoaib Malik","PAK","MD",{"2000s":[28,1440,36,17,68.1,15]}],
 ["SL Malinga","SL","PC",{"2000s":[28,192,9.1,91,33.8,7]}],
 ["G Gambhir","IND","OP",{"2000s":[27,2553,56.7,0,0,24],"2010s":[31,1601,29.6,0,0,14]}],
 ["A Symonds","AUS","MD",{"2000s":[26,1462,40.6,24,37.3,22]}],
-["PL Harris","SA","SP",{"2000s":[26,391,11.8,79,33.4,12]}],
+["PL Harris","SA","SP",{"2000s":[26,391,11.8,79,33.4,12],"2010s":[11,69,6.9,24,52.8,3,2]}],
 ["JEC Franklin","NZ","PC",{"2000s":[26,644,21.5,80,32.7,11]}],
-["Salman Butt","PAK","OP",{"2000s":[25,1346,29.3,1,106,12]}],
-["Taufeeq Umar","PAK","OP",{"2000s":[25,1729,39.3,0,0,33]}],
+["Salman Butt","PAK","OP",{"2000s":[25,1346,29.3,1,106,12],"2010s":[8,543,33.9,0,0,0,2]}],
+["Taufeeq Umar","PAK","OP",{"2000s":[25,1729,39.3,0,0,33],"2010s":[19,1234,36.3,0,0,15,2]}],
 ["MJ Prior","ENG","MD,WK",{"2000s":[25,1390,42.1,0,0,58],"2010s":[54,2709,39.3,0,0,198]}],
 ["T Taibu","ZIM","MD,WK",{"2000s":[24,1273,29.6,1,27,52]}],
 ["SCJ Broad","ENG","PC",{"2000s":[24,804,28.7,73,34.4,6],"2010s":[111,2354,16.6,403,27.7,37],"2020s":[32,504,15.3,128,23.9,12]}],
 ["DR Tuffey","NZ","PC",{"2000s":[24,349,14,74,30.8,13]}],
-["Umar Gul","PAK","PC",{"2000s":[24,269,9,91,33.6,5]}],
+["Umar Gul","PAK","PC",{"2000s":[24,269,9,91,33.6,5],"2010s":[23,308,11,72,34.6,6,2]}],
 ["SR Clark","AUS","PC",{"2000s":[24,248,13.1,94,23.9,4]}],
 ["Yasir Hameed","PAK","TOP",{"2000s":[23,1450,34.5,0,0,16]}],
 ["L Vincent","NZ","OP",{"2000s":[23,1332,34.2,0,0,19]}],
 ["BJ Haddin","AUS","MD,WK",{"2000s":[23,1404,41.3,0,0,90],"2010s":[43,1862,28.6,0,0,180]}],
 ["AB Agarkar","IND","PC",{"2000s":[23,543,19.4,45,53.1,5]}],
-["LRPL Taylor","NZ","TOP",{"2000s":[22,1644,42.2,0,0,41],"2010s":[76,5486,48.1,2,17,102]}],
+["LRPL Taylor","NZ","TOP",{"2000s":[22,1644,42.2,0,0,41],"2010s":[76,5486,48.1,2,17,102],"2020s":[14,553,29.1,1,0,20,2]}],
 ["KD Karthik","IND","MD,WK",{"2000s":[22,973,28.6,0,0,52]}],
 ["DS Lehmann","AUS","MD",{"2000s":[22,1570,49.1,13,28.2,8]}],
 ["RJ Sidebottom","ENG","PC",{"2000s":[21,298,16.6,77,27.7,5]}],
@@ -1709,7 +1857,7 @@ const DATA=[
 ["M Morkel","SA","PC",{"2000s":[19,336,14,61,34.5,4],"2010s":[67,608,10.7,248,26,21]}],
 ["Misbah-ul-Haq","PAK","MD",{"2000s":[18,997,35.6,0,0,21],"2010s":[57,4225,50.3,0,0,29]}],
 ["H Masakadza","ZIM","TOP",{"2000s":[15,785,27.1,2,19.5,8],"2010s":[23,1438,32,14,32.1,21]}],
-["Shakib Al Hasan","BAN","MD,SP,AR",{"2000s":[14,715,29.8,48,28.3,8],"2010s":[42,3147,42.5,162,32,16]}],
+["Shakib Al Hasan","BAN","MD,SP,AR",{"2000s":[14,715,29.8,48,28.3,8],"2010s":[42,3147,42.5,162,32,16],"2020s":[15,747,31.1,36,35.2,5,2]}],
 ["NM Lyon","AUS","SP",{"2010s":[95,1025,12.2,380,32.1,47],"2020s":[46,626,13.3,187,26.2,17]}],
 ["JE Root","ENG","TOP,MD",{"2010s":[89,7359,48.4,24,51.6,110],"2020s":[75,6593,53.6,49,46.5,106]}],
 ["V Kohli","IND","TOP,MD",{"2010s":[84,7202,55,0,0,80],"2020s":[39,2028,30.7,0,0,41]}],
@@ -1717,31 +1865,31 @@ const DATA=[
 ["KS Williamson","NZ","TOP",{"2010s":[78,6379,51.4,29,40.6,71],"2020s":[32,3136,60.3,1,29,25]}],
 ["Azhar Ali","PAK","OP,TOP",{"2010s":[77,5885,42.6,8,76.4,61],"2020s":[20,1257,40.5,0,0,5]}],
 ["AD Mathews","SL","TOP,MD",{"2010s":[77,5325,44.4,28,51.5,64],"2020s":[35,2510,45.6,0,0,12]}],
-["I Sharma","IND","PC",{"2010s":[77,561,7.9,238,32.3,15]}],
+["I Sharma","IND","PC",{"2000s":[19,142,11.8,54,34.4,5,2],"2010s":[77,561,7.9,238,32.3,15],"2020s":[9,82,7.5,19,28.1,2,2]}],
 ["CA Pujara","IND","TOP",{"2010s":[75,5740,49.5,0,0,50],"2020s":[28,1455,29.7,0,0,16]}],
 ["Asad Shafiq","PAK","TOP,MD",{"2010s":[73,4528,39,2,80,71],"2020s":[4,132,22,1,36,6]}],
 ["SPD Smith","AUS","TOP,MD",{"2010s":[72,7164,62.8,17,56.5,117],"2020s":[51,3599,46.1,2,24,98]}],
-["HMRKB Herath","SL","SP",{"2010s":[72,1492,16,363,26.4,20]}],
+["HMRKB Herath","SL","SP",{"2000s":[10,97,9.7,41,32.8,2,2],"2010s":[72,1492,16,363,26.4,20]}],
 ["JM Bairstow","ENG","MD,WK",{"2010s":[70,4030,34.7,0,0,197],"2020s":[30,2012,40.2,0,0,59]}],
 ["R Ashwin","IND","MD,SP,AR",{"2010s":[70,2385,28.7,362,25.4,24],"2020s":[36,1118,21.1,175,21.2,12]}],
-["BJ Watling","NZ","MD,WK",{"2010s":[66,3538,39.3,0,0,236]}],
+["BJ Watling","NZ","MD,WK",{"2010s":[66,3538,39.3,0,0,236],"2020s":[8,174,17.4,0,0,39,2]}],
 ["TG Southee","NZ","PC",{"2010s":[65,1535,17.8,255,28.8,51],"2020s":[36,583,11.4,121,31.2,34]}],
-["TA Boult","NZ","PC",{"2010s":[65,615,14.6,256,28,36]}],
+["TA Boult","NZ","PC",{"2010s":[65,615,14.6,256,28,36],"2020s":[13,144,24,61,25.3,6,2]}],
 ["FDM Karunaratne","SL","OP",{"2010s":[64,4421,36.8,2,74.5,50],"2020s":[36,2801,43.8,0,0,12]}],
 ["AM Rahane","IND","MD",{"2010s":[63,4112,43.7,0,0,80],"2020s":[22,965,25.4,0,0,22]}],
 ["F du Plessis","SA","TOP,MD",{"2010s":[62,3799,41.3,0,0,56]}],
 ["VD Philander","SA","PC",{"2010s":[61,1700,24.6,220,22,17]}],
 ["BA Stokes","ENG","MD,PC,AR",{"2010s":[60,3787,35.7,139,33.1,62],"2020s":[61,3441,33.4,106,29,53]}],
-["MM Ali","ENG","MD,SP,AR",{"2010s":[60,2782,29,181,36.6,32]}],
+["MM Ali","ENG","MD,SP,AR",{"2010s":[60,2782,29,181,36.6,32],"2020s":[8,312,22.3,23,43,7,2]}],
 ["D Elgar","SA","OP",{"2010s":[60,3666,38.6,15,43.5,62],"2020s":[26,1681,36.5,0,0,30]}],
 ["KC Brathwaite","WI","OP",{"2010s":[59,3496,33.3,18,56.9,26],"2020s":[41,2454,31.5,11,48.5,23]}],
 ["M Vijay","IND","OP",{"2010s":[59,3821,37.8,1,198,46]}],
-["RAS Lakmal","SL","PC",{"2010s":[59,804,11.5,141,39,17]}],
+["RAS Lakmal","SL","PC",{"2010s":[59,804,11.5,141,39,17],"2020s":[11,130,10,30,24.4,5,2]}],
 ["MA Starc","AUS","PC",{"2010s":[56,1493,22.3,240,27.1,28],"2020s":[49,985,18.2,193,25.8,18]}],
 ["LD Chandimal","SL","MD,WK",{"2010s":[55,3846,41.4,0,0,87],"2020s":[35,2515,47.5,0,0,18]}],
 ["DM Bravo","WI","TOP",{"2010s":[54,3506,37.7,0,0,51]}],
-["Mushfiqur Rahim","BAN","MD,WK",{"2010s":[53,3531,38.8,0,0,95],"2020s":[33,2553,49.1,0,0,11]}],
-["PM Siddle","AUS","PC",{"2010s":[52,947,14.8,167,30.2,10]}],
+["Mushfiqur Rahim","BAN","MD,WK",{"2000s":[13,473,21.5,0,0,18,2],"2010s":[53,3531,38.8,0,0,95],"2020s":[33,2553,49.1,0,0,11]}],
+["PM Siddle","AUS","PC",{"2000s":[15,217,14.5,54,32.2,6,2],"2010s":[52,947,14.8,167,30.2,10]}],
 ["KAJ Roach","WI","PC",{"2010s":[51,844,12.8,173,26.9,10],"2020s":[32,473,12.4,101,27,14]}],
 ["JR Hazlewood","AUS","PC",{"2010s":[51,402,12.2,195,26.2,18],"2020s":[25,163,10.2,100,20.4,12]}],
 ["IJL Trott","ENG","TOP",{"2010s":[49,3560,43.4,5,74.4,28]}],
@@ -1749,14 +1897,14 @@ const DATA=[
 ["Sarfaraz Ahmed","PAK","MD,WK",{"2010s":[49,2657,36.4,0,0,167],"2020s":[5,374,46.8,0,0,15]}],
 ["RA Jadeja","IND","MD,SP,AR",{"2010s":[48,1844,35.5,211,24.6,34],"2020s":[41,2251,40.9,137,25.8,15]}],
 ["Mohammed Shami","IND","PC",{"2010s":[47,453,11,175,27.1,10],"2020s":[17,297,14.1,54,29.7,6]}],
-["Tamim Iqbal","BAN","OP",{"2010s":[46,3719,41.8,0,0,9]}],
+["Tamim Iqbal","BAN","OP",{"2000s":[10,493,27.4,0,0,4,2],"2010s":[46,3719,41.8,0,0,9],"2020s":[12,807,38.4,0,0,6,2]}],
 ["Mahmudullah","BAN","TOP,MD",{"2010s":[46,2694,32.9,31,56.5,34]}],
-["N Wagner","NZ","PC",{"2010s":[46,554,12.6,201,26.5,12]}],
-["GP Swann","ENG","SP",{"2010s":[46,907,18.5,193,30.1,46]}],
-["ST Gabriel","WI","PC",{"2010s":[45,200,4.8,133,30.6,16]}],
-["UT Yadav","IND","PC",{"2010s":[45,339,12.1,142,30.3,16]}],
+["N Wagner","NZ","PC",{"2010s":[46,554,12.6,201,26.5,12],"2020s":[18,321,20.1,59,31.2,5,2]}],
+["GP Swann","ENG","SP",{"2000s":[14,463,35.6,62,29.4,8,2],"2010s":[46,907,18.5,193,30.1,46]}],
+["ST Gabriel","WI","PC",{"2010s":[45,200,4.8,133,30.6,16],"2020s":[14,29,2.4,33,38.6,0,2]}],
+["UT Yadav","IND","PC",{"2010s":[45,339,12.1,142,30.3,16],"2020s":[12,121,10.1,28,34.5,3,2]}],
 ["Mohammad Hafeez","PAK","OP,SP,AR",{"2010s":[44,2975,38.6,49,30.4,41]}],
-["SR Watson","AUS","OP,TOP,PC,AR",{"2010s":[44,2758,33.6,52,33.4,36]}],
+["SR Watson","AUS","OP,TOP,PC,AR",{"2000s":[12,892,46.9,21,31.7,9,2],"2010s":[44,2758,33.6,52,33.4,36]}],
 ["UT Khawaja","AUS","OP,TOP",{"2010s":[44,2887,40.7,0,0,35],"2020s":[44,3342,45.2,0,0,33]}],
 ["Q de Kock","SA","MD,WK",{"2010s":[44,2683,38.9,0,0,187],"2020s":[10,617,38.6,0,0,45]}],
 ["BKG Mendis","SL","MD,WK",{"2010s":[42,2777,35.2,1,69,63],"2020s":[31,1980,39.6,0,0,55]}],
@@ -1764,25 +1912,25 @@ const DATA=[
 ["K Rabada","SA","PC",{"2010s":[41,586,11.7,190,22.6,22],"2020s":[32,516,12.9,150,21.4,12]}],
 ["KOA Powell","WI","OP",{"2010s":[40,2011,26.8,0,0,29]}],
 ["JO Holder","WI","MD,PC,AR",{"2010s":[40,1898,32.7,106,26.4,33],"2020s":[29,1175,26.1,56,38,38]}],
-["MJ Guptill","NZ","OP",{"2010s":[39,2257,30.5,5,52.2,43]}],
+["MJ Guptill","NZ","OP",{"2000s":[8,329,23.5,3,12.3,5,2],"2010s":[39,2257,30.5,5,52.2,43]}],
 ["JK Silva","SL","MD,WK",{"2010s":[39,2099,28.4,0,0,35]}],
 ["T Bavuma","SA","TOP,MD",{"2010s":[39,1812,31.2,1,61,17],"2020s":[27,1998,47.6,0,0,15]}],
 ["Mominul Haque","BAN","TOP",{"2010s":[38,2657,39.7,4,94,29],"2020s":[39,2401,36.4,7,33.4,17]}],
 ["JC Buttler","ENG","MD,WK",{"2010s":[38,2046,33,0,0,79],"2020s":[19,861,29.7,0,0,75]}],
 ["SE Marsh","AUS","TOP",{"2010s":[38,2265,34.3,0,0,23]}],
-["JP Duminy","SA","TOP,MD",{"2010s":[38,1643,31.6,36,37.9,29]}],
+["JP Duminy","SA","TOP,MD",{"2000s":[8,460,38.3,6,39.7,8,2],"2010s":[38,1643,31.6,36,37.9,29]}],
 ["Yasir Shah","PAK","SP",{"2010s":[38,702,13.8,209,30.4,19],"2020s":[10,216,15.4,35,37,5]}],
 ["WP Saha","IND","MD,WK",{"2010s":[37,1238,30.2,0,0,103]}],
 ["AN Petersen","SA","OP",{"2010s":[36,2093,34.9,1,62,31]}],
 ["D Bishoo","WI","SP",{"2010s":[36,707,15.4,117,37.2,20]}],
 ["KL Rahul","IND","OP",{"2010s":[36,2006,34.6,0,0,46],"2020s":[32,2147,38.3,0,0,39]}],
 ["ST Finn","ENG","PC",{"2010s":[36,279,11.2,125,30.4,8]}],
-["HDRL Thirimanne","SL","OP,TOP",{"2010s":[35,1404,22.6,0,0,20]}],
+["HDRL Thirimanne","SL","OP,TOP",{"2010s":[35,1404,22.6,0,0,20],"2020s":[9,684,40.2,0,0,17,2]}],
 ["N Dickwella","SL","MD,WK",{"2010s":[35,1857,31,0,0,101],"2020s":[19,900,31,0,0,60]}],
 ["S Dhawan","IND","OP",{"2010s":[34,2315,40.6,0,0,28]}],
 ["Imrul Kayes","BAN","OP",{"2010s":[33,1636,26.4,0,0,31]}],
 ["RL Chase","WI","MD,SP,AR",{"2010s":[32,1695,31.4,59,42.4,14],"2020s":[25,791,16.5,35,58.5,16]}],
-["MR Marsh","AUS","MD,PC,AR",{"2010s":[32,1260,25.2,42,38.6,16]}],
+["MR Marsh","AUS","MD,PC,AR",{"2010s":[32,1260,25.2,42,38.6,16],"2020s":[14,823,35.8,9,48.7,11,2]}],
 ["RG Sharma","IND","OP,MD",{"2010s":[32,2141,46.5,2,108,31],"2020s":[35,2160,36,0,0,37]}],
 ["CR Woakes","ENG","PC",{"2010s":[32,1145,27.3,92,31,13],"2020s":[30,889,22.8,100,28.4,18]}],
 ["SD Hope","WI","MD,WK",{"2010s":[31,1498,27.2,0,0,45],"2020s":[15,762,25.4,0,0,26]}],
@@ -1790,7 +1938,7 @@ const DATA=[
 ["MS Wade","AUS","MD,WK",{"2010s":[31,1418,31.5,0,0,80]}],
 ["HM Nicholls","NZ","TOP,MD",{"2010s":[31,1711,40.7,0,0,21],"2020s":[27,1450,37.2,0,0,15]}],
 ["TD Paine","AUS","MD,WK",{"2010s":[30,1295,31.6,0,0,137]}],
-["DJG Sammy","WI","PC",{"2010s":[30,1032,22.4,57,39.6,57]}],
+["DJG Sammy","WI","PC",{"2000s":[8,291,20.8,27,27.7,7,2],"2010s":[30,1032,22.4,57,39.6,57]}],
 ["Saeed Ajmal","PAK","SP",{"2010s":[30,422,11.7,160,26.5,11]}],
 ["DM de Silva","SL","TOP,MD",{"2010s":[29,1758,34.5,18,51.4,32],"2020s":[36,2375,43.2,25,55,55]}],
 ["Mohammad Amir","PAK","PC",{"2010s":[29,598,13.3,101,28.5,5]}],
@@ -1807,54 +1955,54 @@ const DATA=[
 ["JA Raval","NZ","OP",{"2010s":[23,1100,30.6,1,34,21]}],
 ["Mehidy Hasan Miraz","BAN","SP",{"2010s":[22,638,17.7,90,33.1,19],"2020s":[36,1593,27.5,129,31.6,24]}],
 ["MJ Santner","NZ","SP",{"2010s":[22,741,25.6,39,44.7,14],"2020s":[10,344,26.5,39,22,12]}],
-["C de Grandhomme","NZ","MD,PC,AR",{"2010s":[21,1044,37.3,42,30.8,14]}],
+["C de Grandhomme","NZ","MD,PC,AR",{"2010s":[21,1044,37.3,42,30.8,14],"2020s":[8,388,43.1,7,46.1,5,2]}],
 ["B Kumar","IND","PC",{"2010s":[21,552,22.1,63,26.1,8]}],
 ["AK Markram","SA","OP",{"2010s":[20,1424,38.5,0,0,15],"2020s":[30,1768,33.4,6,38,55]}],
 ["JA Burns","AUS","OP",{"2010s":[20,1321,38.9,0,0,22]}],
 ["AC Voges","AUS","MD",{"2010s":[20,1485,61.9,0,0,15]}],
 ["Shan Masood","PAK","OP,TOP",{"2010s":[19,1089,29.4,2,22,11],"2020s":[27,1564,31.3,0,0,19]}],
 ["AU Rashid","ENG","SP",{"2010s":[19,540,19.3,60,39.8,4]}],
-["CBRLS Kumara","SL","PC",{"2010s":[19,49,3.5,60,37.3,4]}],
+["CBRLS Kumara","SL","PC",{"2010s":[19,49,3.5,60,37.3,4],"2020s":[15,86,6.6,44,34.3,6,2]}],
 ["BRM Taylor","ZIM","WK,MD",{"2010s":[18,1418,44.3,0,0,20],"2020s":[8,563,37.5,0,0,3],"2000s":[10,422,21.1,0,0,7]}],
 ["Litton Das","BAN","MD,WK",{"2010s":[18,744,24.8,0,0,29],"2020s":[36,2612,42.1,0,0,107]}],
 ["SK Raina","IND","MD",{"2010s":[18,768,26.5,13,46.4,23]}],
 ["KK Jennings","ENG","OP",{"2010s":[17,781,25.2,0,0,17]}],
-["WU Tharanga","SL","OP",{"2010s":[16,1041,34.7,0,0,13]}],
+["WU Tharanga","SL","OP",{"2000s":[14,641,27.9,0,0,9,2],"2010s":[16,1041,34.7,0,0,13]}],
 ["SO Hetmyer","WI","MD",{"2010s":[16,838,27.9,0,0,7]}],
 ["TM Head","AUS","MD",{"2010s":[16,1081,43.2,0,0,10],"2020s":[49,3511,43.9,16,35.5,24]}],
 ["CR Ervine","ZIM","TOP",{"2010s":[15,941,33.6,0,0,15],"2020s":[16,990,33,0,0,12]}],
-["SM Curran","ENG","PC",{"2010s":[14,610,29,32,29.9,2]}],
+["SM Curran","ENG","PC",{"2010s":[14,610,29,32,29.9,2],"2020s":[10,205,17.1,15,47.5,3,2]}],
 ["Z Crawley","ENG","OP",{"2020s":[63,3585,31.4,0,0,70]}],
 ["OJ Pope","ENG","MD,WK",{"2020s":[60,3568,35,0,0,75]}],
-["M Labuschagne","AUS","TOP",{"2020s":[50,3509,41.8,2,199,38]}],
+["M Labuschagne","AUS","TOP",{"2010s":[13,1185,59.2,12,36.3,14,2],"2020s":[50,3509,41.8,2,199,38]}],
 ["AT Carey","AUS","MD,WK",{"2020s":[48,2333,35.9,0,0,205]}],
 ["Mohammed Siraj","IND","PC",{"2020s":[46,154,4.4,139,29.7,22]}],
 ["TA Blundell","NZ","MD,WK",{"2020s":[43,2093,33.2,0,0,131]}],
 ["Shubman Gill","IND","OP,TOP",{"2020s":[41,2946,44.6,0,0,30]}],
 ["BM Duckett","ENG","OP",{"2020s":[40,3016,41.9,0,0,32]}],
-["JJ Bumrah","IND","PC",{"2020s":[40,330,7.5,172,20,14]}],
+["JJ Bumrah","IND","PC",{"2010s":[12,18,2.2,62,19.2,2,2],"2020s":[40,330,7.5,172,20,14]}],
 ["Najmul Hossain Shanto","BAN","TOP",{"2020s":[39,2482,35,0,0,36]}],
-["RR Pant","IND","MD,WK",{"2020s":[39,2772,43.3,0,0,123]}],
+["RR Pant","IND","MD,WK",{"2010s":[11,754,44.4,0,0,53,2],"2020s":[39,2772,43.3,0,0,123]}],
 ["Mohammad Rizwan","PAK","MD,WK",{"2020s":[38,2365,40.8,0,0,111]}],
 ["C Green","AUS","MD,PC,AR",{"2020s":[37,1736,32.8,39,38.9,38]}],
 ["HC Brook","ENG","MD",{"2020s":[36,3234,53.9,1,105,55]}],
 ["DJ Mitchell","NZ","MD",{"2020s":[36,2115,40.7,4,85.3,54]}],
 ["DP Conway","NZ","OP",{"2020s":[34,2557,42.6,0,0,16]}],
 ["J Da Silva","WI","MD,WK",{"2020s":[33,1238,24.8,0,0,127]}],
-["AS Joseph","WI","PC",{"2020s":[31,686,14.3,99,33.6,11]}],
+["AS Joseph","WI","PC",{"2010s":[9,84,5.6,25,32.8,5,2],"2020s":[31,686,14.3,99,33.6,11]}],
 ["K Verreynne","SA","MD,WK",{"2020s":[31,1266,30.1,0,0,106]}],
 ["YBK Jaiswal","IND","OP",{"2020s":[29,2535,48.8,0,0,25]}],
-["MJ Leach","ENG","SP",{"2020s":[29,278,11.1,108,35.7,13]}],
+["MJ Leach","ENG","SP",{"2010s":[10,220,18.3,34,29,3,2],"2020s":[29,278,11.1,108,35.7,13]}],
 ["Shaheen Shah Afridi","PAK","PC",{"2020s":[27,230,8.2,101,27.7,3]}],
 ["JNT Seales","WI","PC",{"2020s":[26,235,8.7,95,25.9,10]}],
 ["Salman Agha","PAK","MD",{"2020s":[25,1663,39.6,20,60.5,37]}],
-["MA Wood","ENG","PC",{"2020s":[25,514,15.1,83,28,3]}],
+["MA Wood","ENG","PC",{"2010s":[13,297,16.5,36,37.4,5,2],"2020s":[25,514,15.1,83,28,3]}],
 ["Abdullah Shafique","PAK","OP",{"2020s":[24,1610,37.4,0,0,19]}],
 ["AM Fernando","SL","PC",{"2020s":[24,58,3.2,80,27.3,6]}],
 ["Saud Shakeel","PAK","MD",{"2020s":[23,1802,44,0,0,15]}],
 ["WA Young","NZ","OP",{"2020s":[23,1215,32,0,0,26]}],
 ["PWA Mulder","SA","PC",{"2020s":[23,1239,37.5,37,26.4,31]}],
-["MJ Henry","NZ","PC",{"2020s":[23,449,15.5,113,22.1,8]}],
+["MJ Henry","NZ","PC",{"2010s":[11,221,20.1,28,48.5,5,2],"2020s":[23,449,15.5,113,22.1,8]}],
 ["Mahmudul Hasan Joy","BAN","OP",{"2020s":[22,1105,27,0,0,14]}],
 ["R Ravindra","NZ","TOP",{"2020s":[22,1655,47.3,11,46.8,11]}],
 ["NGRP Jayasuriya","SL","SP",{"2020s":[22,255,8,122,31.4,4]}],
@@ -1870,7 +2018,7 @@ const DATA=[
 ["GD Phillips","NZ","WK,MD",{"2020s":[18,809,32.4,33,31,20]}],
 ["Washington Sundar","IND","SP",{"2020s":[18,885,42.1,36,33,6]}],
 ["A Athanaze","WI","MD",{"2020s":[17,781,23.7,1,79,14]}],
-["Imam-ul-Haq","PAK","OP",{"2020s":[16,1249,43.1,0,0,16]}],
+["Imam-ul-Haq","PAK","OP",{"2010s":[11,485,25.5,0,0,7,2],"2020s":[16,1249,43.1,0,0,16]}],
 ["AR Patel","IND","SP",{"2020s":[15,688,34.4,57,19.7,4]}],
 ["Kuldeep Yadav","IND","SP",{"2020s":[12,174,13.4,52,21.6,2]}],
 ["A Balbirnie","IRE","TOP",{"2020s":[10,429,22.6,0,0,12]}],
@@ -1944,13 +2092,13 @@ const DATA=[
 ["Rashid Khan","AFG","SP",{"2010s":[4,106,15.1,23,21.1,0]}],
 ["Ihsanullah","AFG","OP",{"2010s":[3,110,22,0,0,4]}],
 ["Mohammad Nabi","AFG","MD,AR,SP",{"2010s":[3,33,5.5,8,31.8,2]}],
-["Hasan Ali","PAK","PC",{"2020s":[18,252,9.7,57,27.6,5]}],
+["Hasan Ali","PAK","PC",{"2010s":[9,155,15.5,31,28.9,4,2],"2020s":[18,252,9.7,57,27.6,5]}],
 ["Fawad Alam","PAK","MD",{"2020s":[16,761,38.1,2,27,10]}],
 ["Naseem Shah","PAK","PC",{"2020s":[17,136,7.6,52,35.5,5]}],
 ["Abid Ali","PAK","OP",{"2020s":[14,859,39,0,0,6]}],
 ["Sajid Khan","PAK","SP",{"2020s":[15,291,14.6,69,30.5,7]}],
 ["Faheem Ashraf","PAK","MD,AR,PC",{"2020s":[13,549,27.5,14,50.3,5]}],
-["Mohammad Abbas","PAK","PC",{"2020s":[12,38,4.8,38,27.7,6]}],
+["Mohammad Abbas","PAK","PC",{"2010s":[17,93,7.8,72,20.9,5,2],"2020s":[12,38,4.8,38,27.7,6]}],
 ["Aamer Jamal","PAK","PC",{"2020s":[8,352,27.1,21,32.9,5]}],
 ["Abrar Ahmed","PAK","SP",{"2020s":[10,68,8.5,46,34.3,3]}],
 ["Saim Ayub","PAK","OP",{"2020s":[8,364,26,4,34.5,4]}],
@@ -1961,14 +2109,83 @@ const DATA=[
 ["Mohammad Ali","PAK","PC",{"2020s":[4,2,0.4,6,67.7,2]}],
 ["Zahid Mahmood","PAK","SP",{"2020s":[4,20,4,13,38.8,0]}],
 ["Mohammad Nawaz (3)","PAK","MD,AR,SP",{"2020s":[3,94,18.8,11,31.7,2]}],
-["Haris Sohail","PAK","MD",{"2020s":[3,103,20.6,2,15,4]}]
+["Haris Sohail","PAK","MD",{"2010s":[13,744,35.4,11,24,11,2],"2020s":[3,103,20.6,2,15,4]}],
+/* roster v2 - 2026-06-10 Cricsheet Tests restoration: rv flag (7th cell element) = 2.
+   Invisible to legacy O|/O2|/O3| opponent draws; appended LAST so PIDX share-code indexes are stable. */
+["BW Hilfenhaus","AUS","PC",{"2000s":[9,68,11.3,34,30.6,2,2],"2010s":[18,287,15.1,65,27.4,3,2]}],
+["EJM Cowan","AUS","OP",{"2010s":[18,1001,33.4,0,0,24,2]}],
+["JL Pattinson","AUS","PC",{"2010s":[20,415,27.7,81,25.5,4,2]}],
+["PJ Hughes","AUS","OP",{"2000s":[5,472,52.4,0,0,4,2],"2010s":[21,1063,29.5,0,0,12,2]}],
+["PM Nevill","AUS","MD,WK",{"2010s":[17,468,22.3,0,0,63,2]}],
+["PSP Handscomb","AUS","MD",{"2010s":[16,934,40.6,0,0,30,2],"2020s":[4,145,29,0,0,2,2]}],
+["SM Boland","AUS","PC",{"2020s":[19,125,8.3,82,18.6,8,2]}],
+["Ebadat Hossain","BAN","PC",{"2010s":[4,4,0.7,5,79.4,1,2],"2020s":[18,82,6.8,33,51.8,0,2]}],
+["Khaled Ahmed","BAN","PC",{"2020s":[15,51,2.8,32,40.5,3,2]}],
+["Liton Das","BAN","MD,WK",{"2010s":[17,702,25.1,0,0,30,2],"2020s":[35,2537,41.6,0,0,101,2]}],
+["Mehedi Hasan Miraz","BAN","MD,AR,SP",{"2010s":[21,615,18.6,87,33,15,2],"2020s":[35,1545,27.1,126,32.2,20,2]}],
+["Nasir Hossain","BAN","MD",{"2010s":[19,1044,34.8,8,55.2,10,2]}],
+["Nazmul Hossain Shanto","BAN","TOP",{"2020s":[38,2212,32.5,0,0,36,2]}],
+["Shadman Islam","BAN","OP",{"2010s":[5,234,26,0,0,3,2],"2020s":[21,1148,30.2,0,0,24,2]}],
+["Shahadat Hossain","BAN","PC",{"2000s":[19,217,8.3,51,36.7,3,2],"2010s":[15,290,13.2,19,74.5,5,2],"2020s":[6,190,15.8,0,0,8,2]}],
+["AAP Atkinson","ENG","PC",{"2020s":[17,471,19.6,76,22.5,6,2]}],
+["DJ Malan","ENG","MD",{"2010s":[15,724,27.8,0,0,11,2],"2020s":[7,350,29.2,2,30.5,2,2]}],
+["DP Sibley","ENG","OP",{"2020s":[19,971,31.3,0,0,9,2]}],
+["EJG Morgan","ENG","MD",{"2010s":[16,700,31.8,0,0,11,2]}],
+["NRD Compton","ENG","OP",{"2010s":[16,775,28.7,0,0,7,2]}],
+["RJ Burns","ENG","OP",{"2010s":[15,979,33.8,0,0,12,2],"2020s":[17,810,27.9,0,0,12,2]}],
+["TT Bresnan","ENG","PC",{"2010s":[21,566,27,69,32.8,6,2]}],
+["A Mishra","IND","SP",{"2000s":[6,73,14.6,21,37.9,1,2],"2010s":[16,575,23,55,34.9,3,2]}],
+["PP Ojha","IND","SP",{"2010s":[22,83,9.2,104,30.4,4,2]}],
+["S Sreesanth","IND","PC",{"2000s":[15,196,12.2,53,32.3,2,2],"2010s":[11,56,5.1,29,50.3,3,2]}],
+["AY Patel","NZ","SP",{"2010s":[7,49,7,22,32.2,4,2],"2020s":[15,170,14.2,69,27.8,5,2]}],
+["DAJ Bracewell","NZ","PC",{"2010s":[27,568,14.2,72,38.8,8,2]}],
+["HD Rutherford","NZ","OP",{"2010s":[16,755,27,0,0,11,2]}],
+["IE O'Brien","NZ","PC",{"2000s":[19,210,7.8,60,35.9,5,2]}],
+["IS Sodhi","NZ","SP",{"2010s":[17,448,22.4,41,48.6,9,2],"2020s":[4,113,18.8,17,29.9,0,2]}],
+["JS Patel","NZ","SP",{"2000s":[7,129,16.1,23,44.3,3,2],"2010s":[15,250,13.2,32,55.9,6,2]}],
+["MD Craig","NZ","SP",{"2010s":[15,589,39.3,50,46.5,11,2]}],
+["Abdur Rehman","PAK","SP",{"2010s":[20,361,13.9,88,29.1,6,2]}],
+["Adnan Akmal","PAK","MD,WK",{"2010s":[21,591,25.7,0,0,77,2]}],
+["Agha Salman","PAK","MD,AR,SP",{"2020s":[25,1663,40.6,20,60.5,37,2]}],
+["Faisal Iqbal","PAK","MD",{"2000s":[15,673,30.6,0,0,13,2]}],
+["Junaid Khan","PAK","PC",{"2010s":[22,122,7.2,71,31.7,3,2]}],
+["Nauman Ali","PAK","SP",{"2020s":[22,391,15.6,101,25.1,1,2]}],
+["Rahat Ali","PAK","PC",{"2010s":[21,136,8.5,58,39,9,2]}],
+["Sarfraz Ahmed","PAK","MD,WK",{"2010s":[49,2657,36.4,0,0,167,2],"2020s":[5,374,46.8,0,0,15,2]}],
+["Zulfiqar Babar","PAK","SP",{"2010s":[15,144,16,54,39.4,4,2]}],
+["A Nortje","SA","PC",{"2020s":[16,135,6.4,64,24.8,6,2]}],
+["DG Bedingham","SA","MD",{"2020s":[15,828,36,0,0,17,2]}],
+["HE van der Dussen","SA","TOP,MD",{"2020s":[17,848,30.3,0,0,23,2]}],
+["Imran Tahir","SA","SP",{"2010s":[20,130,9.3,57,40.2,8,2]}],
+["L Ngidi","SA","PC",{"2010s":[5,15,3.8,15,25.1,3,2],"2020s":[15,82,5.5,43,22.8,3,2]}],
+["RD Rickelton","SA","TOP",{"2020s":[15,897,37.4,0,0,7,2]}],
+["T de Zorzi","SA","OP",{"2020s":[17,919,30.6,0,0,13,2]}],
+["BOP Fernando","SL","OP",{"2010s":[4,277,46.2,0,0,3,2],"2020s":[18,827,30.6,0,0,11,2]}],
+["KTGD Prasad","SL","PC",{"2010s":[21,410,12.4,62,34.4,5,2]}],
+["M Muralitharan","SL","SP",{"2000s":[36,268,9.6,230,22.6,8,2]}],
+["MDKJ Perera","SL","TOP,WK",{"2010s":[18,934,31.1,0,0,27,2],"2020s":[4,243,30.4,0,0,0,2]}],
+["MF Maharoof","SL","PC",{"2000s":[15,433,18.8,14,75.6,4,2]}],
+["MG Vandort","SL","OP",{"2000s":[17,857,34.3,0,0,6,2]}],
+["MVT Fernando","SL","PC",{"2010s":[7,16,3.2,21,32.6,2,2],"2020s":[20,145,9.1,56,32.6,4,2]}],
+["N Pradeep","SL","PC",{"2010s":[28,132,4.1,70,42.9,5,2]}],
+["NT Paranavitana","SL","OP",{"2000s":[10,530,29.4,1,76,4,2],"2010s":[22,1262,34.1,0,0,23,2]}],
+["RMS Eranga","SL","PC",{"2010s":[19,193,12.9,57,37.5,4,2]}],
+["RTM Mendis","SL","SP",{"2020s":[16,408,17.7,71,31.2,8,2]}],
+["UWMBCA Welegedara","SL","PC",{"2000s":[4,19,6.3,10,47.3,1,2],"2010s":[17,199,9.9,45,40,4,2]}],
+["CS Baugh","WI","MD,WK",{"2010s":[16,414,18,0,0,43,2]}],
+["JA Warrican","WI","SP",{"2010s":[7,138,27.6,21,38.4,1,2],"2020s":[15,207,9.4,56,25.5,2,2]}],
+["JD Campbell","WI","OP",{"2010s":[5,224,24.9,0,0,4,2],"2020s":[22,978,24.4,0,0,10,2]}],
+["KA Edwards","WI","TOP",{"2010s":[17,986,32.9,0,0,15,2]}],
+["NE Bonner","WI","TOP",{"2020s":[15,803,38.2,1,82,14,2]}],
+["R Rampaul","WI","PC",{"2010s":[15,270,15,45,31.4,2,2]}],
+["S Shillingford","WI","SP",{"2010s":[16,266,13.3,70,34.6,6,2]}]
 ];
 
 const P=DATA.map(a=>{
   const isWK=a[2].split(",").includes("WK");
   const eras={}; let cwkts=0;
   for(const d in a[3]){const e=a[3][d];
-    eras[d]={mat:e[0],runs:e[1],avg:e[2],wkts:e[3],bavg:e[4],sr:0,dis:e[5],isWK,exact:true};
+    eras[d]={mat:e[0],runs:e[1],avg:e[2],wkts:e[3],bavg:e[4],sr:0,dis:e[5],isWK,exact:true,rv:e[6]||1};
     cwkts+=e[3];}
   return {n:a[0],c:a[1],pos:a[2].split(","),decs:Object.keys(a[3]),eras,cwkts};
 });
@@ -2031,6 +2248,14 @@ const nationDecades={};
 Object.keys(NATIONS).forEach(c=>{nationDecades[c]=DECADES.filter(d=>cellSize(c,d)>=minCell(c));});
 const playable=Object.keys(NATIONS).filter(c=>nationDecades[c].length)
   .sort((a,b)=>NATIONS[a].localeCompare(NATIONS[b]));   // alphabetical team order
+/* roster v2 (Cricsheet Tests restoration): legacy O|/O2|/O3| Open Tours drafted their opponents
+   from the launch roster, so replays/re-verification must see EXACTLY that pool. rv-flagged
+   additions are filtered out of legacy draws; new tours (O4| codes) draw from the full roster. */
+const cellSizeL=(c,dec)=>P.filter(p=>p.c===c&&p.eras[dec]&&p.eras[dec].rv===1).length;
+const nationDecadesL={};
+Object.keys(NATIONS).forEach(c=>{nationDecadesL[c]=DECADES.filter(d=>cellSizeL(c,d)>=minCell(c));});
+const playableL=Object.keys(NATIONS).filter(c=>nationDecadesL[c].length)
+  .sort((a,b)=>NATIONS[a].localeCompare(NATIONS[b]));
 const DEF_TEAM=playable.includes("AUS")?"AUS":playable[0];   // Australia is the default reel
 const DEF_ERA=nationDecades[DEF_TEAM][0];   // earliest qualifying decade for the default team
 const defTeamTxt=()=>ABBR[DEF_TEAM];
@@ -2075,13 +2300,16 @@ function openPicker(){
   $("title").classList.add("hidden");$("challenge").classList.remove("hidden");
   $("oppGrid").innerHTML=LEGENDS.map((L,idx)=>{
     const chips=["turner","pace","swing","flat","true"].filter(k=>L.home[k]).map(k=>`<span class="tm-chip c-${k}">${L.home[k]} ${COND_LABEL[k]}</span>`).join("");
-    return `<div class="oppcard" data-opp="${idx}"><span class="tier tier-${L.tier}">${L.tier}</span><div class="opp-title">${L.title}</div><div class="opp-blurb">${L.blurb}</div><div class="opp-pitch">${chips}</div></div>`;
+    return `<div class="oppcard" data-opp="${idx}"><span class="tier tier-${L.tier}">${L.tier}</span><div class="opp-title">${L.title}</div><div class="opp-blurb">${L.blurb}</div><div class="opp-pitch">${chips}</div><button class="oppxi" data-xi="${idx}">See their XI &rsaquo;</button></div>`;
   }).join("");
   window.scrollTo({top:0,behavior:"smooth"});
 }
 $("oppBack").onclick=()=>{$("challenge").classList.add("hidden");$("title").classList.remove("hidden");};
 $("oppRandom").onclick=()=>start(rnd(LEGENDS));
-$("oppGrid").addEventListener("click",e=>{const c=e.target.closest(".oppcard");if(c)start(LEGENDS[+c.dataset.opp]);});
+$("oppGrid").addEventListener("click",e=>{
+  const x=e.target.closest(".oppxi");
+  if(x){e.stopPropagation();showLegendXI(LEGENDS[+x.dataset.xi]);return;}
+  const c=e.target.closest(".oppcard");if(c)start(LEGENDS[+c.dataset.opp]);});
 $("tourStrip").addEventListener("click",e=>{const f=e.target.closest(".ts-click");if(f&&curTests())renderCard(+f.dataset.test);});
 $("cardClose").onclick=()=>$("cardModal").classList.add("hidden");
 $("cardModal").addEventListener("click",e=>{if(e.target.id==="cardModal")$("cardModal").classList.add("hidden");});
@@ -2293,11 +2521,61 @@ function renderList(){
         <div class="st${hot('dis')}"><div class="v">${ax}${L.dis}</div><div class="k">${L.isWK?"Dis":"Ct"}</div></div>
       </div>`;
     }
+    if(!hideStats&&p.decs.length)html+=`<button class="careerbtn" title="Career, era by era" aria-label="Career card for ${p.n}">&#9776;</button>`;
     row.innerHTML=html;
     row.onclick=()=>selectPlayer(p);
+    const cb=row.querySelector(".careerbtn");
+    if(cb)cb.onclick=e=>{e.stopPropagation();showCareer(p);};
     box.appendChild(row);
   });
   if(!list.length){box.innerHTML=`<div style="color:#5e7368;font-style:italic;padding:18px;text-align:center">No players match.</div>`;}
+}
+
+/* career card: the whole career, era by era, on one almanack card */
+let ccBack=null;   // set when the card was opened from a legend XI sheet — back returns there
+function showCareer(p){
+  const decs=DECADES.filter(d=>p.eras[d]);
+  let tm=0,tr=0,tw=0,td=0,outs=0,conc=0;
+  const rows=decs.map(d=>{const L=p.eras[d];
+    tm+=L.mat;tr+=L.runs;tw+=L.wkts;td+=L.dis;
+    if(L.avg>0)outs+=L.runs/L.avg;
+    if(L.wkts&&L.bavg>0)conc+=L.wkts*L.bavg;
+    return `<div class="cc-row"><span class="cc-era">the &rsquo;${eraShort(d)}</span>`+
+      `<span class="cc-v">${L.mat}</span><span class="cc-v">${L.runs.toLocaleString("en-US")}</span><span class="cc-v">${L.avg>0?L.avg.toFixed(1):"&ndash;"}</span>`+
+      `<span class="cc-v">${L.wkts||"&ndash;"}</span><span class="cc-v">${L.wkts&&L.bavg>0?L.bavg.toFixed(1):"&ndash;"}</span><span class="cc-v">${L.dis}</span></div>`;}).join("");
+  const tavg=outs>0?(tr/outs).toFixed(1):"&ndash;", tbavg=tw>0?(conc/tw).toFixed(1):"&ndash;";
+  const role=p.pos.map(r=>ROLE_SHORT[r]).join(" &middot; ");
+  $("careerBody").innerHTML=
+    (ccBack?`<button class="cc-back">&lsaquo; back to the XI</button>`:"")+
+    `<div class="cc-crest">${ABBR[p.c]}</div><div class="cc-nm">${esc(p.n)}</div><div class="cc-tm">${NATIONS[p.c]} &middot; ${role} &middot; Test career</div>`+
+    `<div class="cc-head"><span class="cc-era">era</span><span class="cc-v">Tests</span><span class="cc-v">runs</span><span class="cc-v">avg</span><span class="cc-v">wkts</span><span class="cc-v">avg</span><span class="cc-v">${p.pos.includes("WK")?"dis":"ct"}</span></div>`+
+    rows+
+    `<div class="cc-row cc-tot"><span class="cc-era">career</span><span class="cc-v">${tm}</span><span class="cc-v">${tr.toLocaleString("en-US")}</span><span class="cc-v">${tavg}</span><span class="cc-v">${tw||"&ndash;"}</span><span class="cc-v">${tbavg}</span><span class="cc-v">${td}</span></div>`+
+    `<div class="cc-note">His Test career, decade by decade. Draft him in one era and he brings only that era&rsquo;s numbers.</div>`;
+  const bk=$("careerBody").querySelector(".cc-back");
+  if(bk)bk.onclick=()=>{const b=ccBack;ccBack=null;b();};
+  $("careerModal").classList.remove("hidden");
+}
+function closeCareer(){ccBack=null;$("careerModal").classList.add("hidden");}
+$("careerClose").onclick=closeCareer;
+$("careerModal").addEventListener("click",e=>{if(e.target.id==="careerModal")closeCareer();});
+
+/* legend team sheet: see the XI you'd be touring against, before you commit */
+function showLegendXI(L){
+  const rows=L._players.map((p,i)=>{const e=p.eras[p._dec]||{};
+    const isB=p.pos.includes("PC")||p.pos.includes("SP"), isA=isB&&e.runs>400;
+    let st=e.wkts&&(isB||isA)?`${e.wkts} wkts @ ${e.bavg>0?e.bavg.toFixed(1):"&ndash;"}`:`${(e.runs||0).toLocaleString("en-US")} runs @ ${e.avg>0?e.avg.toFixed(1):"&ndash;"}`;
+    if(isA)st=`${(e.runs||0).toLocaleString("en-US")} @ ${e.avg>0?e.avg.toFixed(1):"&ndash;"} &middot; ${e.wkts} wkts`;
+    const role=p.pos.map(r=>ROLE_SHORT[r]).join(" &middot; ");
+    return `<div class="lx-row" data-cc="${i}"><span class="lx-no">${i+1}</span><span class="lx-nm">${esc(p.n)}${p.pos.includes("WK")?' <span class="lx-wk">&#129350;</span>':""}<em>${role}</em></span><span class="lx-st">${st}</span></div>`;}).join("");
+  const conds=["turner","pace","swing","flat","true"].filter(k=>L.home[k]).map(k=>`${L.home[k]} ${COND_LABEL[k]}`).join(" &middot; ");
+  $("careerBody").innerHTML=
+    `<div class="cc-tm" style="margin-bottom:4px">${L.tier} &middot; their conditions</div><div class="cc-nm">${L.title}</div>`+
+    `<div class="cc-tm">${conds}</div>`+rows+
+    `<div class="cc-note">Tap a name for his career, era by era. You can&rsquo;t draft from this side on the tour.</div>`;
+  ccBack=null;
+  $("careerBody").querySelectorAll(".lx-row").forEach(r=>r.onclick=()=>{ccBack=()=>showLegendXI(L);showCareer(L._players[+r.dataset.cc]);});
+  $("careerModal").classList.remove("hidden");
 }
 
 function selectPlayer(p){
@@ -2757,20 +3035,22 @@ function matchStory(t){
   return star?`${head} &mdash; ${star}.`:`${head}.`;
 }
 let gameMode="tour", challengeOpp=null, challengeTests=null, tourTests=null, lastOpenFixtures=null;
+let shareRoster=null;  // 1 when replaying a pre-roster-v2 Open code (O|/O2|/O3|), else null (full roster)
 
 /* ===== Open Tour on the ball-by-ball engine =====
    Each fixture is a real Test vs a seeded, graded local XI drafted from the whole pool —
    no more single-probability-roll Tests or generated box scores. The legend-side engine
    (mPlayTest/mInnings) is untouched, so challenge records and the HoF are unaffected. */
 const OPEN_SK=[0.20,0.30,0.40,0.50,0.55,0.62,0.68,0.75,0.82,0.88,0.93,1.0,1.0];  // grade ladder, weak -> elite, in fixture order
-function draftOpenOpp(rng,skill,excl){
+function draftOpenOpp(rng,skill,excl,cap){
+  const legacy=cap===1, pl=legacy?playableL:playable, nd=legacy?nationDecadesL:nationDecades;
   const team=new Array(XI_SIZE).fill(null),u=new Set(excl||[]);   // never field a player who's in your XI
   for(let r=0;r<XI_SIZE;r++){let placed=false;
     for(let t=0;t<240&&!placed;t++){
-      const c=playable[Math.floor(rng()*playable.length)];
-      const ds=nationDecades[c]; if(!ds.length)continue;
+      const c=pl[Math.floor(rng()*pl.length)];
+      const ds=nd[c]; if(!ds.length)continue;
       const dec=ds[Math.floor(rng()*ds.length)];
-      let cand=P.filter(p=>p.c===c&&p.decs.includes(dec)&&!u.has(p.n));
+      let cand=P.filter(p=>p.c===c&&p.decs.includes(dec)&&(!legacy||p.eras[dec].rv===1)&&!u.has(p.n));
       if(!cand.length)continue;
       if(rng()<skill)cand=cand.slice().sort((a,b)=>(batRating(b,dec)+bowlRating(b,dec))-(batRating(a,dec)+bowlRating(a,dec)));
       for(const p of cand){const sl=SLOT_DEF.findIndex((s,i)=>!team[i]&&eligible(s,p));if(sl>=0){team[sl]={...p,_dec:dec};u.add(p.n);placed=true;break;}}
@@ -2786,7 +3066,8 @@ function simulateOpen(){
   const seed=hashStr(picks.map(p=>p.n+"."+p._dec).join("-")+"|"+fixturesEnc(fixtures)+"|O1");
   const orng=mulberry32((seed^0x9e3779b9)>>>0);                      // opponent stream, separate from match stream
   const yours=picks.map(p=>p.n);
-  const opps=fixtures.map((fx,i)=>{let xi=null,g=0;while(!xi&&g<50){xi=draftOpenOpp(orng,OPEN_SK[i]??0.6,yours);g++;}return xi;});
+  const rcap=(shareEng||shareRoster===1)?1:2;            // legacy codes (O|/O2|/O3|) draw opponents from the launch roster
+  const opps=fixtures.map((fx,i)=>{let xi=null,g=0;while(!xi&&g<50){xi=draftOpenOpp(orng,OPEN_SK[i]??0.6,yours,rcap);g++;}return xi;});
   const oppInps=opps.map(o=>inputsOf(o));
   const E=shareEng||ENG;                      // shared legacy (O|) tours replay on the engine they were created under
   const rng=mulberry32(seed);
@@ -3037,10 +3318,11 @@ function decodeShare(code){
     const opp=LEGENDS.find(L=>L.id===seg[2]); if(!opp)return null;
     return {picksArr:arr,challenge:true,opp,eng:seg[0]==="C"?1:seg[0]==="C2"?2:3};
   }
-  if(seg[0]==="O"||seg[0]==="O2"||seg[0]==="O3"){    // shared Open Tour: XI + tour type + fixtures (replays deterministically)
+  if(seg[0]==="O"||seg[0]==="O2"||seg[0]==="O3"||seg[0]==="O4"){    // shared Open Tour: XI + tour type + fixtures (replays deterministically)
     const arr=parseXI(seg[1]); if(!arr)return null;
     const fx=fixturesDec(seg[3]||""); if(!fx)return null;
-    const tt=TOUR_TYPES[+seg[2]]; return {picksArr:arr,open:true,tourType:tt?tt.name:"World Tour",fixtures:fx,eng:seg[0]==="O"?1:seg[0]==="O2"?2:3};
+    const tt=TOUR_TYPES[+seg[2]];                       // O4 = same engine as O3, roster v2 (Cricsheet Tests additions visible to opponent draws)
+    return {picksArr:arr,open:true,tourType:tt?tt.name:"World Tour",fixtures:fx,eng:seg[0]==="O"?1:seg[0]==="O2"?2:3,roster:seg[0]==="O4"?2:1};
   }
   if(seg[0]!=="1"||seg.length<3)return null;
   const arr=parseXI(seg[1]); if(!arr)return null;
@@ -3058,7 +3340,7 @@ function fixturesDec(str){const fx=[];
   return fx.length===SEASON?fx:null;}
 function shareCodeOpen(){
   const ti=Math.max(0,TOUR_TYPES.findIndex(t=>t.name===lastTourType));
-  return b64e((shareEng===ENG_V1?"O|":shareEng===ENG_V2?"O2|":"O3|")+xiParts()+"|"+ti+"|"+fixturesEnc(lastOpenFixtures));
+  return b64e((shareEng===ENG_V1?"O|":shareEng===ENG_V2?"O2|":shareRoster===1?"O3|":"O4|")+xiParts()+"|"+ti+"|"+fixturesEnc(lastOpenFixtures));
 }
 /* ---- render the result as a shareable PNG (no backend — drawn on a canvas) ---- */
 function drawBall(x,cx,cy,r){
@@ -3665,6 +3947,7 @@ $("fbSend")&&($("fbSend").onclick=async()=>{
   picks=d.picksArr; used=new Set(picks.map(p=>p.n)); sharedView=true;
   $("title").classList.add("hidden");$("challenge").classList.add("hidden");$("draft").classList.add("hidden");
   shareEng=d.eng===1?ENG_V1:d.eng===2?ENG_V2:null;      // legacy codes replay on the engine they were made under
+  shareRoster=d.open&&d.roster===1?1:null;              // pre-roster-v2 Open codes replay against the launch roster
   if(d.challenge){                                      // replay a shared Challenge tour deterministically
     gameMode="challenge"; challengeOpp=d.opp;
     simulateChallenge();                                // rebuilds the exact fixtures + scorecards and renders the result
