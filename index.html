@@ -2998,12 +2998,12 @@ function mPlayTest(A,B,cond,rng,E){
     if(foll){const i3=mInnings(T2,T1,cond,Math.min(budget,CAP),null,null,rng,E);budget-=i3.overs;inn.push({side:s2,...i3});
       if(i3.total<lead1&&i3.wkts>=10){outcome="W";margin="an innings and "+(lead1-i3.total)+" runs";}
       else if(budget>=25){const need=Math.max(1,i3.total-lead1);const i4=mInnings(T1,T2,cond,Math.min(budget,CAP),need,null,rng,E);inn.push({side:s1,...i4});
-        outcome=i4.result==="chasewin"?"W":i4.result==="allout"?"L":"D";if(outcome==="W")margin=(11-i4.wkts)+" wickets";else if(outcome==="L")margin=(need-i4.total)+" runs";}
+        outcome=i4.result==="chasewin"?"W":i4.result==="allout"?"L":"D";if(outcome==="W")margin=(10-i4.wkts)+" wickets";else if(outcome==="L")margin=(need-i4.total)+" runs";}
       else outcome="D";
     } else {const i4res=clamp(Math.round(budget*0.5),60,95);const declT=clamp(E.DECLT-lead1,140,430);const i3=mInnings(T1,T2,cond,Math.min(budget-i4res,CAP),null,declT,rng,E);budget-=i3.overs;inn.push({side:s1,...i3});
       const target=i3.total+lead1;
       if(budget>=25){const i4=mInnings(T2,T1,cond,Math.min(budget,i4res,CAP),Math.max(1,target),null,rng,E);inn.push({side:s2,...i4});
-        outcome=i4.result==="chasewin"?"L":i4.result==="allout"?"W":"D";if(outcome==="W")margin=(target-i4.total)+" runs";else if(outcome==="L")margin=(11-i4.wkts)+" wickets";}
+        outcome=i4.result==="chasewin"?"L":i4.result==="allout"?"W":"D";if(outcome==="W")margin=(target-i4.total)+" runs";else if(outcome==="L")margin=(10-i4.wkts)+" wickets";}
       else outcome="D";}
   }
   if(!youFirst&&outcome!=="D")outcome=outcome==="W"?"L":"W";
