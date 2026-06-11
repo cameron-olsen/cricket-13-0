@@ -587,8 +587,11 @@
   .ts-fx.ts-click{cursor:pointer}
   .ts-fx.ts-click:hover .ts-res{background:var(--panel)}
   .ts-fx.ts-click::after{content:none}
-  .ts-grid{column-gap:6px;align-items:start}
-  @media(max-width:760px){.ts-grid{grid-template-columns:repeat(7,1fr);row-gap:14px}}
+  /* robust centering: fixed-width circle columns, flex-centered, wrap on small screens */
+  .ts-grid{display:flex!important;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:18px 8px}
+  .ts-fx{flex:0 0 76px;min-width:0;max-width:76px}
+  #result .tourstrip{max-width:1140px;margin:26px auto 0}
+
   /* result verdict in serif */
   .verdict{font-family:"Playfair Display",Georgia,serif;font-weight:900}
   .recordline{font-family:"Playfair Display",Georgia,serif;font-weight:800}
@@ -676,6 +679,29 @@
     #title{padding-top:18px}
     .careerbtn{padding:6px 8px}
   }
+
+  /* A1: the reveal uses the same circle language as the result tour line */
+  .rvgrid{display:grid!important;grid-template-columns:repeat(13,1fr);gap:0;max-width:1060px;margin:22px auto 0;column-gap:6px}
+  .rvtile{border:none!important;background:none!important;flex-direction:column;gap:9px;padding:6px 0}
+  .rvtile .rvr{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--night);display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",Georgia,serif;font-weight:800;font-size:16px;color:#5c7163;margin:0 auto}
+  .rvtile.W .rvr{border-color:#b08f3e;color:var(--gold)}
+  .rvtile.D .rvr{border-color:#41584a;color:var(--willow)}
+  .rvtile.L .rvr{border-color:#5a3328;color:#c96a4e}
+  .rvtile .rvv{font-family:"IBM Plex Mono",monospace;font-size:7.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--cream-dim);white-space:normal;line-height:1.35;padding:0 3px;overflow-wrap:break-word}
+  @media(max-width:760px){.rvgrid{grid-template-columns:repeat(7,1fr);row-gap:14px}}
+  /* A2: modal sheets in the skin language */
+  .ssheet{background:linear-gradient(180deg,var(--panel),var(--night));border:1px solid var(--line);border-radius:10px}
+  .ssheet h2,.ssheet h3{font-family:"Playfair Display",Georgia,serif;font-weight:800}
+  .hofrow{border-bottom:1px solid #16241c;border-radius:0;background:none;border-left:none;border-right:none;border-top:none}
+  .hofrow:hover{background:var(--panel)}
+  .hofname{font-family:"Playfair Display",Georgia,serif;font-weight:600;font-size:16px}
+  .hofrec{font-family:"Playfair Display",Georgia,serif;font-weight:800}
+  .hofopp,.hofbadge,.hofrank{font-family:"IBM Plex Mono",monospace}
+  .reelcard{border:1px solid var(--line);border-radius:12px;background:linear-gradient(180deg,var(--panel),var(--night))}
+  .reelcard .rlabel{font-family:"IBM Plex Mono",monospace;letter-spacing:.3em}
+  .xirow.xic{cursor:pointer}
+  .xirow.xic:hover .who{color:var(--gold)}
+  .pickrow{cursor:pointer}
 </style>
 </head>
 <body>
@@ -2334,7 +2360,9 @@ $("cardModal").addEventListener("click",e=>{if(e.target.id==="cardModal")$("card
 
 const SHOW_NAME={"M Muralidaran":"M Muralitharan"};   // display-only — seeds/share codes keep the stored name (119 posted tours carry it)
 const showName=n=>SHOW_NAME[n]||n;
-const surnameOf=f=>{f=showName(f);return f.split(" ").slice(1).join(" ")||f;};
+const AMBIG_SUR=new Set(["Mohammad","Khan","Ahmed","Ali","Singh","Hossain"]);
+const surnameOf=f=>{f=showName(f);const parts=f.split(" ");const sur=parts.slice(1).join(" ")||f;
+  return (parts.length>1&&AMBIG_SUR.has(sur))?(parts[0][0]+" "+sur):sur;};
 function renderHow(how,bn,kn){
   if(how==="not out"||how==="run out")return how;
   return how
@@ -3314,10 +3342,12 @@ function renderResultView(W,D,L){
       if(s.ct>0)parts.push(`${s.ct} ct`);
       if(s.st>0)parts.push(`${s.st} st`);
       stat=parts.join(" &middot; ");}
-    const row=document.createElement("div");row.className="xirow";
+    const row=document.createElement("div");row.className="xirow xic";
+    row.title="Career, era by era";
     row.innerHTML=`<span class="num">${i+1}</span>
-      <span class="who">${p.n} <small>${ABBR[p.c]} · ${eraShort(p._dec)} · ${p.pos.map(r=>ROLE_SHORT[r]).join("/")}</small></span>
-      <span class="xistat">${stat}</span>`;box.appendChild(row);});
+      <span class="who">${showName(p.n)} <small>${ABBR[p.c]} · ${eraShort(p._dec)} · ${p.pos.map(r=>ROLE_SHORT[r]).join("/")}</small></span>
+      <span class="xistat">${stat}</span>`;
+    row.onclick=()=>showCareer(p);box.appendChild(row);});
   if(lastStats)$("teamRtg").textContent=lastStats.teamPts;
   $("postBtn").classList.toggle("hidden",!(isChal&&!sharedView&&seasonEras==="all"));   // post only your own completed, all-history legend tour
   if(isChal&&!sharedView)refreshPostBtn();                          // dim it if this tour is already posted
@@ -3385,37 +3415,43 @@ function drawBall(x,cx,cy,r){
 async function buildShareCard(){
   try{ if(document.fonts&&document.fonts.ready) await document.fonts.ready; }catch(e){}
   const W0=1080,H0=1350,x=document.createElement("canvas");x.width=W0;x.height=H0;const c=x.getContext("2d");
-  const g=c.createLinearGradient(0,0,0,H0);g.addColorStop(0,"#0d2619");g.addColorStop(1,"#06140d");c.fillStyle=g;c.fillRect(0,0,W0,H0);
+  // A3: the cream almanack card on the baize (matches the in-game scorecards)
+  const g=c.createLinearGradient(0,0,0,H0);g.addColorStop(0,"#0d1a13");g.addColorStop(1,"#07100b");c.fillStyle=g;c.fillRect(0,0,W0,H0);
+  const CX=48,CY=42,CW=W0-96,CH=H0-84;
+  const cg=c.createLinearGradient(0,CY,0,CY+CH);cg.addColorStop(0,"#f0e8d1");cg.addColorStop(1,"#e7dcc0");
+  c.save();c.shadowColor="rgba(0,0,0,.55)";c.shadowBlur=46;c.shadowOffsetY=20;
+  c.beginPath();if(c.roundRect)c.roundRect(CX,CY,CW,CH,18);else c.rect(CX,CY,CW,CH);c.fillStyle=cg;c.fill();c.restore();
+  c.strokeStyle="#6e6448";c.lineWidth=1.6;c.beginPath();if(c.roundRect)c.roundRect(CX+9,CY+9,CW-18,CH-18,10);else c.rect(CX+9,CY+9,CW-18,CH-18);c.stroke();
+  c.strokeStyle="#cdc1a4";c.lineWidth=1;c.beginPath();if(c.roundRect)c.roundRect(CX+14,CY+14,CW-28,CH-28,8);else c.rect(CX+14,CY+14,CW-28,CH-28);c.stroke();
   let {bat,bowl}=indices();const noKeeper=!picks.some(isKeeper);if(noKeeper){bat*=NO_KEEPER_BAT;bowl*=NO_KEEPER_BOWL;}
   const {pWin}=perTest(bat,bowl);const W=lastResult.W,D=lastResult.D,L=lastResult.L;const grail=(W===SEASON);
-  const PAD=64;c.textBaseline="alphabetic";
-  // eyebrow
-  c.fillStyle="#8c9a8e";c.font="600 25px Oswald, sans-serif";c.textAlign="center";
-  c.fillText("E L E V E N   L E G E N D S   ·   O N E   P E R F E C T   Y E A R",W0/2,86);
-  drawBall(c,W0/2,168,52);
-  // verdict
+  const INK="#231f14",MUT="#6e6448",MAR="#7a2a22",RULE="#cdc1a4",PAD=104;
+  c.textBaseline="alphabetic";c.textAlign="center";
+  c.fillStyle=MUT;c.font='600 22px "IBM Plex Mono", monospace';
+  c.fillText("E L E V E N   L E G E N D S   ·   O N E   P E R F E C T   Y E A R",W0/2,128);
+  drawBall(c,W0/2,196,40);
   const vtxt=grail?"13–0":`${W}–${L}`;
-  c.fillStyle=grail?"#e3b341":"#f4ead5";c.font="700 150px Oswald, sans-serif";c.textAlign="center";
-  c.fillText(vtxt,W0/2,360);
-  c.fillStyle=grail?"#e3b341":"#cdd6a0";c.font="italic 600 34px Spectral, Georgia, serif";
-  c.fillText(grail?"UNBEATEN — THE PERFECT YEAR":`${W} won · ${D} drawn · ${L} lost in 13 Tests`,W0/2,410);
-  // index strip
-  c.fillStyle="#9fb0a3";c.font="600 26px Oswald, sans-serif";
-  c.fillText(`BAT ${Math.round(bat)}   ·   BOWL ${Math.round(bowl)}   ·   WIN ${Math.round(pWin*100)}% / TEST`,W0/2,462);
-  c.strokeStyle="rgba(205,214,160,0.25)";c.lineWidth=2;c.beginPath();c.moveTo(PAD,500);c.lineTo(W0-PAD,500);c.stroke();
-  // XI
-  const top=540,rowH=67;
+  c.fillStyle=grail?MAR:INK;c.font='900 150px "Playfair Display", Georgia, serif';
+  c.fillText(vtxt,W0/2,392);
+  c.fillStyle=grail?MAR:MUT;c.font='italic 500 33px "Playfair Display", Georgia, serif';
+  c.fillText(grail?"Unbeaten — the perfect year.":`${W} won · ${D} drawn · ${L} lost in 13 Tests`,W0/2,444);
+  c.fillStyle=MUT;c.font='500 22px "IBM Plex Mono", monospace';
+  c.fillText(`BAT ${Math.round(bat)}   ·   BOWL ${Math.round(bowl)}   ·   WIN ${Math.round(pWin*100)}% / TEST`,W0/2,496);
+  c.strokeStyle=INK;c.lineWidth=2;c.beginPath();c.moveTo(PAD,532);c.lineTo(W0-PAD,532);c.stroke();
+  const top=566,rowH=63;
   picks.forEach((p,i)=>{const Ln=eraLine(p,p._dec);const y=top+i*rowH;
-    c.textAlign="left";c.fillStyle="#e3b341";c.font="700 30px Oswald, sans-serif";c.fillText(String(i+1).padStart(2," "),PAD,y+34);
-    c.fillStyle="#f4ead5";c.font="600 31px Oswald, sans-serif";c.fillText(p.n,PAD+62,y+28);
-    c.fillStyle="#7f8f83";c.font="400 19px Spectral, serif";
-    c.fillText(`${ABBR[p.c]} · ${eraShort(p._dec)} · ${p.pos.map(r=>ROLE_SHORT[r]).join("/")}${isKeeper(p)?" 🧤":""}`,PAD+62,y+52);
-    c.textAlign="right";c.fillStyle="#cdd6a0";c.font="600 23px Oswald, sans-serif";
-    c.fillText(`${Ln.runs} runs${Ln.wkts?"  ·  "+Ln.wkts+" wkts":""}`,W0-PAD,y+38);
+    c.textAlign="left";c.fillStyle=MAR;c.font='600 22px "IBM Plex Mono", monospace';c.fillText(String(i+1).padStart(2," "),PAD,y+30);
+    c.fillStyle=INK;c.font='700 30px "Playfair Display", Georgia, serif';c.fillText(showName(p.n),PAD+56,y+28);
+    c.fillStyle=MUT;c.font='400 17px "IBM Plex Mono", monospace';
+    c.fillText(`${ABBR[p.c]} · ${eraShort(p._dec)} · ${p.pos.map(r=>ROLE_SHORT[r]).join("/")}${isKeeper(p)?" 🧤":""}`,PAD+56,y+50);
+    c.textAlign="right";c.fillStyle=INK;c.font='600 21px "IBM Plex Mono", monospace';
+    c.fillText(`${Ln.runs} runs${Ln.wkts?"  ·  "+Ln.wkts+" wkts":""}`,W0-PAD,y+36);
+    if(i<10){c.strokeStyle=RULE;c.lineWidth=1;c.beginPath();c.moveTo(PAD,y+rowH-4);c.lineTo(W0-PAD,y+rowH-4);c.stroke();}
   });
-  // footer
-  c.textAlign="center";c.fillStyle="#e3b341";c.font="700 36px Oswald, sans-serif";c.fillText("13-0.app",W0/2,H0-54);
-  c.fillStyle="#7f8f83";c.font="400 22px Spectral, serif";c.fillText("Build your own unbeaten XI",W0/2,H0-22);
+  c.textAlign="center";
+  c.strokeStyle=INK;c.lineWidth=2;c.beginPath();c.moveTo(PAD,H0-118);c.lineTo(W0-PAD,H0-118);c.stroke();
+  c.fillStyle=MAR;c.font='800 34px "Playfair Display", Georgia, serif';c.fillText("13-0.app",W0/2,H0-74);
+  c.fillStyle=MUT;c.font='400 19px "IBM Plex Mono", monospace';c.fillText("BUILD YOUR OWN UNBEATEN XI",W0/2,H0-44);
   return await new Promise(res=>x.toBlob(res,"image/png"));
 }
 function teamGrade(o){return o>=92?"A+":o>=86?"A":o>=80?"A-":o>=74?"B+":o>=68?"B":o>=62?"B-":o>=55?"C+":o>=48?"C":o>=40?"D":"F";}
@@ -3742,12 +3778,13 @@ async function loadPopularity(tok){
   list.innerHTML=head+rows.slice(0,100).map((r,i)=>{
     const medal=i===0?"&#129351;":i===1?"&#129352;":i===2?"&#129353;":(i+1);
     const role=r.p.pos.map(x=>ROLE_SHORT[x]).join("/");
-    return `<div class="hofrow${i===0?" perfect":""}">`+
+    return `<div class="hofrow pickrow${i===0?" perfect":""}" data-pn="${esc(r.p.n)}">`+
       `<div class="hofrank">${medal}</div>`+
       `<div class="hofmid"><div class="hofname">${esc(r.p.n)}</div>`+
       `<div class="hofopp">${ABBR[r.p.c]} &middot; ${role}${r.era?" &middot; mostly "+eraShort(r.era)+"s":""}</div></div>`+
       `<div class="hofright"><div class="hofrec">${r.n}</div><span class="hofbadge chk">${r.pct}% of XIs</span></div>`+
     `</div>`;}).join("");
+  list.querySelectorAll(".pickrow").forEach(el=>el.onclick=()=>{const p=PBYN.get(el.getAttribute("data-pn"));if(p)showCareer(p);});
 }
 function hofFilterOpts(sel){
   const cur=sel||"overall";
