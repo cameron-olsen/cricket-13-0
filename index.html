@@ -698,6 +698,14 @@
   .hofrec{font-family:"Playfair Display",Georgia,serif;font-weight:800}
   .hofopp,.hofbadge,.hofrank{font-family:"IBM Plex Mono",monospace}
   .reelcard{border:1px solid var(--line);border-radius:12px;background:linear-gradient(180deg,var(--panel),var(--night))}
+  /* spin stage in the skin language: thin brass/willow frames, quiet labels, serif values */
+  .reelcard.team{border:1px solid var(--gold)}
+  .reelcard.era{border:1px solid var(--willow)}
+  .reelcard.team.landed{box-shadow:0 0 0 1px var(--gold),0 14px 40px -18px rgba(0,0,0,.8)}
+  .reelcard.era.landed{box-shadow:0 0 0 1px var(--willow),0 14px 40px -18px rgba(0,0,0,.8)}
+  .rlabel{color:#5c7163!important;font-size:11px;letter-spacing:.3em}
+  .rval{font-family:"Playfair Display",Georgia,serif;font-weight:900;color:var(--cream)}
+  #spinstage .rval:empty:before,#spinstage .rval{text-shadow:none}
   .reelcard .rlabel{font-family:"IBM Plex Mono",monospace;letter-spacing:.3em}
   .xirow.xic{cursor:pointer}
   .xirow.xic:hover .who{color:var(--gold)}
@@ -2222,7 +2230,13 @@ const DATA=[
 ["KA Edwards","WI","TOP",{"2010s":[17,986,32.9,0,0,15,2]}],
 ["NE Bonner","WI","TOP",{"2020s":[15,803,38.2,1,82,14,2]}],
 ["R Rampaul","WI","PC",{"2010s":[15,270,15,45,31.4,2,2]}],
-["S Shillingford","WI","SP",{"2010s":[16,266,13.3,70,34.6,6,2]}]
+["S Shillingford","WI","SP",{"2010s":[16,266,13.3,70,34.6,6,2]}],
+["JT Partridge","SA","PC",{"1960s":[11,73,10.4,44,31.2,6,2]}],
+["GB Lawrence","SA","PC",{"1960s":[5,141,17.6,28,18.3,2,2]}],
+["AH McKinnon","SA","SP",{"1960s":[8,107,17.8,26,35.6,1,2]}],
+["HD Bromfield","SA","SP",{"1960s":[9,59,11.8,17,35.2,13,2]}],
+["JT Botten","SA","PC",{"1960s":[3,65,10.8,8,42.1,1,2]}],
+["R Dumbrill","SA","PC",{"1960s":[5,153,15.3,9,37.3,3,2]}]
 ];
 
 const P=DATA.map(a=>{
