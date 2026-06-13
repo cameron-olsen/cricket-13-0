@@ -2276,10 +2276,7 @@ const clamp=(x,lo,hi)=>Math.max(lo,Math.min(hi,x));
 const SAMPLE_K=30;   // careers shorter than this regress toward the mean (kills small-sample freaks)
 const damp=(r,mat)=>50+(r-50)*Math.min(1,mat/SAMPLE_K);
 function batRating(p,dec){const L=eraLine(p,dec);if(L.avg<=0)return 5;const pf=Math.max(...p.pos.map(r=>POS_FACTOR[r]||1));return Math.round(clamp(damp(47+((L.avg*pf)/batPar[dec]-1)*78,L.mat),5,100));}
-function bowlRating(p,dec){const L=eraLine(p,dec);if(!L.wkts||L.bavg<=0)return 0;const isSpin=p.pos.includes("SP"),isPace=p.pos.includes("PC");const srp=isSpin?SR_PAR.SP:isPace?SR_PAR.PC:SR_PAR.AR;const avgS=bowlPar[dec]/L.bavg;let bsr=L.sr;if(useRealSR){const r=bowlSRof(p.n,dec);if(r>0)bsr=r;}
-  // v4: real bowling strike rate, era-adjusted (ERA_SR[dec][1] = that decade's balls-per-wkt par) with a mild type tweak so spinners aren't dinged for naturally slower SRs. v1-v3 (bsr=L.sr=0) fall back to the average term, unchanged.
-  let srS=avgS; if(bsr>0){const eraPar=(ERA_SR[dec]&&ERA_SR[dec][1])||88; const srParEff=eraPar*(srp/SR_PAR.AR)*0.768; srS=srParEff/bsr;}   // 0.768 = balance calibration: makes mean(srS)==mean(avgS) over rated bowlers, so activating the SR term re-ranks bowlers by strike rate without inflating overall bowling strength vs v3
-  return Math.round(clamp(damp(50+(0.6*avgS+0.4*srS-1)*100,L.mat),5,100));}
+function bowlRating(p,dec){const L=eraLine(p,dec);if(!L.wkts||L.bavg<=0)return 0;const isSpin=p.pos.includes("SP"),isPace=p.pos.includes("PC");const srp=isSpin?SR_PAR.SP:isPace?SR_PAR.PC:SR_PAR.AR;const avgS=bowlPar[dec]/L.bavg;const srS=L.sr>0?srp/L.sr:avgS;return Math.round(clamp(damp(50+(0.6*avgS+0.4*srS-1)*100,L.mat),5,100));}
 function isBowlerType(p){return p.pos.includes("PC")||p.pos.includes("SP")||(p.pos.includes("AR")&&p.cwkts>120);}
 
 /* ---- roles ---- */
@@ -2431,7 +2428,7 @@ function renderCard(i){
       html+=`<div class="bat-row ${b.out?"":"no"}${hl}"><span class="bn">${batNames[bi]}</span><span class="bh">${renderHow(b.how,bowlNames,bowlKeeper)}</span><span class="br">${b.r}${b.out?"":"*"}</span></div>`;});
     const dnb=it.bat.map((b,bi)=>b.dnb?batNames[bi]:null).filter(Boolean);
     if(dnb.length)html+=`<div class="bat-dnb">Did not bat: ${dnb.join(", ")}</div>`;
-    const fow=genFoW(it.total,it.wkts,(i*131+ii*17+it.total*7+it.wkts)>>>0);
+    const fow=it.fow||genFoW(it.total,it.wkts,(i*131+ii*17+it.total*7+it.wkts)>>>0);   // real FoW from the sim; genFoW kept only as a shape fallback
     if(fow.length)html+=`<div class="fow"><span>FoW</span> ${fow.map((s,k)=>(k+1)+"-"+s).join(", ")}</div>`;
     const bowlPlayers=it.side==="A"?opp.players:picks;   // bowling side
     const spinFirst=t.cond==="turner";   // pace opens, except a turner where spin leads
@@ -2907,9 +2904,7 @@ const LEGENDS=[
 const PBYN=new Map(P.map(p=>[p.n,p]));
 function resolveXI(spec){return spec.map(([n,dec])=>{const p=PBYN.get(n);return p?{...p,_dec:dec}:null;}).filter(Boolean);}
 function inputsOf(arr){return arr.map(p=>({br:batRating(p,p._dec),wr:bowlRating(p,p._dec),pos:p.pos,keeper:isKeeper(p),n:p.n,c:p.c,_dec:p._dec}));}
-LEGENDS.forEach(L=>{L._players=resolveXI(L.xi);});   // _inp computed lazily per engine version via oppInpFor (ratings depend on useRealSR)
-const _oppInpCache={};
-function oppInpFor(opp){const k=opp.id+"|"+(useRealSR?"r":"s");return _oppInpCache[k]||(_oppInpCache[k]=inputsOf(opp._players));}
+LEGENDS.forEach(L=>{L._players=resolveXI(L.xi);L._inp=inputsOf(L._players);});
 
 /* ---- match engine (two innings a side, result emerges from the card) ---- */
 function mSideIdx(inp,cond){const c=COND[cond];
@@ -2928,38 +2923,58 @@ const CONDBAT={turner:0.83,pace:0.88,swing:0.85,flat:1.10,true:1.0};
 /* Engine tuning v2 ("B"): sharper skill leverage (TWRX/TBRX), bounded condition leverage
    (WCOND compressed toward 1), softer collapse tails (new-ball/set multipliers).
    ENG_V1 preserves the launch engine EXACTLY — pre-v2 share codes (C|, O|) replay and verify
-   against it, so existing Hall of Fame records and shared links stay true forever. */
-const ENG   ={TWK:0.0115,TNEWB:1.45,TMID:1.12,TSINGLE:0.30,TP4A:0.040,TP4B:0.12,TWRX:1.30,TBRX:1.15,TSCOR:1.02,
+   against it, so existing Hall of Fame records and shared links stay true forever.
+   ENG_V3 = the long-serving v3 tune, frozen at the 2026-06-12 v4 break — C3|/O3|/O4| codes
+   replay and verify against it. New fields used by v4 are read with fallbacks, so the frozen
+   consts are untouched and legacy rng streams are byte-identical. */
+const ENG_V3={TWK:0.0115,TNEWB:1.45,TMID:1.12,TSINGLE:0.30,TP4A:0.040,TP4B:0.12,TWRX:1.30,TBRX:1.15,TSCOR:1.02,
   DECL1:440,DECLT:315,B1:3.2,B2:2.2,B3:7,R1:0.16,R2:0.18,NOKP:0.88,
   WCOND:{turner:{pace:0.73,spin:1.33},pace:{pace:1.27,spin:0.70},swing:{pace:1.24,spin:0.73},flat:{pace:1.03,spin:0.88},true:{pace:1.108,spin:0.868}}};
-const ENG_V2={...ENG,NOKP:1};   // engine v2 (pre keeper-penalty) — C2|/O2| codes verify against this, frozen
+const ENG_V2={...ENG_V3,NOKP:1};   // engine v2 (pre keeper-penalty) — C2|/O2| codes verify against this, frozen
 const ENG_V1={TWK:0.013,TNEWB:1.55,TMID:1.18,TSINGLE:0.30,TP4A:0.030,TP4B:0.12,TWRX:1.15,TBRX:1.0,TSCOR:0.96,
   DECL1:480,DECLT:345,B1:2.4,B2:1.7,B3:6,R1:0.27,R2:0.295,NOKP:1,
   WCOND:{turner:{pace:0.55,spin:1.55},pace:{pace:1.45,spin:0.50},swing:{pace:1.40,spin:0.55},flat:{pace:1.05,spin:0.80},true:{pace:1.18,spin:0.78}}};
-const engFor=v=>v===1?ENG_V1:v===2?ENG_V2:ENG;
+/* ===== ENG_V4 (2026-06-12) — grounded in the Cricsheet Tests archive =====
+   881 matches 2002–26, truth in data/cricsheet-tests-engine.json (tools_tests_engine_extract.py).
+   Empirical anchors: wpb set-curve new/mid/set 1.41/1.24/0.87 (→ 1.62/1.42/1.0 with set=1);
+   dismissals ct 59.2 / b 17.5 / lbw 16.5 / ro 2.7 / st 1.8, keeper takes 35% of catches, c&b 3.6%;
+   per-ball runs dot .742 / 1 .148 / 2 .036 / 3 .009 / 4 .061 / 6 .0043 (shape kept, mean stays esr);
+   pitch wear by innings (wkts ×0.91/0.97/1.08/1.13, scoring ×1.03/1.0/1.0/0.95); follow-on enforced
+   51%; 1st-inn declarations mean 526 / 3rd-inn targets mean 410 (×0.852 into the engine's SR-44
+   era-neutral run environment → 450/350). T4 flag = structural fixes: the third innings now gets the
+   real remaining time (kills the zero-over rain bug — those Tests are draws now), the chase gets
+   what's left, and a keeperless side's catches go to fielders, not "c & b". */
+const ENG   ={TWK:0.0115,TNEWB:1.62,TMID:1.42,TSINGLE:0.1583,T3R:0.0096,T2R:0.0481,
+  TP4A:0.0606,TP4B:0.12,TP6A:0.0043,TP6B:0.02,TWRX:1.30,TBRX:1.15,TSCOR:1.02,
+  DECL1:480,DECLT:410,B1:4.2,B2:3.0,B3:7,R1:0.16,R2:0.18,NOKP:0.88,FOLL:0.51,T4:1,
+  TPUSH:1.4,TPUSHW:0.55,TPACE:3.1,
+  TWEAR:[0.91,0.97,1.07,1.07],TSWEAR:[1.03,1.0,1.0,0.97],
+  TPCT:0.592,TPB:0.175,TPLBW:0.165,TPRUN:0.027,TPST:0.055,TCTK:0.35,TCNB:0.036,
+  WCOND:{turner:{pace:0.73,spin:1.33},pace:{pace:1.27,spin:0.70},swing:{pace:1.24,spin:0.73},flat:{pace:1.03,spin:0.88},true:{pace:1.108,spin:0.868}}};
+const engFor=v=>v===1?ENG_V1:v===2?ENG_V2:v===3?ENG_V3:ENG;
 let shareEng=null;   // set when replaying a shared code: V1 for legacy prefixes, else null (current)
-/* ---- engine v4: real per-decade strike-rate data wired in. bowlSR activates the dormant 40% term
-   in bowlRating(); batSR coverage gaps (mostly recent decades) fill effBatSR. Match-sim TUNING is
-   identical to v3 — only the data differs — so v1/v2/v3 (and legacy "1|") codes set useRealSR=false
-   and replay their Hall-of-Fame records and shared links exactly. New games + C4|/O5| codes use v4. */
-let useRealSR=true;   // true: fresh games (current=v4) + v4 codes; false: v1/v2/v3 + legacy "1|" replays
-const SRX2={"BW Hilfenhaus":{"2000s":[59.13,58.02],"2010s":[53.14,63.15]},"EJM Cowan":{"2010s":[41.27,null]},"JL Pattinson":{"2010s":[43.63,47.29]},"PJ Hughes":{"2000s":[58.56,null],"2010s":[51.6,null]},"PM Nevill":{"2010s":[40.66,null]},"PSP Handscomb":{"2010s":[49.83,null],"2020s":[40.27,null]},"SM Boland":{"2020s":[31.8,38.91]},"Khaled Ahmed":{"2020s":[32.07,69.75]},"Nasir Hossain":{"2010s":[54.46,null]},"Shadman Islam":{"2010s":[44.21,null],"2020s":[50.86,null]},"Shahadat Hossain":{"2000s":[38.69,63.09],"2010s":[54,null]},"AAP Atkinson":{"2020s":[76.21,36.8]},"DJ Malan":{"2010s":[41.08,null],"2020s":[40.69,null]},"DP Sibley":{"2020s":[34.7,null]},"EJG Morgan":{"2010s":[54.77,null]},"NRD Compton":{"2010s":[36.04,null]},"RJ Burns":{"2010s":[45.17,null],"2020s":[42.25,null]},"TT Bresnan":{"2010s":[39.25,65.04]},"A Mishra":{"2000s":[64.03,75.14],"2010s":[58.13,64.09]},"PP Ojha":{"2010s":[17.43,68.48]},"S Sreesanth":{"2000s":[64.28,55.94],"2010s":[29.62,74.96]},"AY Patel":{"2010s":[32.88,72.22],"2020s":[39.9,49.72]},"DAJ Bracewell":{"2010s":[46.36,69.22]},"HD Rutherford":{"2010s":[56.42,null]},"IE O'Brien":{"2000s":[38.48,60.19]},"IS Sodhi":{"2010s":[52.64,77.7],"2020s":[32.94,null]},"JS Patel":{"2000s":[43.52,77.45],"2010s":[57.2,102.4]},"MD Craig":{"2010s":[54.38,73.38]},"Abdur Rehman":{"2010s":[43.49,69.79]},"Adnan Akmal":{"2010s":[44.07,null]},"Faisal Iqbal":{"2000s":[44.48,null]},"Junaid Khan":{"2010s":[39.86,64.85]},"Rahat Ali":{"2010s":[36.55,72.87]},"Zulfiqar Babar":{"2010s":[69.56,82.92]},"A Nortje":{"2020s":[31.83,40.4]},"DG Bedingham":{"2020s":[67.42,null]},"HE van der Dussen":{"2020s":[40,null]},"Imran Tahir":{"2010s":[55.31,68.85]},"L Ngidi":{"2010s":[36.58,null],"2020s":[43.38,42.76]},"RD Rickelton":{"2020s":[52.85,null]},"T de Zorzi":{"2020s":[54.8,null]},"BOP Fernando":{"2010s":[53.99,null],"2020s":[48.33,null]},"KTGD Prasad":{"2010s":[53.45,57.95]},"MDKJ Perera":{"2010s":[73.95,null],"2020s":[66.39,null]},"MF Maharoof":{"2000s":[40,null]},"MG Vandort":{"2000s":[47.25,null]},"MVT Fernando":{"2010s":[13.33,51.85],"2020s":[29.11,55.55]},"N Pradeep":{"2010s":[36.56,72.52]},"NT Paranavitana":{"2000s":[51.2,null],"2010s":[38.96,null]},"RMS Eranga":{"2010s":[41.15,68.26]},"RTM Mendis":{"2020s":[43.91,58.77]},"UWMBCA Welegedara":{"2000s":[45.23,null],"2010s":[52.23,68.28]},"CS Baugh":{"2010s":[47.42,null]},"JA Warrican":{"2010s":[56.12,70.27],"2020s":[55.2,53.57]},"JD Campbell":{"2010s":[61.69,null],"2020s":[49.07,null]},"KA Edwards":{"2010s":[48.05,null]},"NE Bonner":{"2020s":[34.28,null]},"R Rampaul":{"2010s":[51.72,66.17]},"S Shillingford":{"2010s":[42.35,67.05]},"JT Partridge":{"1960s":[29.31,83.72]},"GB Lawrence":{"1960s":[null,47.64]},"AH McKinnon":{"1960s":[null,97.92]}};   // gap-fill overlay [batSR,bowlSR] from data/sr-source; consulted only when useRealSR
-function bowlSRof(n,dec){const a=(SRX[n]||{})[dec];if(a&&a[5]!=null)return a[5];const b=(SRX2[n]||{})[dec];return b&&b[1]!=null?b[1]:0;}
-function effBatSR(n,dec){let bs=null;const sx=(SRX[n]||{})[dec];if(sx&&sx[3]!=null)bs=sx[3];else if(useRealSR){const b=(SRX2[n]||{})[dec];if(b&&b[0]!=null)bs=b[0];}if(!bs)return 40;const e=ERA_SR[dec];return e?bs/e[0]*44:bs;}
-function mBall(esr,br,bwr,type,cond,bf,rng,E){
+function effBatSR(n,dec){const sx=(SRX[n]||{})[dec];const bs=sx&&sx[3]!=null?sx[3]:null;if(!bs)return 40;const e=ERA_SR[dec];return e?bs/e[0]*44:bs;}
+function mBall(esr,br,bwr,type,cond,bf,rng,E,wmul){
   const wc=E.WCOND[cond],tm=type==="sp"?wc.spin:type==="pc"?wc.pace:(wc.pace+wc.spin)/2;
   const set=bf<6?E.TNEWB:bf<20?E.TMID:1.0;
-  let pOut=E.TWK*Math.pow(Math.max(bwr,10)/50,E.TWRX)/Math.pow(Math.max(br,10)/50,E.TBRX)*tm*set; pOut=clamp(pOut,0.002,0.18);
+  let pOut=E.TWK*Math.pow(Math.max(bwr,10)/50,E.TWRX)/Math.pow(Math.max(br,10)/50,E.TBRX)*tm*set*(wmul||1); pOut=clamp(pOut,0.002,0.18);
   if(rng()<pOut)return{w:true,r:0};
   const m=(esr||44)/100*E.TSCOR*CONDBAT[cond]/Math.pow(tm,0.4);
+  if(E.TP6A!=null){   // v4 run shape — real Cricsheet per-ball distribution, scaled so the mean stays esr
+    const p4=clamp(E.TP4A+E.TP4B*(m-0.42),0.012,0.17),p6=clamp(E.TP6A+E.TP6B*(m-0.42),0.0005,0.02);
+    const r=rng();if(r<p6)return{w:false,r:6};if(r<p6+p4)return{w:false,r:4};
+    const r2=rng();if(r2<E.T3R)return{w:false,r:3};if(r2<E.T2R)return{w:false,r:2};if(r2<E.T2R+E.TSINGLE)return{w:false,r:1};
+    return{w:false,r:0};
+  }
   const p4=clamp(E.TP4A+E.TP4B*(m-0.42),0.012,0.17),p6=clamp(0.0015+0.018*(m-0.6),0,0.035);
   const r=rng();if(r<p6)return{w:false,r:6};if(r<p6+p4)return{w:false,r:4};
   const r2=rng();if(r2<0.014)return{w:false,r:3};if(r2<0.075)return{w:false,r:2};if(r2<0.075+E.TSINGLE)return{w:false,r:1};
   return{w:false,r:0};
 }
-function mInnings(batInp,bowlInp,cond,cap,target,declareTarget,rng,E){
+function mInnings(batInp,bowlInp,cond,cap,target,declareTarget,rng,E,innNo){
   E=E||ENG;
   const wc=E.WCOND[cond];
+  const wearW=E.TWEAR?E.TWEAR[Math.min(innNo||1,4)-1]:1, wearS=E.TSWEAR?E.TSWEAR[Math.min(innNo||1,4)-1]:1;   // v4 pitch wear (legacy: 1)
   const kinds=bowlInp.map(p=>p.pos.includes("SP")?"sp":p.pos.includes("PC")?"pc":"med");
   const edge=bowlInp.map(p=>{const sp=p.pos.includes("SP"),pc=p.pos.includes("PC"),ar=p.pos.includes("AR");if(sp||pc)return 1;if(ar&&p.wr>0)return 0.85;if(p.wr>=45)return 0.30;return 0;});
   let nB=edge.filter(e=>e>0).length;
@@ -2967,18 +2982,20 @@ function mInnings(batInp,bowlInp,cond,cap,target,declareTarget,rng,E){
   const nokF=bowlInp.some(p=>p.keeper)?1:E.NOKP;   // fielding side without a keeper: chances go down
   const bowlers=bowlInp.map((p,j)=>({p,j,type:kinds[j],edge:edge[j]})).filter(b=>b.edge>0)
     .map(b=>({...b,wrEff:Math.max(b.p.wr,10)*(b.edge<0.5?0.6:1)*nokF,cw:b.type==="sp"?wc.spin:b.type==="pc"?wc.pace:(wc.pace+wc.spin)/2,o:0,balls:0,r:0,w:0}));
-  const bat=batInp.map(p=>({r:0,b:0,out:false,dnb:false,how:"not out",byBowler:-1,byField:-1,esr:effBatSR(p.n,p._dec)}));
+  const bat=batInp.map(p=>({r:0,b:0,out:false,dnb:false,how:"not out",byBowler:-1,byField:-1,esr:effBatSR(p.n,p._dec)*wearS}));
   let total=0,wkts=0,striker=0,nonstriker=1,next=2,declared=false,result=null,over=0,last=-1,won=false;
+  const fow=[];   // real fall-of-wickets (score at each fall) — display-only, consumes no rng, safe for every engine version
   while(wkts<10&&over<cap){
     let pool=bowlers.map((b,i)=>i).filter(i=>i!==last);if(!pool.length)pool=bowlers.map((b,i)=>i);
     const w=pool.map(i=>bowlers[i].edge>=0.5?bowlers[i].cw*Math.max(bowlers[i].p.wr,12):0);const specSum=w.reduce((a,x)=>a+x,0)||1;pool.forEach((i,k)=>{if(bowlers[i].edge<0.5)w[k]=specSum*0.095;});
     let sw=w.reduce((a,b)=>a+b,0),rr=rng()*sw,acc=0,bi=pool[0];for(let k=0;k<pool.length;k++){acc+=w[k];if(rr<=acc){bi=pool[k];break;}}
     last=bi;const bw=bowlers[bi];
-    let block=false;if(target){const ol=cap-over,need=target-total,rrr=ol>0?need/ol:99;if((rrr>E.B1||(wkts>=4&&rrr>E.B2)||wkts>=E.B3)&&ol>8)block=true;}
+    let block=false,press=1;if(target){const ol=cap-over,need=target-total,rrr=ol>0?need/ol:99;if((rrr>E.B1||(wkts>=4&&rrr>E.B2)||wkts>=E.B3)&&ol>8)block=true;
+      else if(E.TPUSH&&rrr>E.TPACE)press=Math.min(rrr/E.TPACE,E.TPUSH);}   // v4: a gettable chase is hunted — faster scoring at a wicket-risk cost
     for(let ball=0;ball<6&&wkts<10;ball++){
-      const o=mBall(bat[striker].esr*(block?0.5:1),batInp[striker].br,bw.wrEff*(block?clamp(0.45+(bw.p.wr-55)/55,0.45,1.05):1),bw.type,cond,bat[striker].b,rng,E);
+      const o=mBall(bat[striker].esr*(block?0.5:1)*press,batInp[striker].br,bw.wrEff*(block?clamp(0.45+(bw.p.wr-55)/55,0.45,1.05):1),bw.type,cond,bat[striker].b,rng,E,wearW*(press>1?Math.pow(press,E.TPUSHW):1));
       bat[striker].b++;bw.balls++;
-      if(o.w){bat[striker].out=true;bat[striker].byBowler=bi;wkts++;bw.w++;if(next<11){striker=next;next++;}}
+      if(o.w){bat[striker].out=true;bat[striker].byBowler=bi;wkts++;bw.w++;fow.push(total);if(next<11){striker=next;next++;}}
       else{total+=o.r;bat[striker].r+=o.r;bw.r+=o.r;if(o.r%2===1){const t=striker;striker=nonstriker;nonstriker=t;}}
       if(target&&total>=target){result="chasewin";won=true;break;}
     }
@@ -2992,7 +3009,19 @@ function mInnings(batInp,bowlInp,cond,cap,target,declareTarget,rng,E){
   const pickW=(wt,sum)=>{let r=rng()*sum,acc=0;for(let i=0;i<wt.length;i++){acc+=wt[i];if(r<=acc)return i;}return 0;};
   for(let i=0;i<bat.length;i++){if(!bat[i].out)continue;
     const bj=bowlers[bat[i].byBowler].j;bat[i].byBowler=bj;
-    const sp=kinds[bj]==="sp";const pCt=0.55,pBowl=0.20,pLbw=0.14,pRun=0.04,pSt=sp?0.07:0;const x=rng()*(pCt+pBowl+pLbw+pRun+pSt);
+    const sp=kinds[bj]==="sp";
+    if(E.TPCT!=null){   // v4 dismissal mix — real Cricsheet shares; keeperless catches go to fielders (not "c & b")
+      const pSt=sp?E.TPST:0;const x=rng()*(E.TPCT+E.TPB+E.TPLBW+E.TPRUN+pSt);
+      if(x<E.TPCT){const r2=rng();
+        if(r2<E.TCTK&&bk>=0){bat[i].byField=bk;bat[i].how="c †K b "+bj;}
+        else if(r2>=E.TCTK&&r2<E.TCTK+E.TCNB){bat[i].byField=bj;bat[i].how="c & b "+bj;}
+        else{const fj=pickW(fldW,fldSum);bat[i].byField=fj;bat[i].how="c F"+fj+" b "+bj;}}
+      else if(x<E.TPCT+E.TPB)bat[i].how="b "+bj;
+      else if(x<E.TPCT+E.TPB+E.TPLBW)bat[i].how="lbw b "+bj;
+      else if(x<E.TPCT+E.TPB+E.TPLBW+E.TPRUN){bat[i].how="run out";const bb=bowlers.find(b=>b.j===bj);if(bb)bb.w--;bat[i].byBowler=-1;}
+      else{if(bk>=0){bat[i].byField=bk;bat[i].how="st †K b "+bj;}else bat[i].how="b "+bj;}
+      continue;}
+    const pCt=0.55,pBowl=0.20,pLbw=0.14,pRun=0.04,pSt=sp?0.07:0;const x=rng()*(pCt+pBowl+pLbw+pRun+pSt);
     if(x<pCt){const r2=rng();if(r2<0.30&&bk>=0){bat[i].byField=bk;bat[i].how="c †K b "+bj;}else if(r2<0.40){bat[i].byField=bj;bat[i].how="c & b "+bj;}else{const fj=pickW(fldW,fldSum);bat[i].byField=fj;bat[i].how="c F"+fj+" b "+bj;}}
     else if(x<pCt+pBowl)bat[i].how="b "+bj;
     else if(x<pCt+pBowl+pLbw)bat[i].how="lbw b "+bj;
@@ -3000,7 +3029,7 @@ function mInnings(batInp,bowlInp,cond,cap,target,declareTarget,rng,E){
     else{if(bk>=0){bat[i].byField=bk;bat[i].how="st †K b "+bj;}else bat[i].how="b "+bj;}}
   const bowlFig=bowlInp.map(()=>({o:0,m:0,r:0,w:0}));
   bowlers.forEach(b=>{bowlFig[b.j]={o:b.o,m:Math.max(0,Math.round(b.o*(0.10+0.08*rng()))),r:b.r,w:b.w};});
-  return {total,wkts:bat.filter(b=>b.out).length,declared,overs:over,result,bat,bowlFig};
+  return {total,wkts:bat.filter(b=>b.out).length,declared,overs:over,result,bat,bowlFig,fow};
 }
 
 
@@ -3011,19 +3040,31 @@ function mPlayTest(A,B,cond,rng,E){
   let budget=clamp(450-lost,100,450);
   if(budget<150&&rng()<0.7)return{cond,outcome:"D",margin:"rain",inn:[],tossYou:true,lost:Math.round(lost)};
   const youFirst=rng()<0.5,T1=youFirst?A:B,T2=youFirst?B:A,s1=youFirst?"A":"B",s2=youFirst?"B":"A";const inn=[];const CAP=150;
-  const i1=mInnings(T1,T2,cond,Math.min(budget,CAP),null,E.DECL1,rng,E);budget-=i1.overs;inn.push({side:s1,...i1});
-  const i2=mInnings(T2,T1,cond,Math.min(budget,CAP),null,E.DECL1,rng,E);budget-=i2.overs;inn.push({side:s2,...i2});
+  const i1=mInnings(T1,T2,cond,Math.min(budget,CAP),null,E.DECL1,rng,E,1);budget-=i1.overs;inn.push({side:s1,...i1});
+  const i2=mInnings(T2,T1,cond,Math.min(budget,CAP),null,E.DECL1,rng,E,2);budget-=i2.overs;inn.push({side:s2,...i2});
   const lead1=i1.total-i2.total;let outcome="D",margin="match drawn";
   if(budget>=40){
-    const foll=lead1>=200&&rng()<0.5;
-    if(foll){const i3=mInnings(T2,T1,cond,Math.min(budget,CAP),null,null,rng,E);budget-=i3.overs;inn.push({side:s2,...i3});
+    const foll=lead1>=200&&rng()<(E.FOLL!=null?E.FOLL:0.5);
+    if(foll){const i3=mInnings(T2,T1,cond,E.T4?budget:Math.min(budget,CAP),null,null,rng,E,3);budget-=i3.overs;inn.push({side:s2,...i3});
       if(i3.total<lead1&&i3.wkts>=10){outcome="W";margin="an innings and "+(lead1-i3.total)+" runs";}
-      else if(budget>=25){const need=Math.max(1,i3.total-lead1);const i4=mInnings(T1,T2,cond,Math.min(budget,CAP),need,null,rng,E);inn.push({side:s1,...i4});
+      else if(budget>=25){const need=Math.max(1,i3.total-lead1);const i4=mInnings(T1,T2,cond,E.T4?budget:Math.min(budget,CAP),need,null,rng,E,4);inn.push({side:s1,...i4});
         outcome=i4.result==="chasewin"?"W":i4.result==="allout"?"L":"D";if(outcome==="W")margin=(10-i4.wkts)+" wickets";else if(outcome==="L")margin=(need-i4.total)+" runs";}
       else outcome="D";
-    } else {const i4res=clamp(Math.round(budget*0.5),60,95);const declT=clamp(E.DECLT-lead1,140,430);const i3=mInnings(T1,T2,cond,Math.min(budget-i4res,CAP),null,declT,rng,E);budget-=i3.overs;inn.push({side:s1,...i3});
+    } else if(E.T4){
+      /* v4: the third innings gets the real remaining time (no phantom reserve, no artificial
+         150-over cap). Kills two bugs: the zero-over third-innings rain result (heavy rain now
+         drifts to a draw, as it should) and the phantom 1-run fourth innings — if the side batting
+         third is bowled out without erasing the deficit, that is an INNINGS defeat, the winners
+         never bat again. */
+      const declT=clamp(E.DECLT-lead1,140,430);const i3=mInnings(T1,T2,cond,budget,null,declT,rng,E,3);budget-=i3.overs;inn.push({side:s1,...i3});
+      const rawT=i3.total+lead1;
+      if(i3.wkts>=10&&rawT<0){outcome="L";margin="an innings and "+(-rawT)+" runs";}
+      else if(budget>=25){const target=Math.max(1,rawT);const i4=mInnings(T2,T1,cond,budget,target,null,rng,E,4);inn.push({side:s2,...i4});
+        outcome=i4.result==="chasewin"?"L":i4.result==="allout"?"W":"D";if(outcome==="W")margin=(target-i4.total)+" runs";else if(outcome==="L")margin=(10-i4.wkts)+" wickets";}
+      else outcome="D";
+    } else {const i4res=clamp(Math.round(budget*0.5),60,95);const declT=clamp(E.DECLT-lead1,140,430);const i3=mInnings(T1,T2,cond,Math.min(budget-i4res,CAP),null,declT,rng,E,3);budget-=i3.overs;inn.push({side:s1,...i3});
       const target=i3.total+lead1;
-      if(budget>=25){const i4=mInnings(T2,T1,cond,Math.min(budget,i4res,CAP),Math.max(1,target),null,rng,E);inn.push({side:s2,...i4});
+      if(budget>=25){const i4=mInnings(T2,T1,cond,Math.min(budget,i4res,CAP),Math.max(1,target),null,rng,E,4);inn.push({side:s2,...i4});
         outcome=i4.result==="chasewin"?"L":i4.result==="allout"?"W":"D";if(outcome==="W")margin=(target-i4.total)+" runs";else if(outcome==="L")margin=(10-i4.wkts)+" wickets";}
       else outcome="D";}
   }
@@ -3165,7 +3206,7 @@ function simulateOpen(){
   const seed=hashStr(picks.map(p=>p.n+"."+p._dec).join("-")+"|"+fixturesEnc(fixtures)+"|O1");
   const orng=mulberry32((seed^0x9e3779b9)>>>0);                      // opponent stream, separate from match stream
   const yours=picks.map(p=>p.n);
-  const rcap=(shareEng||shareRoster===1)?1:2;            // legacy codes (O|/O2|/O3|) draw opponents from the launch roster
+  const rcap=shareRoster===1?1:2;            // pre-roster-v2 codes (O|/O2|/O3|) draw opponents from the launch roster; O4|/O5| use the full roster
   const opps=fixtures.map((fx,i)=>{let xi=null,g=0;while(!xi&&g<50){xi=draftOpenOpp(orng,OPEN_SK[i]??0.6,yours,rcap);g++;}return xi;});
   const oppInps=opps.map(o=>inputsOf(o));
   const E=shareEng||ENG;                      // shared legacy (O|) tours replay on the engine they were created under
@@ -3186,7 +3227,7 @@ function simulateOpen(){
 }
 function simulateChallenge(){
   const E=shareEng||ENG;                      // shared legacy (C|) tours replay on the engine they were posted under
-  const youInp=statInputs(), oppInp=oppInpFor(challengeOpp);
+  const youInp=statInputs(), oppInp=challengeOpp._inp;
   const seed=hashStr(picks.map(p=>p.n+"."+p._dec).join("-")+"|"+challengeOpp.id);
   const rng=mulberry32(seed);
   tour=challengeFixtures(challengeOpp,rng);   // deterministic fixtures from the seed -> the whole tour is reproducible (shareable)
@@ -3410,11 +3451,11 @@ function parseXI(str){const arr=[];
     if(!p||!dec||!p.eras[dec])return null; p._dec=dec; arr.push(p);}
   return arr.length===XI_SIZE?arr:null;}
 function shareCode(W,D,L){ return b64e("1|"+xiParts()+"|"+W+"."+D+"."+L); }
-function shareCodeChallenge(){ return b64e((shareEng===ENG_V1?"C|":shareEng===ENG_V2?"C2|":useRealSR?"C4|":"C3|")+xiParts()+"|"+challengeOpp.id); }   // challenge tour: XI + opponent; legacy replays keep their legacy prefix
+function shareCodeChallenge(){ return b64e((shareEng===ENG_V1?"C|":shareEng===ENG_V2?"C2|":shareEng===ENG_V3?"C3|":"C4|")+xiParts()+"|"+challengeOpp.id); }   // challenge tour: XI + opponent; legacy replays keep their legacy prefix
 function decodeShare(code){
   let raw; try{raw=b64d(code);}catch(e){return null;}
   const seg=raw.split("|");
-  if(seg[0]==="C"||seg[0]==="C2"||seg[0]==="C3"||seg[0]==="C4"){    // shared Challenge tour (C=launch, C2=v2, C3=v3, C4=v4 real strike-rate data)
+  if(seg[0]==="C"||seg[0]==="C2"||seg[0]==="C3"||seg[0]==="C4"){    // shared Challenge tour (C = launch engine, C2 = v2, C3 = v3, C4 = current/v4)
     const arr=parseXI(seg[1]); if(!arr)return null;
     const opp=LEGENDS.find(L=>L.id===seg[2]); if(!opp)return null;
     return {picksArr:arr,challenge:true,opp,eng:seg[0]==="C"?1:seg[0]==="C2"?2:seg[0]==="C3"?3:4};
@@ -3422,7 +3463,7 @@ function decodeShare(code){
   if(seg[0]==="O"||seg[0]==="O2"||seg[0]==="O3"||seg[0]==="O4"||seg[0]==="O5"){    // shared Open Tour: XI + tour type + fixtures (replays deterministically)
     const arr=parseXI(seg[1]); if(!arr)return null;
     const fx=fixturesDec(seg[3]||""); if(!fx)return null;
-    const tt=TOUR_TYPES[+seg[2]];                       // O4 = v3 engine + roster v2; O5 = v4 engine (real strike-rate data) + roster v2
+    const tt=TOUR_TYPES[+seg[2]];                       // O4 = engine v3 + roster v2; O5 = engine v4 + roster v2
     return {picksArr:arr,open:true,tourType:tt?tt.name:"World Tour",fixtures:fx,eng:seg[0]==="O"?1:seg[0]==="O2"?2:seg[0]==="O5"?4:3,roster:(seg[0]==="O4"||seg[0]==="O5")?2:1};
   }
   if(seg[0]!=="1"||seg.length<3)return null;
@@ -3441,7 +3482,7 @@ function fixturesDec(str){const fx=[];
   return fx.length===SEASON?fx:null;}
 function shareCodeOpen(){
   const ti=Math.max(0,TOUR_TYPES.findIndex(t=>t.name===lastTourType));
-  return b64e((shareEng===ENG_V1?"O|":shareEng===ENG_V2?"O2|":useRealSR?"O5|":(shareRoster===1?"O3|":"O4|"))+xiParts()+"|"+ti+"|"+fixturesEnc(lastOpenFixtures));
+  return b64e((shareEng===ENG_V1?"O|":shareEng===ENG_V2?"O2|":shareEng===ENG_V3?(shareRoster===1?"O3|":"O4|"):"O5|")+xiParts()+"|"+ti+"|"+fixturesEnc(lastOpenFixtures));
 }
 /* ---- render the result as a shareable PNG (no backend — drawn on a canvas) ---- */
 function drawBall(x,cx,cy,r){
@@ -3651,9 +3692,8 @@ async function hofFetch(oppId){
   return await r.json();
 }
 // re-derive a tour's true W/D/L straight from its share code — identical maths to simulateChallenge()
-function verifyChallenge(arr,opp,E,realSR){
-  const prevR=useRealSR; useRealSR=!!realSR;             // ratings/esr must match the engine the record was posted under
-  const youInp=inputsOf(arr), oppInp=oppInpFor(opp);
+function verifyChallenge(arr,opp,E){
+  const youInp=inputsOf(arr), oppInp=opp._inp;
   const seed=hashStr(arr.map(p=>p.n+"."+p._dec).join("-")+"|"+opp.id);
   const rng=mulberry32(seed);
   const fx=challengeFixtures(opp,rng);
@@ -3662,7 +3702,6 @@ function verifyChallenge(arr,opp,E,realSR){
   const bat=weighted(youInp.map(p=>Math.max(p.br,12)),BW), bowl=weighted(youInp.map(p=>Math.max(p.wr,8)),WW);
   const resultScore=(2*W+D)/(2*(W+D+L||1));
   const teamPts=Math.round(clamp(55+resultScore*75+((bat+bowl)-150)*0.18,30,142));   // same ICC-style team rating as the result screen
-  useRealSR=prevR;
   return {W,D,L,teamPts};
 }
 function hofCmp(a,b){            // best record first; harder opponent breaks ties; then earliest
@@ -3694,13 +3733,13 @@ function esc(s){return String(s).replace(/[&<>"'`]/g,c=>({"&":"&amp;","<":"&lt;"
 function verifyOne(e){
   let d=null; try{d=decodeShare(e.share_code);}catch(_){}
   if(!d||!d.challenge||!d.opp||d.opp.id!==e.opp_id)return null;       // undecodable / opponent mismatch
-  const t=verifyChallenge(d.picksArr,d.opp,engFor(d.eng),d.eng>=4);   // verify on the engine the record was posted under (v4 = real strike-rate data)
+  const t=verifyChallenge(d.picksArr,d.opp,engFor(d.eng));            // verify on the engine the record was posted under
   return {ok:(t.W===e.wins&&t.D===e.draws&&t.L===e.losses),wins:t.W,draws:t.D,losses:t.L,swept:t.W===SEASON,teamPts:t.teamPts};
 }
 /* ---- verification cache: a share code is immutable and the replay deterministic, so each
    tour only ever needs verifying once per device per engine version. Bump VC_KEY's suffix
    whenever the engine changes — stale caches are then simply ignored. ---- */
-const VC_KEY="h13_vc2";
+const VC_KEY="h13_vc2";   // bumped at the v4 break — cached verdicts from the v3-era client are stale
 let VCACHE={};try{VCACHE=JSON.parse(localStorage.getItem(VC_KEY)||"{}")||{};}catch(_){VCACHE={};}
 let vcDirty=false,vcSaveT=null;
 function vcSave(){if(!vcDirty)return;vcDirty=false;try{localStorage.setItem(VC_KEY,JSON.stringify(VCACHE));}catch(_){}}
@@ -4056,8 +4095,7 @@ $("fbSend")&&($("fbSend").onclick=async()=>{
   const d=decodeShare(code); if(!d)return;
   picks=d.picksArr; used=new Set(picks.map(p=>p.n)); sharedView=true;
   $("title").classList.add("hidden");$("challenge").classList.add("hidden");$("draft").classList.add("hidden");
-  shareEng=d.eng===1?ENG_V1:d.eng===2?ENG_V2:null;      // legacy codes replay on the engine they were made under (v3/v4 share v3 match tuning)
-  useRealSR=(d.eng>=4);                                 // only v4 codes use the real strike-rate data; v1/v2/v3 + legacy "1|" reproduce their records
+  shareEng=d.eng===1?ENG_V1:d.eng===2?ENG_V2:d.eng===3?ENG_V3:null;      // legacy codes replay on the engine they were made under
   shareRoster=d.open&&d.roster===1?1:null;              // pre-roster-v2 Open codes replay against the launch roster
   if(d.challenge){                                      // replay a shared Challenge tour deterministically
     gameMode="challenge"; challengeOpp=d.opp;
