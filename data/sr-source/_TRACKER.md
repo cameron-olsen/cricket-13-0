@@ -16,7 +16,18 @@ complete, wire strike rate into batRating/bowlRating and the match-engine tempo/
 - [x] 2010s  (full coverage, 0 missing)
 - [x] 2020s  (full coverage, 0 missing)
 
-## ALL TEN DECADES COMPLETE — ready for the integration pass.
+## ALL TEN DECADES COMPLETE — INTEGRATION PASS DONE (engine v4).
+## Wired (2026-06-13): bowlSR -> bowlRating's 40% strike-rate term, era-adjusted via ERA_SR[dec][1]
+##   with a spin/pace type tweak and a 0.768 balance calibration (activation is power-neutral vs v3:
+##   mean rating change -0.08, it re-ranks bowlers by strike rate without inflating them). batSR
+##   coverage gaps filled via the SRX2 overlay (data/srx2-overlay.json; 80 batSR + 42 bowlSR fills,
+##   mostly 2000s-2020s players missing from SRX). Parser: data/build-srx2.js (reproduces the
+##   existing SRX batSR exactly, 0 mismatches over 1597 lines). All v4 changes are gated behind
+##   useRealSR; v1/v2/v3 + legacy "1|" replays are byte-identical (verified 300/300). New games emit
+##   C4|/O5| share codes; old C/C2/C3/O..O4 codes still decode and verify against their frozen engine.
+## NOTE: the milestone-rate fields (p100/p50/pduck/p5w in SRX) were NOT wired — the live scorecards
+##   are now ball-by-ball (mInnings/mBall), so milestones emerge organically from ratings + batSR.
+##   The only milestone-synthesizing path (genTourStats) now serves frozen legacy "1|" replays only.
 ## Only 1 roster player absent across the whole set: KC James (1930s NZ keeper).
 ## Note: 1940s/1950s bowling tails were truncated in the original paste, but every
 ##   game-roster player is present (truncation only hit non-roster low-wicket bowlers).
