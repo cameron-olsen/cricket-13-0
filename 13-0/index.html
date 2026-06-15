@@ -3056,10 +3056,18 @@ function mPlayTest(A,B,cond,rng,E){
          drifts to a draw, as it should) and the phantom 1-run fourth innings — if the side batting
          third is bowled out without erasing the deficit, that is an INNINGS defeat, the winners
          never bat again. */
-      const declT=clamp(E.DECLT-lead1,140,430);const i3=mInnings(T1,T2,cond,budget,null,declT,rng,E,3);budget-=i3.overs;inn.push({side:s1,...i3});
+      /* v4.1: time-aware declaration. A 4th-innings chase tops out at CHASE_CAP overs (a side can't
+         physically bat 200+); the captain bats on until the lead would demand a hard chase (~SAFE_RATE
+         rpo) over the overs the opponent will actually get — so when most of the match remains we no
+         longer declare to a gettable target. When time is genuinely short, max() falls back to the old
+         DECLT-lead1 threshold and we declare to force a result, as a real captain would. */
+      const CHASE_CAP=E.CHASECAP||150, SAFE_RATE=E.SAFERATE||3.3;
+      const chaseOvers=clamp(Math.min(budget,CHASE_CAP),40,CHASE_CAP);
+      const declT=clamp(Math.max(E.DECLT-lead1,Math.round(SAFE_RATE*chaseOvers)-lead1),160,520);
+      const i3=mInnings(T1,T2,cond,budget,null,declT,rng,E,3);budget-=i3.overs;inn.push({side:s1,...i3});
       const rawT=i3.total+lead1;
       if(i3.wkts>=10&&rawT<0){outcome="L";margin="an innings and "+(-rawT)+" runs";}
-      else if(budget>=25){const target=Math.max(1,rawT);const i4=mInnings(T2,T1,cond,budget,target,null,rng,E,4);inn.push({side:s2,...i4});
+      else if(budget>=25){const target=Math.max(1,rawT);const i4=mInnings(T2,T1,cond,Math.min(budget,CHASE_CAP),target,null,rng,E,4);inn.push({side:s2,...i4});
         outcome=i4.result==="chasewin"?"L":i4.result==="allout"?"W":"D";if(outcome==="W")margin=(target-i4.total)+" runs";else if(outcome==="L")margin=(10-i4.wkts)+" wickets";}
       else outcome="D";
     } else {const i4res=clamp(Math.round(budget*0.5),60,95);const declT=clamp(E.DECLT-lead1,140,430);const i3=mInnings(T1,T2,cond,Math.min(budget-i4res,CAP),null,declT,rng,E,3);budget-=i3.overs;inn.push({side:s1,...i3});
