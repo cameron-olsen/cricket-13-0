@@ -2276,7 +2276,7 @@ const clamp=(x,lo,hi)=>Math.max(lo,Math.min(hi,x));
 const SAMPLE_K=30;   // careers shorter than this regress toward the mean (kills small-sample freaks)
 const damp=(r,mat)=>50+(r-50)*Math.min(1,mat/SAMPLE_K);
 function batRating(p,dec){const L=eraLine(p,dec);if(L.avg<=0)return 5;const pf=Math.max(...p.pos.map(r=>POS_FACTOR[r]||1));return Math.round(clamp(damp(47+((L.avg*pf)/batPar[dec]-1)*78,L.mat),5,100));}
-function bowlRating(p,dec){const L=eraLine(p,dec);if(!L.wkts||L.bavg<=0)return 0;const isSpin=p.pos.includes("SP"),isPace=p.pos.includes("PC");const srp=isSpin?SR_PAR.SP:isPace?SR_PAR.PC:SR_PAR.AR;const avgS=bowlPar[dec]/L.bavg;
+function bowlRating(p,dec){if(p.pos.includes("WK"))return 0;const L=eraLine(p,dec);if(!L.wkts||L.bavg<=0)return 0;const isSpin=p.pos.includes("SP"),isPace=p.pos.includes("PC");const srp=isSpin?SR_PAR.SP:isPace?SR_PAR.PC:SR_PAR.AR;const avgS=bowlPar[dec]/L.bavg;
   // real bowling strike rate, era-adjusted (ERA_SR[dec][1] = that decade's balls-per-wkt par) with a
   // spin/pace type tweak and a 0.768 calibration so activating the SR term is power-neutral vs avg-only.
   let bsr=L.sr; const r=bowlSRof(p.n,dec); if(r>0)bsr=r;
@@ -2926,6 +2926,18 @@ const MORD=[1.12,1.12,1.10,1.07,1.04,1.0,0.94,0.82,0.72,0.62,0.55];
 /* ===== ball-by-ball Test engine (player-driven, era-normalized) ===== */
 const ERA_SR={"1930s":[42.2,77.1],"1940s":[40.6,121],"1950s":[40.6,86.2],"1960s":[38.1,92.4],"1970s":[39.7,101],"1980s":[41.6,89.5],"1990s":[42.2,92.6],"2000s":[47.4,79.4],"2010s":[51,78.2],"2020s":[50.8,69.7]};
 const CONDBAT={turner:0.83,pace:0.88,swing:0.85,flat:1.10,true:1.0};
+/* per-pitch DETERIORATION: how each surface's spin/pace effectiveness drifts across the four innings
+   (centered on innings 2 = 1.0, so the engine's baseline calibration holds). Baked into each bowler's
+   condition multiplier, so it drives over-allocation, wickets AND scoring together.
+   turner: cracks & dusts — spin takes over, pace dies, batting treacherous late.
+   swing/pace: the juice is a day-1/2 thing — seam fades, the surface flattens into a road. */
+const CWEAR={
+  turner:{sp:[1.00,1.00,1.16,1.34], pc:[1.05,1.00,0.90,0.80]},
+  swing: {sp:[0.94,1.00,1.08,1.16], pc:[1.14,1.00,0.86,0.76]},
+  pace:  {sp:[0.96,1.00,1.06,1.12], pc:[1.12,1.00,0.92,0.84]},
+  flat:  {sp:[0.97,1.00,1.06,1.12], pc:[1.03,1.00,0.98,0.94]},
+  true:  {sp:[0.98,1.00,1.03,1.07], pc:[1.04,1.00,0.98,0.95]}
+};
 /*ENGINE-CORE:T13 BEGIN — generated from engine-core.js by tools_sync_engine.js; edit engine-core.js, not this block*/
 /* The frozen engine ladder (ENG_V1/V2/V3) and verify-by-resim were removed once every shared
    tour's scorecards were stored in Supabase: replays read the stored cards, so the old engines
@@ -2953,8 +2965,8 @@ let shareEng=null, sharedCode=null;   // vestigial — always null now (engine l
 const SRX2={"BW Hilfenhaus":{"2000s":[59.13,58.02],"2010s":[53.14,63.15]},"EJM Cowan":{"2010s":[41.27,null]},"JL Pattinson":{"2010s":[43.63,47.29]},"PJ Hughes":{"2000s":[58.56,null],"2010s":[51.6,null]},"PM Nevill":{"2010s":[40.66,null]},"PSP Handscomb":{"2010s":[49.83,null],"2020s":[40.27,null]},"SM Boland":{"2020s":[31.8,38.91]},"Khaled Ahmed":{"2020s":[32.07,69.75]},"Nasir Hossain":{"2010s":[54.46,null]},"Shadman Islam":{"2010s":[44.21,null],"2020s":[50.86,null]},"Shahadat Hossain":{"2000s":[38.69,63.09],"2010s":[54,null]},"AAP Atkinson":{"2020s":[76.21,36.8]},"DJ Malan":{"2010s":[41.08,null],"2020s":[40.69,null]},"DP Sibley":{"2020s":[34.7,null]},"EJG Morgan":{"2010s":[54.77,null]},"NRD Compton":{"2010s":[36.04,null]},"RJ Burns":{"2010s":[45.17,null],"2020s":[42.25,null]},"TT Bresnan":{"2010s":[39.25,65.04]},"A Mishra":{"2000s":[64.03,75.14],"2010s":[58.13,64.09]},"PP Ojha":{"2010s":[17.43,68.48]},"S Sreesanth":{"2000s":[64.28,55.94],"2010s":[29.62,74.96]},"AY Patel":{"2010s":[32.88,72.22],"2020s":[39.9,49.72]},"DAJ Bracewell":{"2010s":[46.36,69.22]},"HD Rutherford":{"2010s":[56.42,null]},"IE O'Brien":{"2000s":[38.48,60.19]},"IS Sodhi":{"2010s":[52.64,77.7],"2020s":[32.94,null]},"JS Patel":{"2000s":[43.52,77.45],"2010s":[57.2,102.4]},"MD Craig":{"2010s":[54.38,73.38]},"Abdur Rehman":{"2010s":[43.49,69.79]},"Adnan Akmal":{"2010s":[44.07,null]},"Faisal Iqbal":{"2000s":[44.48,null]},"Junaid Khan":{"2010s":[39.86,64.85]},"Rahat Ali":{"2010s":[36.55,72.87]},"Zulfiqar Babar":{"2010s":[69.56,82.92]},"A Nortje":{"2020s":[31.83,40.4]},"DG Bedingham":{"2020s":[67.42,null]},"HE van der Dussen":{"2020s":[40,null]},"Imran Tahir":{"2010s":[55.31,68.85]},"L Ngidi":{"2010s":[36.58,null],"2020s":[43.38,42.76]},"RD Rickelton":{"2020s":[52.85,null]},"T de Zorzi":{"2020s":[54.8,null]},"BOP Fernando":{"2010s":[53.99,null],"2020s":[48.33,null]},"KTGD Prasad":{"2010s":[53.45,57.95]},"MDKJ Perera":{"2010s":[73.95,null],"2020s":[66.39,null]},"MF Maharoof":{"2000s":[40,null]},"MG Vandort":{"2000s":[47.25,null]},"MVT Fernando":{"2010s":[13.33,51.85],"2020s":[29.11,55.55]},"N Pradeep":{"2010s":[36.56,72.52]},"NT Paranavitana":{"2000s":[51.2,null],"2010s":[38.96,null]},"RMS Eranga":{"2010s":[41.15,68.26]},"RTM Mendis":{"2020s":[43.91,58.77]},"UWMBCA Welegedara":{"2000s":[45.23,null],"2010s":[52.23,68.28]},"CS Baugh":{"2010s":[47.42,null]},"JA Warrican":{"2010s":[56.12,70.27],"2020s":[55.2,53.57]},"JD Campbell":{"2010s":[61.69,null],"2020s":[49.07,null]},"KA Edwards":{"2010s":[48.05,null]},"NE Bonner":{"2020s":[34.28,null]},"R Rampaul":{"2010s":[51.72,66.17]},"S Shillingford":{"2010s":[42.35,67.05]},"JT Partridge":{"1960s":[29.31,83.72]},"GB Lawrence":{"1960s":[null,47.64]},"AH McKinnon":{"1960s":[null,97.92]}};
 function bowlSRof(n,dec){const a=(SRX[n]||{})[dec];if(a&&a[5]!=null)return a[5];const b=(SRX2[n]||{})[dec];return b&&b[1]!=null?b[1]:0;}
 function effBatSR(n,dec){let bs=null;const sx=(SRX[n]||{})[dec];if(sx&&sx[3]!=null)bs=sx[3];else{const b=(SRX2[n]||{})[dec];if(b&&b[0]!=null)bs=b[0];}if(!bs)return 40;const e=ERA_SR[dec];return e?bs/e[0]*44:bs;}
-function mBall(esr,br,bwr,type,cond,bf,rng,E,wmul){
-  const wc=E.WCOND[cond],tm=type==="sp"?wc.spin:type==="pc"?wc.pace:(wc.pace+wc.spin)/2;
+function mBall(esr,br,bwr,type,cond,bf,rng,E,wmul,tmIn){
+  const wc=E.WCOND[cond],tm=tmIn!=null?tmIn:(type==="sp"?wc.spin:type==="pc"?wc.pace:(wc.pace+wc.spin)/2);   // tmIn = per-innings deteriorated condition mult from mInnings
   const set=bf<6?E.TNEWB:bf<20?E.TMID:1.0;
   let pOut=E.TWK*Math.pow(Math.max(bwr,10)/50,E.TWRX)/Math.pow(Math.max(br,10)/50,E.TBRX)*tm*set*(wmul||1); pOut=clamp(pOut,0.002,0.18);
   if(rng()<pOut)return{w:true,r:0};
@@ -2973,6 +2985,7 @@ function mBall(esr,br,bwr,type,cond,bf,rng,E,wmul){
 function mInnings(batInp,bowlInp,cond,cap,target,declareTarget,rng,E,innNo){
   E=E||ENG;
   const wc=E.WCOND[cond];
+  const _ci=Math.min(innNo||1,4)-1, _cwx=(typeof CWEAR!=="undefined"&&CWEAR[cond])||{sp:[1,1,1,1],pc:[1,1,1,1]};   // per-pitch deterioration this innings
   const wearW=E.TWEAR?E.TWEAR[Math.min(innNo||1,4)-1]:1, wearS=E.TSWEAR?E.TSWEAR[Math.min(innNo||1,4)-1]:1;   // v4 pitch wear (legacy: 1)
   const kinds=bowlInp.map(p=>p.pos.includes("SP")?"sp":p.pos.includes("PC")?"pc":"med");
   const edge=bowlInp.map(p=>{if(p.keeper&&E.KEEPNB)return 0;const sp=p.pos.includes("SP"),pc=p.pos.includes("PC"),ar=p.pos.includes("AR");if(sp||pc)return 1;if(ar&&p.wr>0)return 0.85;if(p.wr>=45)return 0.30;return 0;});
@@ -2980,7 +2993,7 @@ function mInnings(batInp,bowlInp,cond,cap,target,declareTarget,rng,E,innNo){
   if(nB<5){const cand=bowlInp.map((p,j)=>({j,p})).filter(x=>edge[x.j]<=0&&!x.p.keeper).map(x=>{const rb=x.p.pos.includes("AR")?40:x.p.pos.includes("MD")?10:x.p.pos.includes("TOP")?6:0;return{j:x.j,score:(x.p.wr||0)+rb};}).sort((a,b)=>b.score-a.score);for(let k=0;k<cand.length&&nB<5;k++){edge[cand[k].j]=0.12;nB++;}}
   const nokF=bowlInp.some(p=>p.keeper)?1:E.NOKP;   // fielding side without a keeper: chances go down
   const bowlers=bowlInp.map((p,j)=>({p,j,type:kinds[j],edge:edge[j]})).filter(b=>b.edge>0)
-    .map(b=>({...b,wrEff:Math.max(b.p.wr,10)*(b.edge<0.5?0.6:1)*nokF,cw:b.type==="sp"?wc.spin:b.type==="pc"?wc.pace:(wc.pace+wc.spin)/2,o:0,balls:0,r:0,w:0}));
+    .map(b=>({...b,wrEff:Math.max(b.p.wr,10)*(b.edge<0.5?0.6:1)*nokF,cw:b.type==="sp"?wc.spin*_cwx.sp[_ci]:b.type==="pc"?wc.pace*_cwx.pc[_ci]:(wc.pace*_cwx.pc[_ci]+wc.spin*_cwx.sp[_ci])/2,o:0,balls:0,r:0,w:0}));
   const bat=batInp.map(p=>({r:0,b:0,out:false,dnb:false,how:"not out",byBowler:-1,byField:-1,esr:effBatSR(p.n,p._dec)*wearS}));
   let total=0,wkts=0,striker=0,nonstriker=1,next=2,declared=false,result=null,over=0,last=-1,won=false;
   const fow=[];   // real fall-of-wickets (score at each fall) — display-only, consumes no rng, safe for every engine version
@@ -2992,7 +3005,7 @@ function mInnings(batInp,bowlInp,cond,cap,target,declareTarget,rng,E,innNo){
     let block=false,press=1;if(target){const ol=cap-over,need=target-total,rrr=ol>0?need/ol:99;if((rrr>E.B1||(wkts>=4&&rrr>E.B2)||wkts>=E.B3)&&ol>8)block=true;
       else if(E.TPUSH&&rrr>E.TPACE)press=Math.min(rrr/E.TPACE,E.TPUSH);}   // v4: a gettable chase is hunted — faster scoring at a wicket-risk cost
     for(let ball=0;ball<6&&wkts<10;ball++){
-      const o=mBall(bat[striker].esr*(block?0.5:1)*press,batInp[striker].br,bw.wrEff*(block?clamp(0.45+(bw.p.wr-55)/55,0.45,1.05):1),bw.type,cond,bat[striker].b,rng,E,wearW*(press>1?Math.pow(press,E.TPUSHW):1));
+      const o=mBall(bat[striker].esr*(block?0.5:1)*press,batInp[striker].br,bw.wrEff*(block?clamp(0.45+(bw.p.wr-55)/55,0.45,1.05):1),bw.type,cond,bat[striker].b,rng,E,wearW*(press>1?Math.pow(press,E.TPUSHW):1),bw.cw);
       bat[striker].b++;bw.balls++;
       if(o.w){bat[striker].out=true;bat[striker].byBowler=bi;wkts++;bw.w++;fow.push(total);if(next<11){striker=next;next++;}}
       else{total+=o.r;bat[striker].r+=o.r;bw.r+=o.r;if(o.r%2===1){const t=striker;striker=nonstriker;nonstriker=t;}}
