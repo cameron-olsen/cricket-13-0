@@ -1,0 +1,8 @@
+# Vercel reads .vercelignore from the project Root Directory (= 13-0/), NOT the
+# repo root — so the build-suppression excludes must live HERE. Removing the
+# Node manifest makes this a pure static deploy: no npm install, no build step,
+# no flaky NOT_FOUND. (@vercel/analytics is loaded via /_vercel/insights/script.js,
+# served by the platform when Web Analytics is on — the npm package isn't needed.)
+package.json
+package-lock.json
+node_modules
