@@ -2946,7 +2946,7 @@ const ENG_V1={TWK:0.013,TNEWB:1.55,TMID:1.18,TSINGLE:0.30,TP4A:0.030,TP4B:0.12,T
    what's left, and a keeperless side's catches go to fielders, not "c & b". */
 const ENG   ={TWK:0.0115,TNEWB:1.62,TMID:1.42,TSINGLE:0.1583,T3R:0.0096,T2R:0.0481,
   TP4A:0.0606,TP4B:0.12,TP6A:0.0043,TP6B:0.02,TWRX:1.30,TBRX:1.15,TSCOR:1.02,
-  DECL1:480,DECLT:410,B1:4.2,B2:3.0,B3:7,R1:0.16,R2:0.18,NOKP:0.88,FOLL:0.51,T4:1,
+  DECL1:480,DECLT:410,B1:4.2,B2:3.0,B3:7,R1:0.16,R2:0.18,NOKP:0.88,FOLL:0.51,T4:1,KEEPNB:1,
   TPUSH:1.4,TPUSHW:0.55,TPACE:3.1,
   TWEAR:[0.91,0.97,1.07,1.07],TSWEAR:[1.03,1.0,1.0,0.97],
   TPCT:0.592,TPB:0.175,TPLBW:0.165,TPRUN:0.027,TPST:0.055,TCTK:0.35,TCNB:0.036,
@@ -2976,7 +2976,7 @@ function mInnings(batInp,bowlInp,cond,cap,target,declareTarget,rng,E,innNo){
   const wc=E.WCOND[cond];
   const wearW=E.TWEAR?E.TWEAR[Math.min(innNo||1,4)-1]:1, wearS=E.TSWEAR?E.TSWEAR[Math.min(innNo||1,4)-1]:1;   // v4 pitch wear (legacy: 1)
   const kinds=bowlInp.map(p=>p.pos.includes("SP")?"sp":p.pos.includes("PC")?"pc":"med");
-  const edge=bowlInp.map(p=>{const sp=p.pos.includes("SP"),pc=p.pos.includes("PC"),ar=p.pos.includes("AR");if(sp||pc)return 1;if(ar&&p.wr>0)return 0.85;if(p.wr>=45)return 0.30;return 0;});
+  const edge=bowlInp.map(p=>{if(p.keeper&&E.KEEPNB)return 0;const sp=p.pos.includes("SP"),pc=p.pos.includes("PC"),ar=p.pos.includes("AR");if(sp||pc)return 1;if(ar&&p.wr>0)return 0.85;if(p.wr>=45)return 0.30;return 0;});
   let nB=edge.filter(e=>e>0).length;
   if(nB<5){const cand=bowlInp.map((p,j)=>({j,p})).filter(x=>edge[x.j]<=0&&!x.p.keeper).map(x=>{const rb=x.p.pos.includes("AR")?40:x.p.pos.includes("MD")?10:x.p.pos.includes("TOP")?6:0;return{j:x.j,score:(x.p.wr||0)+rb};}).sort((a,b)=>b.score-a.score);for(let k=0;k<cand.length&&nB<5;k++){edge[cand[k].j]=0.12;nB++;}}
   const nokF=bowlInp.some(p=>p.keeper)?1:E.NOKP;   // fielding side without a keeper: chances go down
