@@ -2853,7 +2853,12 @@ function genTourStats(inp,fixtures,batIdx,bowlIdx,rng){
   const teamPts=Math.round(clamp(55+resultScore*75+((batIdx+bowlIdx)-150)*0.18,30,142));
   return {players,teamPts};
 }
-function statInputs(){return picks.map(p=>({br:batRating(p,p._dec),wr:bowlRating(p,p._dec),pos:p.pos,keeper:isKeeper(p),n:p.n,_dec:p._dec}));}
+/* batting order: positions 1-6 stay as drafted (specialist top/middle); the lower order (7-11) is
+   sequenced by batting rating, so a batting all-rounder or keeper drafted into a bowling slot no
+   longer bats below a pure tail-ender. (Default; a manual reorder screen can layer on this.) */
+let batOrder=null;
+function defaultBatOrder(){const top=picks.slice(0,6),tail=picks.slice(6,11).slice().sort((a,b)=>batRating(b,b._dec)-batRating(a,a._dec));return top.concat(tail);}
+function statInputs(){return (batOrder||picks).map(p=>({br:batRating(p,p._dec),wr:bowlRating(p,p._dec),pos:p.pos,keeper:isKeeper(p),n:p.n,_dec:p._dec}));}
 function makeStats(W,D,L,res){
   const {bat,bowl}=indices();
   let fixtures;
@@ -3220,6 +3225,7 @@ function draftOpenOpp(rng,skill,excl,cap){
   return team;
 }
 function simulateOpen(){
+  batOrder=defaultBatOrder();
   lastTourType=tourType;
   const fixtures=tour.slice(); lastOpenFixtures=fixtures;
   const youInp=statInputs();
@@ -3246,6 +3252,7 @@ function simulateOpen(){
   maybeReveal(W,D,L);
 }
 function simulateChallenge(){
+  batOrder=defaultBatOrder();
   const E=shareEng||ENG;                      // shared legacy (C|) tours replay on the engine they were posted under
   const youInp=statInputs(), oppInp=oppInpFor(challengeOpp);
   const seed=hashStr(picks.map(p=>p.n+"."+p._dec).join("-")+"|"+challengeOpp.id);
@@ -3264,6 +3271,7 @@ function simulateChallenge(){
 }
 
 function simulate(){
+  batOrder=defaultBatOrder();
   if(gameMode==="challenge"){simulateChallenge();return;}
   if(tour){simulateOpen();return;}                    // Open Tour now plays ball-by-ball (simulateTour retired)
   lastTour=null;
