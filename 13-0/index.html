@@ -275,6 +275,7 @@
   /* ---------- draft top bar ---------- */
   .dtop{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:16px;gap:16px;flex-wrap:wrap}
   .dtop .brand{display:flex;align-items:center;gap:14px}
+@media(max-width:620px){.brand{flex-wrap:wrap;gap:10px 12px;padding-right:96px}#cellChips{flex-basis:100%;justify-content:flex-start;padding-right:0}}
   .dtop .brand .mono{font-size:26px;font-weight:700}
   .roundpill{font-family:"IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.1em;font-size:13px;color:var(--cream-dim);border:1px solid var(--line);border-radius:20px;padding:6px 14px}
   .cell{display:flex;align-items:center;gap:10px}
@@ -311,7 +312,7 @@
   .prow.disabled:hover{border-color:var(--line);background:rgba(255,255,255,.015)}
   .prow .pid{flex:1;min-width:0}
   .prow .pn{font-weight:600;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .prow .pr{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--ball-bright);margin-top:1px}
+  .prow .pr{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--ball-bright);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .prow .pr .dim{color:#5e7368}
   .prow .stats{display:flex;gap:12px;text-align:center}
   .prow .st{min-width:38px}
@@ -355,9 +356,10 @@
   .sbhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:7px}
   .sbhead .k{font-family:"IBM Plex Mono",monospace;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--cream-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .sbhead .k.kept{color:var(--willow)} .sbhead .k.warn{color:var(--gold)}
+  #sbCount,#sbKeeper{flex:0 0 auto} #sbHint{flex:1 1 auto;min-width:0;text-align:right}   /* hint truncates instead of overflowing the bar */
   .sbrow{display:flex;gap:3px;justify-content:space-between}   /* all 11 fit, no scroll */
   .scell{flex:1 1 0;min-width:0;text-align:center}
-  .ring{width:100%;max-width:32px;aspect-ratio:1;border-radius:50%;border:2px dashed var(--line2);display:flex;align-items:center;justify-content:center;
+  .ring{width:100%;max-width:27px;aspect-ratio:1;border-radius:50%;border:2px dashed var(--line2);display:flex;align-items:center;justify-content:center;
     font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:600;color:#5e7368;margin:0 auto;position:relative;transition:.14s}
   .scell.filled .ring{border-style:solid;border-color:var(--line2);background:rgba(255,255,255,.05);color:var(--cream)}
   .scell.eligible .ring{border-color:var(--gold);background:rgba(227,179,65,.16);color:var(--gold);cursor:pointer;box-shadow:0 0 8px rgba(227,179,65,.35)}
@@ -817,7 +819,7 @@
     <svg class="minicrest center" viewBox="0 0 260 224" role="img" aria-label="13-0"><use href="#crestSym"/></svg>
     <div class="eyebrow">Challenge mode</div>
     <h2 class="challenge-h">Tour a legend side</h2>
-    <p class="challenge-sub">Pick one of the great teams of history and play a thirteen-Test tour <b>in their conditions</b>. Draft your all-era XI to beat them on their own pitches &mdash; spin for India's dustbowls, nerve and pace for the Caribbean. The stronger the side and the more hostile their decks, the closer 13-0 gets to impossible.</p>
+    <p class="challenge-sub">Pick a legendary side and tour them <b>in their own conditions</b>. Draft an all-era XI to beat them on their pitches &mdash; the stronger the side, the closer 13-0 gets to impossible.</p>
     <div class="oppgrid" id="oppGrid"></div>
     <div class="challenge-foot">
       <button class="cta" id="oppRandom">Random opponent</button>
@@ -4105,6 +4107,8 @@ $("fbSend")&&($("fbSend").onclick=async()=>{
   renderResultView(d.W,d.D,d.L);
 })();
 </script>
+<!-- hide the fixed profile chip while scrolling a long list so it never covers row controls -->
+<script>(function(){var a=document.getElementById("acctTop");if(!a)return;var on=false;function upd(){var hide=(window.scrollY||0)>72;if(hide===on)return;on=hide;a.style.transition="opacity .18s ease";a.style.opacity=hide?"0":"";a.style.pointerEvents=hide?"none":"";}addEventListener("scroll",upd,{passive:true});upd();})();</script>
 <!-- Vercel Web Analytics (static-site snippet) -->
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
