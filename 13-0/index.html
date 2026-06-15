@@ -3563,6 +3563,7 @@ function openShareModal(){
   const isChal=gameMode==="challenge"&&challengeTests;
   const isOpen=!isChal&&!!tourTests;
   const url=location.origin+location.pathname+"?s="+(isChal?shareCodeChallenge():isOpen?shareCodeOpen():shareCode(W,D,L));
+  if(isChal||isOpen)storeCards(isChal?shareCodeChallenge():shareCodeOpen());   // freeze cards so the link replays without re-simulating
   const rec=D?`${W}-${D}-${L}`:`${W}-${L}`;
   $("shareUrl").value=url;
   const msg=isChal?`I toured ${challengeOpp.team} and went ${rec} — can you beat them?`
@@ -3689,6 +3690,18 @@ async function hofSubmit(rec){
   if(r.status===409)return {ok:false,dup:true};               // share_code unique -> this exact tour is already on the board
   if(r.status===401||r.status===403){saveSession(null);updateAcct();return {ok:false,err:"auth"};}
   return {ok:false,err:"HTTP "+r.status};
+}
+/* ---- scorecard storage: freeze a tour's full scorecards so shared links replay WITHOUT re-running
+   the engine. Written on share/post, read on replay; lets the engine evolve without re-simulating
+   old tours. cards = {t:tests, w/d/l, s:lastStats, m:gameMode, tt:tourType}. ---- */
+async function storeCards(code){
+  try{ if(!code)return; const t=challengeTests||tourTests; if(!t||!lastResult)return;
+    const payload={t,w:lastResult.W,d:lastResult.D,l:lastResult.L,s:lastStats,m:gameMode,tt:lastTourType||""};
+    await fetch(SB_URL+"/rest/v1/tour_scorecards",{method:"POST",headers:Object.assign({"Content-Type":"application/json",Prefer:"resolution=merge-duplicates"},SB_HEAD),body:JSON.stringify({share_code:code,engine:4,cards:payload})});
+  }catch(_){}
+}
+async function fetchCards(code){
+  try{ const r=await fetch(SB_URL+"/rest/v1/tour_scorecards?select=cards&share_code=eq."+encodeURIComponent(code),{headers:SB_HEAD}); if(!r.ok)return null; const a=await r.json(); return (a&&a[0])?a[0].cards:null; }catch(_){return null;}
 }
 async function hofFetch(oppId){
   let url=SB_URL+"/rest/v1/tours?select=player_name,opp_id,share_code,wins,draws,losses,swept,created_at,user_id,hard_mode"+
@@ -4050,6 +4063,7 @@ $("postSubmit").onclick=async()=>{
   const W=lastResult.W,D=lastResult.D,L=lastResult.L;
   const rec={opp_id:challengeOpp.id,share_code:shareCodeChallenge(),wins:W,draws:D,losses:L,swept:W===SEASON,hard_mode:!!hideStats};
   const res=await hofSubmit(rec);
+  if(res.ok||res.dup)storeCards(rec.share_code);   // store the scorecards alongside the posted record
   btn.disabled=false;btn.textContent=old;
   if(res.ok){markPosted(shareCodeChallenge());$("postModal").classList.add("hidden");toast("Posted to the Hall of Fame");openHof(challengeOpp.id);}
   else if(res.dup){markPosted(shareCodeChallenge());$("postModal").classList.add("hidden");toast("You've already posted this exact tour");openHof(challengeOpp.id);}
@@ -4098,28 +4112,35 @@ $("fbSend")&&($("fbSend").onclick=async()=>{
   });
 })();
 
-(function initShare(){
+(async function initShare(){
   const code=new URLSearchParams(location.search).get("s"); if(!code)return;
   const d=decodeShare(code); if(!d)return;
   picks=d.picksArr; used=new Set(picks.map(p=>p.n)); sharedView=true;
   $("title").classList.add("hidden");$("challenge").classList.add("hidden");$("draft").classList.add("hidden");
   shareEng=d.eng===1?ENG_V1:d.eng===2?ENG_V2:d.eng===3?ENG_V3:null;      // legacy codes replay on the engine they were made under
   shareRoster=d.open&&d.roster===1?1:null;              // pre-roster-v2 Open codes replay against the launch roster
-  if(d.challenge){                                      // replay a shared Challenge tour deterministically
-    gameMode="challenge"; challengeOpp=d.opp;
-    simulateChallenge();                                // rebuilds the exact fixtures + scorecards and renders the result
-    const eb=document.querySelector("#result .eyebrow"); if(eb)eb.textContent="A shared tour of "+challengeOpp.team;
-    $("againBtn").textContent="Build your own XI";
-    $("shareBtn").textContent="Share this tour";
-    return;
+  const finishCh=()=>{const eb=document.querySelector("#result .eyebrow"); if(eb)eb.textContent="A shared tour of "+challengeOpp.team;$("againBtn").textContent="Build your own XI";$("shareBtn").textContent="Share this tour";};
+  const finishOpen=()=>{const eb=document.querySelector("#result .eyebrow"); if(eb)eb.textContent="A shared "+d.tourType+" — replayed Test by Test";$("againBtn").textContent="Build your own XI";$("shareBtn").textContent="Share this tour";};
+  if(d.challenge||d.open){                              // engine-free replay when the cards are stored
+    const stored=await fetchCards(code);
+    if(stored&&stored.t){
+      if(d.challenge){gameMode="challenge";challengeOpp=d.opp;challengeTests=stored.t;tourTests=null;}
+      else{gameMode="tour";challengeOpp=null;tour=d.fixtures;tourType=d.tourType;tourTests=stored.t;challengeTests=null;lastTourType=stored.tt||d.tourType||"";}
+      lastResult={W:stored.w,D:stored.d,L:stored.l}; lastStats=stored.s;
+      renderResultView(stored.w,stored.d,stored.l);
+      d.challenge?finishCh():finishOpen();
+      return;
+    }
   }
-  if(d.open){                                           // replay a shared Open Tour deterministically
+  if(d.challenge){                                      // fallback: deterministic re-sim on the recorded engine
+    gameMode="challenge"; challengeOpp=d.opp;
+    simulateChallenge();
+    finishCh(); return;
+  }
+  if(d.open){
     gameMode="tour"; challengeOpp=null; tour=d.fixtures; tourType=d.tourType;
-    simulateOpen();                                     // rebuilds the same opponents + scorecards from the seed
-    const eb=document.querySelector("#result .eyebrow"); if(eb)eb.textContent="A shared "+d.tourType+" — replayed Test by Test";
-    $("againBtn").textContent="Build your own XI";
-    $("shareBtn").textContent="Share this tour";
-    return;
+    simulateOpen();
+    finishOpen(); return;
   }
   lastResult={W:d.W,D:d.D,L:d.L}; lastStats=makeStats(d.W,d.D,d.L,null);
   const eb=document.querySelector("#result .eyebrow"); if(eb)eb.textContent="A shared XI — a year of Tests";
