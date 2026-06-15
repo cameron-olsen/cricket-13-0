@@ -2920,20 +2920,9 @@ const MORD=[1.12,1.12,1.10,1.07,1.04,1.0,0.94,0.82,0.72,0.62,0.55];
 const ERA_SR={"1930s":[42.2,77.1],"1940s":[40.6,121],"1950s":[40.6,86.2],"1960s":[38.1,92.4],"1970s":[39.7,101],"1980s":[41.6,89.5],"1990s":[42.2,92.6],"2000s":[47.4,79.4],"2010s":[51,78.2],"2020s":[50.8,69.7]};
 const CONDBAT={turner:0.83,pace:0.88,swing:0.85,flat:1.10,true:1.0};
 /*ENGINE-CORE:T13 BEGIN — generated from engine-core.js by tools_sync_engine.js; edit engine-core.js, not this block*/
-/* Engine tuning v2 ("B"): sharper skill leverage (TWRX/TBRX), bounded condition leverage
-   (WCOND compressed toward 1), softer collapse tails (new-ball/set multipliers).
-   ENG_V1 preserves the launch engine EXACTLY — pre-v2 share codes (C|, O|) replay and verify
-   against it, so existing Hall of Fame records and shared links stay true forever.
-   ENG_V3 = the long-serving v3 tune, frozen at the 2026-06-12 v4 break — C3|/O3|/O4| codes
-   replay and verify against it. New fields used by v4 are read with fallbacks, so the frozen
-   consts are untouched and legacy rng streams are byte-identical. */
-const ENG_V3={TWK:0.0115,TNEWB:1.45,TMID:1.12,TSINGLE:0.30,TP4A:0.040,TP4B:0.12,TWRX:1.30,TBRX:1.15,TSCOR:1.02,
-  DECL1:440,DECLT:315,B1:3.2,B2:2.2,B3:7,R1:0.16,R2:0.18,NOKP:0.88,
-  WCOND:{turner:{pace:0.73,spin:1.33},pace:{pace:1.27,spin:0.70},swing:{pace:1.24,spin:0.73},flat:{pace:1.03,spin:0.88},true:{pace:1.108,spin:0.868}}};
-const ENG_V2={...ENG_V3,NOKP:1};   // engine v2 (pre keeper-penalty) — C2|/O2| codes verify against this, frozen
-const ENG_V1={TWK:0.013,TNEWB:1.55,TMID:1.18,TSINGLE:0.30,TP4A:0.030,TP4B:0.12,TWRX:1.15,TBRX:1.0,TSCOR:0.96,
-  DECL1:480,DECLT:345,B1:2.4,B2:1.7,B3:6,R1:0.27,R2:0.295,NOKP:1,
-  WCOND:{turner:{pace:0.55,spin:1.55},pace:{pace:1.45,spin:0.50},swing:{pace:1.40,spin:0.55},flat:{pace:1.05,spin:0.80},true:{pace:1.18,spin:0.78}}};
+/* The frozen engine ladder (ENG_V1/V2/V3) and verify-by-resim were removed once every shared
+   tour's scorecards were stored in Supabase: replays read the stored cards, so the old engines
+   are no longer needed to reproduce historical results. A single current engine (below) remains. */
 /* ===== ENG_V4 (2026-06-12) — grounded in the Cricsheet Tests archive =====
    881 matches 2002–26, truth in data/cricsheet-tests-engine.json (tools_tests_engine_extract.py).
    Empirical anchors: wpb set-curve new/mid/set 1.41/1.24/0.87 (→ 1.62/1.42/1.0 with set=1);
@@ -2951,8 +2940,7 @@ const ENG   ={TWK:0.0115,TNEWB:1.62,TMID:1.42,TSINGLE:0.1583,T3R:0.0096,T2R:0.04
   TWEAR:[0.91,0.97,1.07,1.07],TSWEAR:[1.03,1.0,1.0,0.97],
   TPCT:0.592,TPB:0.175,TPLBW:0.165,TPRUN:0.027,TPST:0.055,TCTK:0.35,TCNB:0.036,
   WCOND:{turner:{pace:0.73,spin:1.33},pace:{pace:1.27,spin:0.70},swing:{pace:1.24,spin:0.73},flat:{pace:1.03,spin:0.88},true:{pace:1.108,spin:0.868}}};
-const engFor=v=>v===1?ENG_V1:v===2?ENG_V2:v===3?ENG_V3:ENG;
-let shareEng=null;   // set when replaying a shared code: V1 for legacy prefixes, else null (current)
+let shareEng=null, sharedCode=null;   // vestigial — always null now (engine ladder gone); kept so any legacy read resolves to ENG. sharedCode = the URL code of a replayed tour, reused when re-sharing
 function effBatSR(n,dec){const sx=(SRX[n]||{})[dec];const bs=sx&&sx[3]!=null?sx[3]:null;if(!bs)return 40;const e=ERA_SR[dec];return e?bs/e[0]*44:bs;}
 function mBall(esr,br,bwr,type,cond,bf,rng,E,wmul){
   const wc=E.WCOND[cond],tm=type==="sp"?wc.spin:type==="pc"?wc.pace:(wc.pace+wc.spin)/2;
@@ -3459,7 +3447,7 @@ function parseXI(str){const arr=[];
     if(!p||!dec||!p.eras[dec])return null; p._dec=dec; arr.push(p);}
   return arr.length===XI_SIZE?arr:null;}
 function shareCode(W,D,L){ return b64e("1|"+xiParts()+"|"+W+"."+D+"."+L); }
-function shareCodeChallenge(){ return b64e((shareEng===ENG_V1?"C|":shareEng===ENG_V2?"C2|":shareEng===ENG_V3?"C3|":"C4|")+xiParts()+"|"+challengeOpp.id); }   // challenge tour: XI + opponent; legacy replays keep their legacy prefix
+function shareCodeChallenge(){ return b64e("C4|"+xiParts()+"|"+challengeOpp.id); }   // challenge tour: XI + opponent; legacy replays keep their legacy prefix
 function decodeShare(code){
   let raw; try{raw=b64d(code);}catch(e){return null;}
   const seg=raw.split("|");
@@ -3490,7 +3478,7 @@ function fixturesDec(str){const fx=[];
   return fx.length===SEASON?fx:null;}
 function shareCodeOpen(){
   const ti=Math.max(0,TOUR_TYPES.findIndex(t=>t.name===lastTourType));
-  return b64e((shareEng===ENG_V1?"O|":shareEng===ENG_V2?"O2|":shareEng===ENG_V3?(shareRoster===1?"O3|":"O4|"):"O5|")+xiParts()+"|"+ti+"|"+fixturesEnc(lastOpenFixtures));
+  return b64e("O5|"+xiParts()+"|"+ti+"|"+fixturesEnc(lastOpenFixtures));
 }
 /* ---- render the result as a shareable PNG (no backend — drawn on a canvas) ---- */
 function drawBall(x,cx,cy,r){
@@ -3562,8 +3550,8 @@ function openShareModal(){
     `<div class="scardfoot"><span>Can you go 13-0?</span><span class="sdot">13-0.app</span></div>`;
   const isChal=gameMode==="challenge"&&challengeTests;
   const isOpen=!isChal&&!!tourTests;
-  const url=location.origin+location.pathname+"?s="+(isChal?shareCodeChallenge():isOpen?shareCodeOpen():shareCode(W,D,L));
-  if(isChal||isOpen)storeCards(isChal?shareCodeChallenge():shareCodeOpen());   // freeze cards so the link replays without re-simulating
+  const url=location.origin+location.pathname+"?s="+((sharedView&&sharedCode)?sharedCode:(isChal?shareCodeChallenge():isOpen?shareCodeOpen():shareCode(W,D,L)));
+  if((isChal||isOpen)&&!sharedView)storeCards(isChal?shareCodeChallenge():shareCodeOpen());   // freeze a freshly-played tour's cards so the link replays without re-simulating
   const rec=D?`${W}-${D}-${L}`:`${W}-${L}`;
   $("shareUrl").value=url;
   const msg=isChal?`I toured ${challengeOpp.team} and went ${rec} — can you beat them?`
@@ -3712,19 +3700,6 @@ async function hofFetch(oppId){
   if(!r.ok)throw new Error("HTTP "+r.status);
   return await r.json();
 }
-// re-derive a tour's true W/D/L straight from its share code — identical maths to simulateChallenge()
-function verifyChallenge(arr,opp,E){
-  const youInp=inputsOf(arr), oppInp=opp._inp;
-  const seed=hashStr(arr.map(p=>p.n+"."+p._dec).join("-")+"|"+opp.id);
-  const rng=mulberry32(seed);
-  const fx=challengeFixtures(opp,rng);
-  let W=0,D=0,L=0;
-  for(const f of fx){const o=mPlayTest(youInp,oppInp,f.cond,rng,E).outcome;if(o==="W")W++;else if(o==="D")D++;else L++;}
-  const bat=weighted(youInp.map(p=>Math.max(p.br,12)),BW), bowl=weighted(youInp.map(p=>Math.max(p.wr,8)),WW);
-  const resultScore=(2*W+D)/(2*(W+D+L||1));
-  const teamPts=Math.round(clamp(55+resultScore*75+((bat+bowl)-150)*0.18,30,142));   // same ICC-style team rating as the result screen
-  return {W,D,L,teamPts};
-}
 function hofCmp(a,b){            // best record first; harder opponent breaks ties; then earliest
   if(b.wins!==a.wins)return b.wins-a.wins;
   if(a.losses!==b.losses)return a.losses-b.losses;
@@ -3750,44 +3725,7 @@ function hofRender(){
   list.querySelectorAll(".hofrow").forEach(el=>el.onclick=()=>{const c=el.getAttribute("data-code");if(c)location.href=location.pathname+"?s="+encodeURIComponent(c);});
 }
 function esc(s){return String(s).replace(/[&<>"'`]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;","`":"&#96;"}[c]));}
-// re-derive one tour's true record from its share code; null if it can't be decoded/counted
-function verifyOne(e){
-  let d=null; try{d=decodeShare(e.share_code);}catch(_){}
-  if(!d||!d.challenge||!d.opp||d.opp.id!==e.opp_id)return null;       // undecodable / opponent mismatch
-  const t=verifyChallenge(d.picksArr,d.opp,engFor(d.eng));            // verify on the engine the record was posted under
-  return {ok:(t.W===e.wins&&t.D===e.draws&&t.L===e.losses),wins:t.W,draws:t.D,losses:t.L,swept:t.W===SEASON,teamPts:t.teamPts};
-}
-/* ---- verification cache: a share code is immutable and the replay deterministic, so each
-   tour only ever needs verifying once per device per engine version. Bump VC_KEY's suffix
-   whenever the engine changes — stale caches are then simply ignored. ---- */
-const VC_KEY="h13_vc2";   // bumped at the v4 break — cached verdicts from the v3-era client are stale
-let VCACHE={};try{VCACHE=JSON.parse(localStorage.getItem(VC_KEY)||"{}")||{};}catch(_){VCACHE={};}
-let vcDirty=false,vcSaveT=null;
-function vcSave(){if(!vcDirty)return;vcDirty=false;try{localStorage.setItem(VC_KEY,JSON.stringify(VCACHE));}catch(_){}}
-function vcQueueSave(){vcDirty=true;clearTimeout(vcSaveT);vcSaveT=setTimeout(vcSave,500);}
-function verifyCached(e){
-  const k=e.share_code+"|"+e.opp_id, hit=VCACHE[k];
-  if(hit!==undefined){
-    if(hit===0)return null;                                            // remembered as undecodable
-    return {ok:(hit[1]===e.wins&&hit[2]===e.draws&&hit[3]===e.losses),wins:hit[1],draws:hit[2],losses:hit[3],swept:hit[1]===SEASON,teamPts:hit[4]};
-  }
-  const v=verifyOne(e);
-  VCACHE[k]=v?[v.ok?1:0,v.wins,v.draws,v.losses,v.teamPts]:0;
-  vcQueueSave();
-  return v;
-}
-let hofSeq=0;                       // view token: bumping it cancels any in-flight verify pass
-async function hofVerify(tok){      // walk the rows, replay each (cache-first), correct any that lie
-  for(let i=0;i<hofRows.length;i++){
-    if(tok!==hofSeq)return;                                            // user switched views — stand down
-    const e=hofRows[i], v=verifyCached(e);
-    if(!v){e.verify="bad";}
-    else if(v.ok){e.verify="ok";e.teamPts=v.teamPts;}
-    else{e.verify="bad";e.wins=v.wins;e.draws=v.draws;e.losses=v.losses;e.swept=v.swept;e.teamPts=v.teamPts;}  // show the engine's truth
-    if(i%12===11){hofRender();await new Promise(r=>setTimeout(r,0));}      // yield so the modal stays responsive
-  }
-  if(tok===hofSeq)hofRender();
-}
+let hofSeq=0;                       // view token: bumping it cancels any in-flight load
 
 /* ---- global skill ranking: best result per legend side, weighted by difficulty ---- */
 let rankRows=[];
@@ -3820,19 +3758,7 @@ async function loadRanking(tok){
   let data; try{data=await hofFetchAll();}catch(e){if(tok===hofSeq)list.innerHTML='<div class="hofempty">Could not reach the ranking. Try again.</div>';return;}
   if(tok!==hofSeq)return;
   const mine=data.filter(e=>e.user_id);
-  // provisional board from the claimed records, shown instantly; the verified truth replaces it below
-  rankRows=aggregateRanking(mine);
-  renderRanking(true);
-  const verified=[];
-  for(let i=0;i<mine.length;i++){
-    if(tok!==hofSeq)return;                            // user switched views — stand down
-    const e=mine[i];
-    const v=verifyCached(e);                           // count only tours that genuinely replay -> fakes can't inflate the ladder
-    if(v)verified.push({user_id:e.user_id,player_name:e.player_name,opp_id:e.opp_id,wins:v.wins,losses:v.losses,swept:v.swept,hard_mode:e.hard_mode});
-    if(i%8===7)await new Promise(r=>setTimeout(r,0));
-  }
-  if(tok!==hofSeq)return;
-  rankRows=aggregateRanking(verified);
+  rankRows=aggregateRanking(mine);                       // trust the stored records (verification retired with the engine ladder)
   renderRanking();
 }
 function renderRanking(provisional){
@@ -3912,9 +3838,8 @@ async function openHof(sel){
   try{
     const data=await hofFetch(v);
     if(tok!==hofSeq)return;
-    hofRows=data.map(e=>({...e,verify:"chk"}));
+    hofRows=data;
     hofRender();
-    hofVerify(tok);
   }catch(e){ if(tok===hofSeq)list.innerHTML='<div class="hofempty">Could not reach the Hall of Fame. Check your connection and try again.</div>'; }
 }
 $("hofFilter")&&($("hofFilter").onchange=()=>openHof($("hofFilter").value));
@@ -4117,8 +4042,7 @@ $("fbSend")&&($("fbSend").onclick=async()=>{
   const d=decodeShare(code); if(!d)return;
   picks=d.picksArr; used=new Set(picks.map(p=>p.n)); sharedView=true;
   $("title").classList.add("hidden");$("challenge").classList.add("hidden");$("draft").classList.add("hidden");
-  shareEng=d.eng===1?ENG_V1:d.eng===2?ENG_V2:d.eng===3?ENG_V3:null;      // legacy codes replay on the engine they were made under
-  shareRoster=d.open&&d.roster===1?1:null;              // pre-roster-v2 Open codes replay against the launch roster
+  sharedCode=code;                                      // reuse this exact code when re-sharing, so it maps to the stored cards
   const finishCh=()=>{const eb=document.querySelector("#result .eyebrow"); if(eb)eb.textContent="A shared tour of "+challengeOpp.team;$("againBtn").textContent="Build your own XI";$("shareBtn").textContent="Share this tour";};
   const finishOpen=()=>{const eb=document.querySelector("#result .eyebrow"); if(eb)eb.textContent="A shared "+d.tourType+" — replayed Test by Test";$("againBtn").textContent="Build your own XI";$("shareBtn").textContent="Share this tour";};
   if(d.challenge||d.open){                              // engine-free replay when the cards are stored
